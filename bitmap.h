@@ -1,3 +1,5 @@
+//Esta clase permite abrir archivos .BMP y cargarlos como texturas para ser usadas con openGL
+
 include "glut.h"
 
 class bitmap {
