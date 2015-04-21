@@ -1,4 +1,8 @@
 # cpp-coders-juego
+
+C++ Coders: Raiders of the lost class
+
+
 Proyecto de videojuego libre con OpenGL
 
 Tomás Lorenzo Henriques Vázquez		tl.henriques@alumnos.upm.es
