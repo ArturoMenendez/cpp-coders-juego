@@ -76,6 +76,14 @@ Vector3D Vector3D::unitario(Vector3D v){
 	return res;
 }
 
+Vector3D Vector3D::creavector(Vector3D p, Vector3D q){
+	Vector3D res;
+	 res.x = q.x - p.x;
+	 res.y = q.y - p.y;
+	 res.z = q.z - p.z;
+	 return res;
+}
+
 Vector3D::Vector3D(void)
 {
 	x=y=z=0;
@@ -85,3 +93,4 @@ Vector3D::Vector3D(void)
 Vector3D::~Vector3D(void)
 {
 }
+
