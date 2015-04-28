@@ -11,6 +11,7 @@ void OnDraw(void); //esta funcion sera llamada para dibujar
 void OnTimer(int value); //esta funcion sera llamada cuando transcurra una temporizacion
 void OnKeyboardDown(unsigned char key, int x, int y); //cuando se pulse una tecla	
 void OnMouseDown(int button, int state, int x, int y);//se llama cuando se pulsa o se suelta un boton del raton
+void OnMotion(int x, int y);
 
 Esfera e1; //AÑADIDO PARA PROBAR EL RATON
 
@@ -36,6 +37,7 @@ int main(int argc, char* argv[])
 	glutTimerFunc(25, OnTimer, 0);//le decimos que dentro de 25ms llame 1 vez a la funcion OnTimer()
 	glutKeyboardFunc(OnKeyboardDown);
 	glutMouseFunc(OnMouseDown);
+	glutMotionFunc(OnMotion);
 	//pasarle el control a GLUT,que llamara a los callbacks
 	glutMainLoop();
 
@@ -148,4 +150,8 @@ void OnTimer(int value){
 
 void OnMouseDown(int button, int state, int x, int y){
 	e1.Mouse(button, state, x, y);
+}
+
+void OnMotion(int x, int y){
+	e1.Motion(x,y);	
 }
