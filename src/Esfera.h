@@ -15,6 +15,7 @@ public:
 	Esfera(void);
 	void Mouse(int, int, int, int);
 	void Motion(int, int);
+	void PassiveMotion(int, int);
 	~Esfera(void);
 	void Dibuja();
 };
