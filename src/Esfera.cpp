@@ -21,14 +21,15 @@ void Esfera::Dibuja(){
 	glTranslatef(-posicion.x, -posicion.y, -posicion.z);
 }
 
-void Esfera::Mouse(int button, int state, int x, int y){   
-	switch (button){                                  
+void Esfera::Mouse(int button, int state, int x, int y){
+	switch (button){
 	case GLUT_LEFT_BUTTON:
 		if (state == GLUT_DOWN){
-			 botonpulsado=true;
+			
+			botonpulsado = true;
 		}
 		else
-		botonpulsado=false;
+			botonpulsado = false;
 	}
 }
 
@@ -40,3 +41,8 @@ void Esfera::Motion(int x, int y){
 	}
 }
 
+void Esfera::PassiveMotion(int x, int y){
+	posicion.x = ((float)x - 400) / 16.82f;
+	posicion.y = ((float)y - 300) / -16.82f;
+	posicion.z = 1;
+}
