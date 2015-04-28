@@ -21,15 +21,22 @@ void Esfera::Dibuja(){
 	glTranslatef(-posicion.x, -posicion.y, -posicion.z);
 }
 
-void Esfera::Mouse(int button, int state, int x, int y){  //ESTE METODO CREA UNA ESFERA EN EL PUNTO EN EL QUE SE 
-	switch (button){                                  //HAGA CLIC, Y CREA OTRA CUANDO SE VUELVA A HACER CLIC
+void Esfera::Mouse(int button, int state, int x, int y){   
+	switch (button){                                  
 	case GLUT_LEFT_BUTTON:
 		if (state == GLUT_DOWN){
-			 posicion.x = ((float)x - 400) / 16.82f;
-			 posicion.y = ((float)y - 300) / -16.82f;
-			 posicion.z = 1;
+			 botonpulsado=true;
 		}
+		else
+		botonpulsado=false;
 	}
-
-
 }
+
+void Esfera::Motion(int x, int y){
+	if (botonpulsado == true){
+	posicion.x = ((float)x - 400) / 16.82f;
+			posicion.y = ((float)y - 300) / -16.82f;
+			posicion.z = 1;
+	}
+}
+
