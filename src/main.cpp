@@ -12,8 +12,10 @@ void OnTimer(int value); //esta funcion sera llamada cuando transcurra una tempo
 void OnKeyboardDown(unsigned char key, int x, int y); //cuando se pulse una tecla	
 void OnMouseDown(int button, int state, int x, int y);//se llama cuando se pulsa o se suelta un boton del raton
 void OnMotion(int x, int y);
+void OnPassiveMotion(int x, int y);
 
-Esfera e1; //AÑADIDO PARA PROBAR EL RATON
+Esfera e1; //esfera cian que sigue al raton si esta pulsado
+Esfera e2; //esfera rosa que sigue al raton si no esta pulsado
 
 int main(int argc, char* argv[])
 {
@@ -38,6 +40,7 @@ int main(int argc, char* argv[])
 	glutKeyboardFunc(OnKeyboardDown);
 	glutMouseFunc(OnMouseDown);
 	glutMotionFunc(OnMotion);
+	glutPassiveMotionFunc(OnPassiveMotion);
 	//pasarle el control a GLUT,que llamara a los callbacks
 	glutMainLoop();
 
@@ -120,7 +123,10 @@ void OnDraw(){
 	gluDeleteQuadric(qobj);
 	glDisable(GL_TEXTURE_2D);
 	
-
+e1.Dibuja();
+e2.r = 255;
+e2.g = 0;
+e2.Dibuja();
 	/*
 	glLightfv(GL_LIGHT0, GL_POSITION, antorcha);
 	glLightf(GL_LIGHT0, GL_LINEAR, 1);
@@ -150,8 +156,13 @@ void OnTimer(int value){
 
 void OnMouseDown(int button, int state, int x, int y){
 	e1.Mouse(button, state, x, y);
+	e2.Mouse(button, state, x, y);
 }
 
 void OnMotion(int x, int y){
-	e1.Motion(x,y);	
+	e1.Motion(x,y);
+}
+
+void OnPassiveMotion(int x, int y){
+	e2.PassiveMotion(x,y);
 }
