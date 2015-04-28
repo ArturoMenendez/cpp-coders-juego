@@ -22,12 +22,12 @@ void Esfera::Dibuja(){
 }
 
 void Esfera::Mouse(int button, int state, int x, int y){  //ESTE METODO CREA UNA ESFERA EN EL PUNTO EN EL QUE SE 
-	switch (button){                                        //HAGA CLIC, Y CREA OTRA CUANDO SE VUELVA A HACER CLIC
+	switch (button){                                  //HAGA CLIC, Y CREA OTRA CUANDO SE VUELVA A HACER CLIC
 	case GLUT_LEFT_BUTTON:
 		if (state == GLUT_DOWN){
-			 posicion.x = ((float)x + 400) / 400;
-			 posicion.y = ((float)y - 300) / -300;
-			 posicion.z = 0;
+			 posicion.x = ((float)x - 400) / 16.82f;
+			 posicion.y = ((float)y - 300) / -16.82f;
+			 posicion.z = 1;
 		}
 	}
 
