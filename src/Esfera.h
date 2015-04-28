@@ -10,9 +10,11 @@ public:
 	unsigned char r;
 	unsigned char g;
 	unsigned char b;
+	bool botonpulsado;
 	//metodos
 	Esfera(void);
 	void Mouse(int, int, int, int);
+	void Motion(int, int);
 	~Esfera(void);
 	void Dibuja();
 };
