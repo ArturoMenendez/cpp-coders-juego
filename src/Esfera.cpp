@@ -1,4 +1,4 @@
-include "Esfera.h"
+#include "Esfera.h"
 #include "glut.h"
 
 Esfera::Esfera()
