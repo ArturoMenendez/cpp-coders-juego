@@ -16,6 +16,8 @@ public:
 	unsigned char b;
 	bool botonpulsado;
 	float angrot;
+	Cilindro c1;
+	Pierna p1, p2;
 	//metodos
 	Jugador(void);
 	void Mouse(int, int, int, int);
