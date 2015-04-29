@@ -23,6 +23,7 @@
 		//Inicializar el gestor de ventanas GLUT
 		//y crear la ventana
 		glutInit(&argc, argv);
+		glutInitWindowPosition(250,100);
 		glutInitWindowSize(800, 600);
 		glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 		glutCreateWindow("C++ Coders: Raiders of the Lost Class");
