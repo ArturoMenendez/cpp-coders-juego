@@ -1,6 +1,7 @@
 #pragma once
 #include "Vector3D.h"
-#include "bitmap.h"
+#include "Cilindro.h"
+#include "Pierna.h"
 
 
 
