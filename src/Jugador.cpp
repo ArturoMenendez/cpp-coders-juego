@@ -1,14 +1,6 @@
 #include "Jugador.h"
 #include "glut.h"
-#include "Cilindro.h"
-#include "Pierna.h"
 #include "bitmap.h"
-
-GLUquadric* obj = gluNewQuadric();
-
-Cilindro c1;
-Pierna p1, p2;
-
 
 Jugador::Jugador(void)
 {
@@ -63,6 +55,7 @@ void Jugador::PassiveMotion(int x, int y){
 }
 
 void Jugador::Pinta(){
+	GLUquadric* obj = gluNewQuadric();
 	
 	static bitmap cuerpo("cuerpo.bmp");
 	static bitmap cabeza("cabeza.bmp");
