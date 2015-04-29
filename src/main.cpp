@@ -1,6 +1,6 @@
 #include "glut.h"
-#include "Esfera.h"
-//#include "bitmap.h"
+#include "Jugador.h"
+#include "bitmap.h"
 
 	float vistax = 0, vistay = 0, zoom = 50;
 	float theta = 0;
@@ -15,7 +15,7 @@
 	void OnMotion(int x, int y);
 	void OnPassiveMotion(int x, int y);
 
-	Esfera e1; //esfera cian que sigue al raton si esta pulsado
+	Jugador j1; //esfera cian que sigue al raton si esta pulsado
 
 
 	int main(int argc, char* argv[])
@@ -51,8 +51,8 @@
 
 	void OnDraw(){
 		static float antorcha[4] = { -16.0, 11.0, 2.0, 1 };
-		//static bitmap suelo("suelo.bmp");
-		//static bitmap bola("bola.bmp");
+		static bitmap suelo("suelo.bmp");
+		static bitmap bola("bola.bmp");
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glMatrixMode(GL_MODELVIEW);
@@ -60,7 +60,7 @@
 		gluLookAt(vistax, vistay, zoom, 0.0, 0, 0.0, 0.0, 1.0, 0.0);
 
 		glDisable(GL_LIGHTING);
-		//suelo.usarTextura();
+		suelo.usarTextura();
 		glBegin(GL_QUADS);	//SUELO
 		glColor3ub(0, 0, 100);
 		glTexCoord2f(3.0, 2.0);
@@ -73,6 +73,7 @@
 		glVertex3f(-20.0, -15.0, 0.0);
 		glEnd();
 		glDisable(GL_TEXTURE_2D);
+
 		glBegin(GL_QUADS);	//PARED SUPERIOR
 		glColor3ub(255, 0, 0);
 		glNormal3f(0, 0, 0);//normales para iluminacion
@@ -115,19 +116,24 @@
 		glColor3ub(255, 255, 255);
 
 
-		/*glTranslatef(0.0, 0.0, 5.0);
+		glTranslatef(0.0, 0.0, 5.0);
 		glRotatef(23, 0, 1, 0);
 		glRotatef(theta, 0, 0, 1);
-		//bola.usarTextura();
+		//////////////////////////////
+		bola.usarTextura();
 		glColor3ub(255, 255, 255);
 		GLUquadricObj *qobj = gluNewQuadric();
 		gluQuadricTexture(qobj, GL_TRUE);
-		gluSphere(qobj, 3, 40, 40);
+		gluSphere(qobj, 1, 40, 40);
 		gluDeleteQuadric(qobj);
-		glDisable(GL_TEXTURE_2D);*/
+		glDisable(GL_TEXTURE_2D);
+		////////////////////////////
+		glRotatef(-theta, 0, 0, 1);
+		glRotatef(-23, 0, 1, 0);
+		glTranslatef(0.0, 0.0, -5.0);
 
-		e1.Dibuja();
-		e1.Pinta();
+		j1.Dibuja();
+		j1.Pinta();
 
 		/*
 		glLightfv(GL_LIGHT0, GL_POSITION, antorcha);
@@ -145,30 +151,31 @@
 		if (key == 'j') vistax -= 0.5;
 		if (key == '+') zoom -= 0.5;
 		if (key == '-') zoom += 0.5;
-		e1.Mueve(key);
+		j1.Mueve(key);
 
 		glutPostRedisplay();
 	}
 
 	void OnTimer(int value){
-		//theta += 1.0F;
+		theta += 1.0F;
 
-		e1.Rota();
+		j1.Rota();
+		j1.Anima();
 
 		glutTimerFunc(25, OnTimer, 0);
 		glutPostRedisplay();
 	}
 
 	void OnMouseDown(int button, int state, int x, int y){
-		e1.Mouse(button, state, x, y);
+		j1.Mouse(button, state, x, y);
 		
 	}
 
 	void OnMotion(int x, int y){
-		e1.Motion(x, y);
+		j1.Motion(x, y);
 	}
 
 	void OnPassiveMotion(int x, int y){
-		e1.PassiveMotion(x, y);
+		j1.PassiveMotion(x, y);
 		
 	}
