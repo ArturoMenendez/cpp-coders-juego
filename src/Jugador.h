@@ -1,4 +1,10 @@
-class Esfera
+#pragma once
+#include "Vector3D.h"
+#include "bitmap.h"
+
+
+
+class Jugador
 {
 public:
 	//variables
@@ -11,15 +17,15 @@ public:
 	bool botonpulsado;
 	float angrot;
 	//metodos
-	Esfera(void);
-	~Esfera(void);
+	Jugador(void);
 	void Mouse(int, int, int, int);
 	void Motion(int, int);
 	void PassiveMotion(int, int);
+	~Jugador(void);
 	void Pinta();
 	void Dibuja();
 	void Rota();
 	void Mueve(unsigned char);
+	void Anima();
 };
-
 
