@@ -1,9 +1,6 @@
 #pragma once
 #include "Vector3D.h"
-#include "Cilindro.h"
 #include "Pierna.h"
-
-
 
 class Jugador
 {
@@ -17,18 +14,20 @@ public:
 	unsigned char b;
 	bool botonpulsado;
 	float angrot;
-	Cilindro c1;
+	bool* keyStates = new bool[256];
 	Pierna p1, p2;
+	Cilindro c1;
 	//metodos
 	Jugador(void);
+	~Jugador(void);
 	void Mouse(int, int, int, int);
 	void Motion(int, int);
 	void PassiveMotion(int, int);
-	~Jugador(void);
 	void Pinta();
 	void Dibuja();
 	void Rota();
 	void Mueve(unsigned char);
 	void Anima();
+	void KeyOperations(void);
+	void NoMueve(unsigned char);
 };
-
