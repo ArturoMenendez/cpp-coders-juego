@@ -1,9 +1,17 @@
 #include "glut.h"
-#include "Jugador.h"
+#include "Mundo.h"
 #include "bitmap.h"
+#include "Obstaculo.h"
+#include "ListaDisparos.h"
 
+	ListaDisparos l1;
 	float vistax = 0, vistay = 0, zoom = 50;
 	float theta = 0;
+	bool* keyStates = new bool[256];
+
+	Obstaculo o1;
+	Obstaculo o2;
+
 
 	//los callback, funciones que seran llamadas automaticamente por la glut
 	//cuando sucedan eventos
@@ -11,12 +19,12 @@
 	void OnDraw(void); //esta funcion sera llamada para dibujar
 	void OnTimer(int value); //esta funcion sera llamada cuando transcurra una temporizacion
 	void OnKeyboardDown(unsigned char key, int x, int y); //cuando se pulse una tecla	
+	void OnKeyboardUp(unsigned char key, int x, int y); //cuando se suelta una tecla
+	void KeyOperations(void);
 	void OnMouseDown(int button, int state, int x, int y);//se llama cuando se pulsa o se suelta un boton del raton
 	void OnMotion(int x, int y);
 	void OnPassiveMotion(int x, int y);
-
-	Jugador j1; //esfera cian que sigue al raton si esta pulsado
-
+	Jugador j1; 
 
 	int main(int argc, char* argv[])
 	{
@@ -40,16 +48,46 @@
 		glutDisplayFunc(OnDraw);
 		glutTimerFunc(25, OnTimer, 0);//le decimos que dentro de 25ms llame 1 vez a la funcion OnTimer()
 		glutKeyboardFunc(OnKeyboardDown);
+		glutKeyboardUpFunc(OnKeyboardUp);
 		glutMouseFunc(OnMouseDown);
 		glutMotionFunc(OnMotion);
 		glutPassiveMotionFunc(OnPassiveMotion);
+
 		//pasarle el control a GLUT,que llamara a los callbacks
+
+
+		o1.posicion.x = -10;
+		o1.posicion.y = 10;
+		o1.posicion.z = 0;
+		o1.tamaño.x = 2;
+		o1.tamaño.y = 10;
+		o1.tamaño.z = 10;
+		o1.id = 1;
+
+		o2.posicion.x = 2;
+		o2.posicion.y = 13;
+		o2.posicion.z = 0;
+		o2.tamaño.x = 0.8;
+		o2.tamaño.y = 0.8;
+		o2.tamaño.z = 3.1;
+		o2.id = 2;
+
+
+
+
+		keyStates['i'] = false;
+		keyStates['j'] = false;
+		keyStates['k'] = false;
+		keyStates['l'] = false;
+		keyStates['+'] = false;
+		keyStates['-'] = false;
 		glutMainLoop();
 
 		return 0;
 	}
 
 	void OnDraw(){
+		KeyOperations();
 		static float antorcha[4] = { -16.0, 11.0, 2.0, 1 };
 		static bitmap suelo("suelo.bmp");
 		static bitmap bola("bola.bmp");
@@ -135,6 +173,11 @@
 		j1.Dibuja();
 		j1.Pinta();
 
+		o2.Dibuja();
+		o1.Dibuja();
+	
+
+		l1.dibujarDisparos();
 		/*
 		glLightfv(GL_LIGHT0, GL_POSITION, antorcha);
 		glLightf(GL_LIGHT0, GL_LINEAR, 1);
@@ -145,30 +188,41 @@
 	}
 
 	void OnKeyboardDown(unsigned char key, int x, int y){
-		if (key == 'i') vistay += 0.5;
-		if (key == 'k') vistay -= 0.5;
-		if (key == 'l') vistax += 0.5;
-		if (key == 'j') vistax -= 0.5;
-		if (key == '+') zoom -= 0.5;
-		if (key == '-') zoom += 0.5;
+		keyStates[key] = true;		
 		j1.Mueve(key);
-
 		glutPostRedisplay();
+	}
+
+	void OnKeyboardUp(unsigned char key, int x, int y){
+		keyStates[key] = false;
+		j1.NoMueve(key);
+		glutPostRedisplay();
+	}
+
+	void KeyOperations(){
+		j1.KeyOperations();
+		if (keyStates['i']) vistay += 0.5;
+		if (keyStates['k']) vistay -= 0.5;
+		if (keyStates['l']) vistax += 0.5;
+		if (keyStates['j']) vistax -= 0.5;
+		if (keyStates['+']) zoom -= 0.5;
+		if (keyStates['-']) zoom += 0.5;
 	}
 
 	void OnTimer(int value){
 		theta += 1.0F;
-
+		
 		j1.Rota();
 		j1.Anima();
-
+		l1.actualizarDisparos(25);
 		glutTimerFunc(25, OnTimer, 0);
 		glutPostRedisplay();
 	}
 
 	void OnMouseDown(int button, int state, int x, int y){
 		j1.Mouse(button, state, x, y);
-		
+		if ((button == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN))
+			l1.agregarDisparos(j1);
 	}
 
 	void OnMotion(int x, int y){
