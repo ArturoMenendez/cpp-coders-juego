@@ -1,16 +1,20 @@
-#include "Jugador.h"
 #include "glut.h"
 #include "bitmap.h"
+#include "Jugador.h"
 
 Jugador::Jugador(void)
 {
-	radio=0.5;
-	posicion.x=posicion.y=0;
+	radio = 0.5;
+	posicion.x = posicion.y = 0;
 	posicion.z = 1;
-	g=b=200;
-	r=0;
+	g = b = 200;
+	r = 0;
 	p1.mov.z = 1;
 	p1.ang = p1.mov.y;
+	keyStates['a'] = false;
+	keyStates['s'] = false;
+	keyStates['d'] = false;
+	keyStates['w'] = false;
 }
 
 
@@ -19,10 +23,10 @@ Jugador::~Jugador(void)
 }
 
 void Jugador::Dibuja(){
-	glColor3f(r,g,b);
+	glColor3f(r, g, b);
 	glTranslatef(ptomira.x, ptomira.y, 1);
-	glutSolidSphere(radio,20,20);
-	glTranslatef(-ptomira.x, -ptomira.y,-1);
+	glutSolidSphere(radio, 20, 20);
+	glTranslatef(-ptomira.x, -ptomira.y, -1);
 	glBegin(GL_LINES);
 	glVertex3f(posicion.x, posicion.y, posicion.z);
 	glVertex3f(ptomira.x, ptomira.y, 1);
@@ -56,30 +60,27 @@ void Jugador::PassiveMotion(int x, int y){
 
 void Jugador::Pinta(){
 	GLUquadric* obj = gluNewQuadric();
-	
 	static bitmap cuerpo("cuerpo.bmp");
 	static bitmap cabeza("cabeza.bmp");
 	glDisable(GL_LIGHTING);
 
-	glTranslatef(posicion.x,posicion.y,0);
+	glTranslatef(posicion.x, posicion.y, 0);
 
-	glRotatef(angrot, 0,0,1);
+	glRotatef(angrot, 0, 0, 1);
 
 	glColor3ub(100, 100, 100);//cabeza
-	glTranslatef( 0, 0, 3);
-	glRotatef(45,0,0,1);
+	glTranslatef(0, 0, 3);
+	glRotatef(45, 0, 0, 1);
 	cabeza.usarTextura();
 	glColor3ub(255, 255, 255);
 	GLUquadricObj *cab = gluNewQuadric();
 	gluQuadricOrientation(cab, GLU_OUTSIDE);
 	gluQuadricTexture(cab, GL_TRUE);
-	gluCylinder(cab, 0.3,0.3,0.5, 4, 2);
+	gluCylinder(cab, 0.3, 0.3, 0.5, 4, 2);
 	gluDeleteQuadric(cab);
 	glDisable(GL_TEXTURE_2D);
 	glRotatef(-45, 0, 0, 1);
-	glTranslatef(0,0, -3);
-
-	
+	glTranslatef(0, 0, -3);
 
 	glColor3ub(0, 100, 100);//cuerpo
 	glTranslatef(0, 0, 1.4);
@@ -88,16 +89,14 @@ void Jugador::Pinta(){
 	GLUquadricObj *cue = gluNewQuadric();
 	gluQuadricOrientation(cue, GLU_OUTSIDE);
 	gluQuadricTexture(cue, GL_TRUE);
-	gluCylinder(cue, 0.5,0.5, 1.6,20, 20);
+	gluCylinder(cue, 0.5, 0.5, 1.6, 20, 20);
 	gluDeleteQuadric(cue);
 	glDisable(GL_TEXTURE_2D);
-	glTranslatef(0,0,1.6);
-	gluDisk(obj,0,0.50,20,20);
-	glTranslatef(0,0,-3);
+	glTranslatef(0, 0, 1.6);
+	gluDisk(obj, 0, 0.50, 20, 20);
+	glTranslatef(0, 0, -3);
 
-	
-
-	glColor3ub(150,150,150);//pierna izq
+	glColor3ub(150, 150, 150);//pierna izq
 	glTranslatef(0, 0.25, 1.2);
 	p1.Anima();
 	glTranslatef(0, -0.25, -1.2);
@@ -114,17 +113,17 @@ void Jugador::Pinta(){
 
 	glColor3ub(0, 0, 0);//brazo der
 	glTranslatef(0, -0.7, 2.8);
-	glRotatef(90,0,1,0);
+	glRotatef(90, 0, 1, 0);
 	gluDisk(obj, 0, 0.20, 20, 20);
 	gluCylinder(obj, 0.2, 0.2, 1.4, 20, 20);
-	glTranslatef(0,0,1.4);
+	glTranslatef(0, 0, 1.4);
 	glColor3ub(100, 255, 100);
 	gluDisk(obj, 0.1, 0.20, 20, 20);
 	glTranslatef(0, 0, -1.4);
 	glRotatef(-90, 0, 1, 0);
 	glTranslatef(0, 0.7, -2.8);
 
-	glRotatef(-angrot, 0,0, 1);
+	glRotatef(-angrot, 0, 0, 1);
 
 	glTranslatef(-posicion.x, -posicion.y, 0);
 
@@ -145,14 +144,34 @@ void Jugador::Rota(){
 	}
 }
 
-void Jugador::Mueve(unsigned char key){
-	if (key == 'w') posicion.y += 0.5;
-	if (key == 's') posicion.y -= 0.5;
-	if (key == 'd') posicion.x += 0.5;
-	if (key == 'a') posicion.x -= 0.5;
+void Jugador::KeyOperations(void){
+	if (keyStates['w']) {
+		posicion.y += 0.2;
+	}
+	if (keyStates['s']) { 
+		posicion.y -= 0.2;
+	}
+	if (keyStates['d']) { 
+		posicion.x += 0.2; 
+	}
+	if (keyStates['a']) { 
+		posicion.x -= 0.2;
+	}
 }
+
+void Jugador::NoMueve(unsigned char key){
+	keyStates[key] = false;
+}
+
+
+void Jugador::Mueve(unsigned char key){
+	keyStates[key] = true;
+}
+
 
 void Jugador::Anima(){
-	c1.Anima();
+	if (keyStates['w'] == true || keyStates['d'] == true || keyStates['s'] == true || keyStates['a'] == true)
+		c1.Anima();
+	else
+		c1.Dibuja();
 }
-
