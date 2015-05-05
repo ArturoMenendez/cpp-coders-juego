@@ -1,25 +1,29 @@
 #pragma once
 #include "Vector3D.h"
+#include "Jugador.h"
+#include "CrashBox.h"
 
 class Disparo
 {
+	CrashBox limites;
 	unsigned char rojo;
 	unsigned char verde;
 	unsigned char azul;
-	float x;
+	float x;	//pasar a vector 3D
 	float y;
 	float z;
-	float vx;
+	float vx;	//pasar a vector 3D
 	float vy;
 	float radio;
-	int daÃ±o;
+	int daño;
 	int vida;
 
 public:
-	Disparo(Vector3D jugador, Vector3D mira);
+	Disparo(Jugador personaje);
 	Disparo();
 	~Disparo();
 	void dibujar();
 	bool updateDisparo(const int t);
 
 };
+

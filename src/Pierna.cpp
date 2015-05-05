@@ -19,7 +19,7 @@ Pierna::~Pierna()
 void Pierna::Dibuja(){
 	glTranslatef(posicion.x, posicion.y, posicion.z);
 	e1.Dibuja();
-	glTranslatef(0,0,-c1.altura);
+	glTranslatef(0, 0, -c1.altura);
 	e2.Dibuja();
 	c1.Dibuja();
 	glTranslatef(0, 0, c1.altura);

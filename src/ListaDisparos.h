@@ -5,6 +5,7 @@
 
 class ListaDisparos
 {
+public:
 	int tam_lista;
 	Disparo *lista[MAX_DISPAROS];
 public:
@@ -14,3 +15,4 @@ public:
 	void actualizarDisparos(const int t);
 	void dibujarDisparos();
 };
+

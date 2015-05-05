@@ -148,13 +148,13 @@ void Jugador::KeyOperations(void){
 	if (keyStates['w']) {
 		posicion.y += 0.2;
 	}
-	if (keyStates['s']) { 
+	if (keyStates['s']) {
 		posicion.y -= 0.2;
 	}
-	if (keyStates['d']) { 
-		posicion.x += 0.2; 
+	if (keyStates['d']) {
+		posicion.x += 0.2;
 	}
-	if (keyStates['a']) { 
+	if (keyStates['a']) {
 		posicion.x -= 0.2;
 	}
 }

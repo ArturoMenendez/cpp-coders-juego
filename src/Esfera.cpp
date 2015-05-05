@@ -16,6 +16,6 @@ Esfera::~Esfera()
 
 void Esfera::Dibuja(){
 	glTranslatef(posicion.x, posicion.y, posicion.z);
-	glutSolidSphere(radio,20,20);
+	glutSolidSphere(radio, 20, 20);
 	glTranslatef(-posicion.x, -posicion.y, -posicion.z);
 }

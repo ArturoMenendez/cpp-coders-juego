@@ -1,5 +1,3 @@
-//Esta clase permite abrir archivos .BMP y cargarlos como texturas para ser usadas con openGL
-
 #include "bitmap.h"
 #include "glut.h"
 #include <stdio.h>
@@ -64,3 +62,4 @@ void bitmap::usarTextura(){
 
 bitmap::~bitmap(){
 	if (estado) delete[] imagen;
+}

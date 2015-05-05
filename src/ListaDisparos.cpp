@@ -12,9 +12,9 @@ ListaDisparos::~ListaDisparos()
 }
 
 void ListaDisparos::agregarDisparos(Jugador tirador){
-	Disparo* nuevo_disparo = new Disparo(tirador.posicion, tirador.ptomira);	
-	
+	Disparo* nuevo_disparo = new Disparo(tirador);	
 	if (tam_lista < MAX_DISPAROS) lista[tam_lista++] = nuevo_disparo;
+	
 }
 
 void ListaDisparos::actualizarDisparos(const int t){

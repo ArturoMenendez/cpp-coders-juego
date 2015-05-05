@@ -2,13 +2,13 @@
 #include "Jugador.h"
 
 class Mundo
-	
+
 {
 public:
 	//variables
 
 	Jugador j1;
-	
+
 	//metodos
 
 	void Dibuja();
