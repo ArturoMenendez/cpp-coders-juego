@@ -5,16 +5,16 @@
 #define PI 3.1416
 
 
-Disparo::Disparo(Jugador personaje) : destruir(false), radio(1), vida(1000), rojo(255), verde(255), azul(255){
+Disparo::Disparo(Jugador personaje) : destruir(false), radio(0.3), vida(1000), rojo(255), verde(0), azul(0){
 	Vector3D velocidad;
-	velocidad = velocidad.creavector(personaje.posicion, personaje.ptomira);
+	float f = 3;
+	pos.x = personaje.posicion.x + (1.4*cos(personaje.angrot * 2 * PI / 360)) + (0.7*sin(personaje.angrot * 2 * PI / 360)); 
+	pos.y = personaje.posicion.y - (0.7*cos(personaje.angrot * 2 * PI / 360)) + (1.4*sin(personaje.angrot * 2 * PI / 360)); 
+	pos.z = 2.8;
+	velocidad = velocidad.creavector(pos, personaje.ptomira);
 	velocidad = velocidad.unitario(velocidad);
-	vx = velocidad.x / 3;
-	vy = velocidad.y / 3;
-	x = personaje.posicion.x; //+ 1.57*cos(2.0F*PI - ((PI / 2.0F) + (2.0F*PI*personaje.angrot) / 360.0F));
-	y = personaje.posicion.y; //+ 1.57*sin(2.0F*PI - ((PI / 2.0F) + (2.0F*PI*personaje.angrot) / 360.0F));
-	z = 2.8;
-	limites.posicion = personaje.posicion;
+	vel = velocidad / f;
+	limites.posicion = pos;
 	limites.posicion.z = 0;
 	limites.radio = radio;
 	limites.tipo = CIRCULO;
@@ -29,19 +29,19 @@ Disparo::~Disparo(){
 
 void Disparo::dibujar(){
 
-	glTranslatef(x, y, z);
+	glTranslatef(pos.x, pos.y, pos.z);
 	glColor3ub(rojo, verde, azul);
 	glutSolidSphere(radio, 20, 20);
-	glTranslatef(0, 0, -z);
+	glTranslatef(0, 0, -pos.z);
 	limites.Dibuja();
-	glTranslatef(-x, -y, 0);
+	glTranslatef(-pos.x, -pos.y, 0);
 
 }
 
 void Disparo::updateDisparo(const int t){
 	//actualiza la posicion
-	limites.posicion.x = x = x + vx*2;
-	limites.posicion.y = y = y + vy * 2;
+	limites.posicion.x = pos.x = pos.x + vel.x*2;
+	limites.posicion.y = pos.y = pos.y + vel.y * 2;
 	
 	//actualiza el tiempo de vida
 	vida -= t;
