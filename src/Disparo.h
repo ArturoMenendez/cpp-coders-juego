@@ -9,13 +9,10 @@ class Disparo
 	unsigned char rojo;
 	unsigned char verde;
 	unsigned char azul;
-	float x;	//pasar a vector 3D
-	float y;
-	float z;
-	float vx;	//pasar a vector 3D
-	float vy;
+	Vector3D pos;
+	Vector3D vel;
 	float radio;
-	int daño;
+	int daÃ±o;
 	int vida;
 
 public:
@@ -30,4 +27,3 @@ public:
 	void destruye();
 
 };
-
