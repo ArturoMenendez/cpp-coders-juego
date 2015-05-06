@@ -6,7 +6,7 @@
 
 
 
-Obstaculo::Obstaculo(Vector3D posicion, Vector3D tamanio, int tipo)
+Obstaculo::Obstaculo(Vector3D posicion, Vector3D tamanio, int tipo, bool destruccion) : destruir(false)
 {
 	this->posicion = posicion;
 	this->tamanio = tamanio;
@@ -21,7 +21,7 @@ Obstaculo::Obstaculo(Vector3D posicion, Vector3D tamanio, int tipo)
 		limites.alto = tamanio.y;
 		limites.tipo = RECTANGULO;
 	}
-
+	se_destruye = destruccion;
 }
 
 

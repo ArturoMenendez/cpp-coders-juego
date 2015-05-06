@@ -1,20 +1,21 @@
 #include "glut.h"
 //#include "Mundo.h"
 #include "bitmap.h"
-#include "Obstaculo.h"
+#include "ListaObstaculos.h"
 #include "ListaDisparos.h"
-#include "CrashBox.h"
+#include "Interaccion.h"
 
+
+ListaObstaculos o1;
 ListaDisparos l1;
 float vistax = 0, vistay = 0, zoom = 50;
 float theta = 0;
 bool* keyStates = new bool[256];
-Vector3D posicion1(-10, 10, 0);
-Vector3D tamanio1(2, 10, 10);
-Vector3D posicion2(2, 13, 0);
-Vector3D tamanio2(0.8, 0.8, 3.1);
-Obstaculo o1(posicion1, tamanio1, 1);
-Obstaculo o2(posicion2, tamanio2, 2);
+Vector3D posicion2(-10, 10, 0);
+Vector3D tamanio2(2, 10, 10);
+Vector3D posicion1(2, 13, 0);
+Vector3D tamanio1(0.8, 0.8, 3.1);
+
 
 
 //los callback, funciones que seran llamadas automaticamente por la glut
@@ -58,7 +59,8 @@ int main(int argc, char* argv[])
 	glutPassiveMotionFunc(OnPassiveMotion);
 
 	//pasarle el control a GLUT,que llamara a los callbacks
-
+	o1.agregarObstaculo(posicion1, tamanio1, 2, true);
+	o1.agregarObstaculo(posicion2, tamanio2, 1, false);
 
 	keyStates['i'] = false;
 	keyStates['j'] = false;
@@ -158,8 +160,7 @@ void OnDraw(){
 	j1.Dibuja();
 	j1.Pinta();
 	l1.dibujarDisparos();
-	o2.Dibuja();
-	o1.Dibuja();
+	o1.dibujarObstaculos();
 
 
 
@@ -199,7 +200,10 @@ void OnTimer(int value){
 
 	j1.Rota();
 	j1.Anima();
+	
+	Interaccion::interaccion(l1, o1);
 	l1.actualizarDisparos(25);
+	o1.actualizarObstaculos();
 
 	glutTimerFunc(25, OnTimer, 0);
 	glutPostRedisplay();

@@ -1,5 +1,7 @@
 #pragma once
 #include "Vector3D.h"
+
+
 #define RECTANGULO 0
 #define CIRCULO 1
 
@@ -18,7 +20,6 @@ public:
 	CrashBox();
 	~CrashBox();
 	void Dibuja();
-	static bool interaccion(CrashBox obj1, CrashBox obj2);
 	
 };
 
