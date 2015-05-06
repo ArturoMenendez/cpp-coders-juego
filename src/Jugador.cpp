@@ -23,14 +23,19 @@ Jugador::~Jugador(void)
 }
 
 void Jugador::Dibuja(){
-	glColor3f(r, g, b);
+	GLUquadricObj* pepe = gluNewQuadric();
+	glColor3f(200, 255, 255);
 	glTranslatef(ptomira.x, ptomira.y, 1);
-	glutSolidSphere(radio, 20, 20);
-	glTranslatef(-ptomira.x, -ptomira.y, -1);
+	gluDisk(pepe, 0.4, 0.6, 20, 20);
 	glBegin(GL_LINES);
-	glVertex3f(posicion.x, posicion.y, posicion.z);
-	glVertex3f(ptomira.x, ptomira.y, 1);
+	glVertex3f(0.4, 0, 0);
+	glVertex3f(-0.4, 0, 0);
 	glEnd();
+	glBegin(GL_LINES);
+	glVertex3f(0, 0.4, 0);
+	glVertex3f(0, -0.4, 0);
+	glEnd();
+	glTranslatef(-ptomira.x, -ptomira.y, -1);
 }
 
 void Jugador::Mouse(int button, int state, int x, int y){
