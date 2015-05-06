@@ -58,6 +58,8 @@ int main(int argc, char* argv[])
 	glutMotionFunc(OnMotion);
 	glutPassiveMotionFunc(OnPassiveMotion);
 
+	glutSetCursor(GLUT_CURSOR_NONE);
+
 	//pasarle el control a GLUT,que llamara a los callbacks
 	o1.agregarObstaculo(posicion1, tamanio1, 2, true);
 	o1.agregarObstaculo(posicion2, tamanio2, 1, false);
