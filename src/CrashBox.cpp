@@ -33,16 +33,3 @@ void CrashBox::Dibuja(){
 	gluDisk(obj, radio, radio+0.05, 20, 20);
 	glTranslatef(0, 0, -0.1);
 }
-
-//NUEVO
-bool CrashBox::interaccion(CrashBox obj1, CrashBox obj2){
-
-	if (obj1.tipo == obj2.tipo == CIRCULO){
-		float distancia = Vector3D::modulo(obj1.posicion - obj2.posicion);
-		if (distancia <= (obj1.radio + obj2.radio))
-			return true;
-		return false;
-	}
-	else return false;
-
-}

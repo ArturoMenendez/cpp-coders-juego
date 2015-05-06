@@ -5,7 +5,7 @@
 #define PI 3.1416
 
 
-Disparo::Disparo(Jugador personaje) : radio(1), vida(1000), rojo(255), verde(255), azul(255){
+Disparo::Disparo(Jugador personaje) : destruir(false), radio(1), vida(1000), rojo(255), verde(255), azul(255){
 	Vector3D velocidad;
 	velocidad = velocidad.creavector(personaje.posicion, personaje.ptomira);
 	velocidad = velocidad.unitario(velocidad);
@@ -15,7 +15,9 @@ Disparo::Disparo(Jugador personaje) : radio(1), vida(1000), rojo(255), verde(255
 	y = personaje.posicion.y; //+ 1.57*sin(2.0F*PI - ((PI / 2.0F) + (2.0F*PI*personaje.angrot) / 360.0F));
 	z = 2.8;
 	limites.posicion = personaje.posicion;
+	limites.posicion.z = 0;
 	limites.radio = radio;
+	limites.tipo = CIRCULO;
 }
 
 Disparo::Disparo()
@@ -36,13 +38,19 @@ void Disparo::dibujar(){
 
 }
 
-bool Disparo::updateDisparo(const int t){
+void Disparo::updateDisparo(const int t){
 	//actualiza la posicion
 	x = x + vx*2;
 	y = y + vy*2;
 	//actualiza el tiempo de vida
 	vida -= t;
-	if (vida > 0) return true;
-	else return false;
-	//comprueba colisones//
+	if (vida < 0) destruir = true;
+}
+
+CrashBox Disparo::getCrashBox(){
+	return limites;
+}
+
+void Disparo::destruye(){
+	destruir = true;
 }

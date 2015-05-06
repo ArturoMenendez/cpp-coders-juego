@@ -19,11 +19,15 @@ class Disparo
 	int vida;
 
 public:
+	bool destruir;
+
 	Disparo(Jugador personaje);
 	Disparo();
 	~Disparo();
 	void dibujar();
-	bool updateDisparo(const int t);
+	void updateDisparo(const int t);
+	CrashBox getCrashBox();
+	void destruye();
 
 };
 
