@@ -42,7 +42,7 @@ Vector3D Vector3D::operator-(Vector3D&v){
 
 Vector3D Vector3D::prodvect(Vector3D u, Vector3D v){
 	Vector3D w;
-	w.x = u.y*u.z - u.z*v.y;
+	w.x = u.y*v.z - u.z*v.y;
 	w.y = u.z*v.x - u.x*v.z;
 	w.z = u.x*v.y - u.y*v.x;
 	return w;
