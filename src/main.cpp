@@ -4,7 +4,7 @@
 #include "ListaObstaculos.h"
 #include "ListaDisparos.h"
 #include "Interaccion.h"
-
+#include "Nivel.h"
 
 ListaObstaculos o1;
 ListaDisparos l1;
@@ -15,7 +15,7 @@ Vector3D posicion2(-10, 10, 0);
 Vector3D tamanio2(2, 10, 10);
 Vector3D posicion1(2, 13, 0);
 Vector3D tamanio1(0.8, 0.8, 3.1);
-
+Nivel n1;
 
 
 //los callback, funciones que seran llamadas automaticamente por la glut
@@ -164,8 +164,12 @@ void OnDraw(){
 	l1.dibujarDisparos();
 	o1.dibujarObstaculos();
 
+	n1.LeeNivel();
 
-
+	//si se pone aquí se dibuja la escena pero sin ningun obstaculo adicional, si se pone antes se queda en negro,
+	//y si se pone en el ontimer se queda en negro tambien todo
+	
+	
 	/*
 	glLightfv(GL_LIGHT0, GL_POSITION, antorcha);
 	glLightf(GL_LIGHT0, GL_LINEAR, 1);
