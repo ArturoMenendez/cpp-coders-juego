@@ -2,7 +2,7 @@
 #include "glut.h"
 
 
-CrashBox::CrashBox(Vector3D posicion, float radio)
+CrashBox::CrashBox(Vector3D posicion, float radio) :ancho(0), alto(0)
 {
 	this->posicion = posicion;
 	this->posicion.z = 0;
@@ -10,7 +10,8 @@ CrashBox::CrashBox(Vector3D posicion, float radio)
 	tipo = CIRCULO;
 }
 
-CrashBox::CrashBox(Vector3D posicion, float ancho, float alto){
+CrashBox::CrashBox(Vector3D posicion, float ancho, float alto) :radio(0)
+{
 	this->posicion = posicion;
 	this->posicion.z = 0;
 	this->ancho = ancho;

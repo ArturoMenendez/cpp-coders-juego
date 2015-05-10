@@ -162,9 +162,10 @@ void OnDraw(){
 	j1.Dibuja();
 	j1.Pinta();
 	l1.dibujarDisparos();
+	n1.LeeNivel();
+	n1.Dibuja();
 	o1.dibujarObstaculos();
 
-	n1.LeeNivel();
 
 	//si se pone aquí se dibuja la escena pero sin ningun obstaculo adicional, si se pone antes se queda en negro,
 	//y si se pone en el ontimer se queda en negro tambien todo
@@ -208,8 +209,10 @@ void OnTimer(int value){
 	j1.Anima();
 	
 	Interaccion::interaccion(l1, o1);
+	Interaccion::interaccion(l1, n1.getLisObs());
 	l1.actualizarDisparos(25);
 	o1.actualizarObstaculos();
+	n1.actualizaLisObs();
 
 	glutTimerFunc(25, OnTimer, 0);
 	glutPostRedisplay();

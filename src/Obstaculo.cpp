@@ -33,22 +33,18 @@ void Obstaculo::Dibuja(){
 	glDisable(GL_LIGHTING);
 	switch (id){
 	case(1) :
-
-
 		glColor3ub(120, 150, 80);
 		glTranslatef(posicion.x, posicion.y, posicion.z);
 		glTranslatef(0, 0, tamanio.z / 2);
 		glScalef(tamanio.x, tamanio.y, tamanio.z);
 		glutSolidCube(1);
-		glLoadIdentity();
-		glTranslatef(0, 0, tamanio.z / 2);
+		glTranslatef(0, 0, -tamanio.z / 2);
 		glTranslatef(-posicion.x, -posicion.y, -posicion.z);
-
 		break;
+
 	case(2) :
 		static bitmap bidon("bidon.bmp");
 		static bitmap bidon_tapa("bidon_tapa.bmp");
-
 
 		glTranslatef(posicion.x, posicion.y, posicion.z);
 		bidon.usarTextura();
@@ -61,7 +57,6 @@ void Obstaculo::Dibuja(){
 		glDisable(GL_TEXTURE_2D);
 
 		
-
 		glTranslatef(0, 0, tamanio.z);
 		bidon_tapa.usarTextura();
 		GLUquadricObj* tapa = gluNewQuadric();
@@ -72,11 +67,6 @@ void Obstaculo::Dibuja(){
 		glDisable(GL_TEXTURE_2D);
 		glTranslatef(0, 0, -tamanio.z);
 		glTranslatef(-posicion.x, -posicion.y, -posicion.z);
-/////
-		glTranslatef(posicion.x, posicion.y, 0);
-		limites.Dibuja();
-		glTranslatef(-posicion.x, -posicion.y, 0);
-		break;
 
 	}
 	glEnable(GL_LIGHTING);

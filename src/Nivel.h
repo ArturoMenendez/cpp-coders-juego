@@ -20,6 +20,8 @@ public:
 	void LeeNivel();
 	void Carga();
 	void Dibuja();
+	ListaObstaculos getLisObs();
+	void actualizaLisObs();
 	Nivel();
 	~Nivel();
 };
