@@ -1,22 +1,16 @@
 #include "glut.h"
-//#include "Mundo.h"
 #include "bitmap.h"
 #include "ListaObstaculos.h"
 #include "ListaDisparos.h"
 #include "Interaccion.h"
 #include "Nivel.h"
 
-ListaObstaculos o1;
 ListaDisparos l1;
 float vistax = 0, vistay = 0, zoom = 50;
 float theta = 0;
 bool* keyStates = new bool[256];
-Vector3D posicion2(-10, 10, 0);
-Vector3D tamanio2(2, 10, 10);
-Vector3D posicion1(2, 13, 0);
-Vector3D tamanio1(0.8, 0.8, 3.1);
+Jugador j1;
 Nivel n1;
-
 
 //los callback, funciones que seran llamadas automaticamente por la glut
 //cuando sucedan eventos
@@ -29,7 +23,6 @@ void KeyOperations(void);
 void OnMouseDown(int button, int state, int x, int y);//se llama cuando se pulsa o se suelta un boton del raton
 void OnMotion(int x, int y);
 void OnPassiveMotion(int x, int y);
-Jugador j1;
 
 int main(int argc, char* argv[])
 {
@@ -61,8 +54,6 @@ int main(int argc, char* argv[])
 	glutSetCursor(GLUT_CURSOR_NONE);
 
 	//pasarle el control a GLUT,que llamara a los callbacks
-	o1.agregarObstaculo(posicion1, tamanio1, 2, true);
-	o1.agregarObstaculo(posicion2, tamanio2, 1, false);
 
 	keyStates['i'] = false;
 	keyStates['j'] = false;
@@ -76,11 +67,13 @@ int main(int argc, char* argv[])
 }
 
 void OnDraw(){
+
 	KeyOperations();
 	static float antorcha[4] = { -16.0, 11.0, 2.0, 1 };
 	static bitmap suelo("suelo.bmp");
 	static bitmap bola("bola.bmp");
-
+	
+	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -100,6 +93,9 @@ void OnDraw(){
 	glVertex3f(-20.0, -15.0, 0.0);
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
+
+	glEnable(GL_LIGHTING);
+
 
 	glBegin(GL_QUADS);	//PARED SUPERIOR
 	glColor3ub(255, 0, 0);
@@ -132,68 +128,31 @@ void OnDraw(){
 	glVertex3f(-20.0, 15.0, 10.0);
 	glVertex3f(-20.0, 15.0, 0.0);
 	glEnd();
-	glTranslatef(-16.0, 11.0, 1.0);
-	glColor3ub(255, 255, 0);
-	glutSolidCube(2.0);
-	glTranslatef(16.0, -11.0, -1.0);
-	glTranslatef(16.0, 11.0, 1.0);
-	glColor3ub(255, 255, 0);
-	glutSolidCube(2.0);
-	glTranslatef(-16.0, -11.0, -1.0);
-	glColor3ub(255, 255, 255);
 
-
-	glTranslatef(0.0, 0.0, 5.0);
-	glRotatef(23, 0, 1, 0);
-	glRotatef(theta, 0, 0, 1);
-	//////////////////////////////
-	bola.usarTextura();
-	glColor3ub(255, 255, 255);
-	GLUquadricObj *qobj = gluNewQuadric();
-	gluQuadricTexture(qobj, GL_TRUE);
-	gluSphere(qobj, 1, 40, 40);
-	gluDeleteQuadric(qobj);
-	glDisable(GL_TEXTURE_2D);
-	////////////////////////////
-	glRotatef(-theta, 0, 0, 1);
-	glRotatef(-23, 0, 1, 0);
-	glTranslatef(0.0, 0.0, -5.0);
-
-	j1.Dibuja();
-	j1.Pinta();
 	l1.dibujarDisparos();
 	n1.LeeNivel();
 	n1.Dibuja();
-	o1.dibujarObstaculos();
 
-
-	//si se pone aquí se dibuja la escena pero sin ningun obstaculo adicional, si se pone antes se queda en negro,
-	//y si se pone en el ontimer se queda en negro tambien todo
-	
-	
-	/*
-	glLightfv(GL_LIGHT0, GL_POSITION, antorcha);
-	glLightf(GL_LIGHT0, GL_LINEAR, 1);
-	glEnable(GL_LIGHT0);*/
 	glEnable(GL_LIGHTING);
 
 	glutSwapBuffers();
 }
 
+
 void OnKeyboardDown(unsigned char key, int x, int y){
 	keyStates[key] = true;
-	j1.Mueve(key);
+	n1.OnKeyboardDown(key, x, y);
 	glutPostRedisplay();
 }
 
 void OnKeyboardUp(unsigned char key, int x, int y){
 	keyStates[key] = false;
-	j1.NoMueve(key);
+	n1.OnKeyboardUp(key, x, y);
 	glutPostRedisplay();
 }
 
 void KeyOperations(){
-	j1.KeyOperations();
+	n1.KeyOperations();
 	if (keyStates['i']) vistay += 0.5;
 	if (keyStates['k']) vistay -= 0.5;
 	if (keyStates['l']) vistax += 0.5;
@@ -203,31 +162,32 @@ void KeyOperations(){
 }
 
 void OnTimer(int value){
-	theta += 1.0F;
 
-	j1.Rota();
-	j1.Anima();
-	
-	Interaccion::interaccion(l1, o1);
+	n1.rotaJugador();
 	Interaccion::interaccion(l1, n1.getLisObs());
+	Interaccion::interaccion(n1.getJugador(), n1.getLisObs());
 	l1.actualizarDisparos(25);
-	o1.actualizarObstaculos();
 	n1.actualizaLisObs();
-
+	n1.actualizaLisEnem();
+	n1.mueveLisEnem();
+	n1.updateLisEnem();
+	n1.rotaLisEnem();
 	glutTimerFunc(25, OnTimer, 0);
 	glutPostRedisplay();
 }
 
 void OnMouseDown(int button, int state, int x, int y){
-	j1.Mouse(button, state, x, y);
-	if ((button == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN))
-		l1.agregarDisparos(j1);
+	Jugador j=n1.getJugador();
+	n1.OnMouseDown(button, state, x, y);
+	if ((button == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN)){
+		l1.agregarDisparos(j);
+	}
 }
 
 void OnMotion(int x, int y){
-	j1.Motion(x, y);
+	n1.OnMotion(x, y);
 }
 
 void OnPassiveMotion(int x, int y){
-	j1.PassiveMotion(x, y);
+	n1.OnPassiveMotion(x, y);
 }
