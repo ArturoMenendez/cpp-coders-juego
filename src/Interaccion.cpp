@@ -1,5 +1,6 @@
 #include "Interaccion.h"
 #include <math.h>
+#include "stdio.h"
 
 bool colision_CR(Vector3D pos_dis, float r_dis, Vector3D pos_obs, float alto_obs, float ancho_obs){
 	float distancia_X = abs(pos_dis.x - pos_obs.x);
@@ -50,3 +51,25 @@ void Interaccion::interaccion(ListaDisparos disparo, ListaObstaculos obstaculo){
 }
 
 //Crear lista objetos y comprobra colisones con todos
+
+void Interaccion::interaccion(Jugador jugador, ListaObstaculos obstaculo){
+	CrashBox jug, obs;
+
+	jug = jugador.getCrashBox();
+	for (int j = 0; j < obstaculo.n_obstaculos; j++){
+		obs = obstaculo.lista[j]->limites;
+		if (obs.tipo == CIRCULO){
+			float distancia = Vector3D::modulo(jug.posicion - obs.posicion);
+			if (distancia <= (jug.radio + obs.radio)) {
+				printf("a");
+				break;
+			}
+		}
+		else if (obs.tipo == RECTANGULO){
+			bool colision = colision_CR(jug.posicion, jug.radio, obs.posicion, obs.alto, obs.ancho);
+			if (colision) {
+				printf("b");
+			}
+		}
+	}
+}
