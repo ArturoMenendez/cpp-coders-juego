@@ -4,11 +4,8 @@
 
 Jugador::Jugador(void)
 {
-	radio = 0.5;
 	posicion.x = posicion.y = 0;
-	posicion.z = 1;
-	g = b = 200;
-	r = 0;
+	posicion.z = 2.8;
 	p1.mov.z = 1;
 	p1.ang = p1.mov.y;
 	keyStates['a'] = false;
@@ -17,6 +14,21 @@ Jugador::Jugador(void)
 	keyStates['w'] = false;
 }
 
+Jugador::Jugador(Vector3D pos){
+	this->posicion.x = pos.x;
+	this->posicion.y = pos.y;
+	this->posicion.z = 2.8;
+	p1.mov.z = 1;
+	p1.ang = p1.mov.y;
+	keyStates['a'] = false;
+	keyStates['s'] = false;
+	keyStates['d'] = false;
+	keyStates['w'] = false;
+	limites.posicion = pos;
+	limites.posicion.z = 0;
+	limites.radio = 0.5;
+	limites.tipo = CIRCULO;
+}
 
 Jugador::~Jugador(void)
 {
@@ -25,7 +37,7 @@ Jugador::~Jugador(void)
 void Jugador::Dibuja(){
 	GLUquadricObj* pepe = gluNewQuadric();
 	glColor3f(200, 255, 255);
-	glTranslatef(ptomira.x, ptomira.y, 1);
+	glTranslatef(ptomira.x, ptomira.y, 2.8);
 	gluDisk(pepe, 0.4, 0.6, 20, 20);
 	glBegin(GL_LINES);
 	glVertex3f(0.4, 0, 0);
@@ -35,7 +47,7 @@ void Jugador::Dibuja(){
 	glVertex3f(0, 0.4, 0);
 	glVertex3f(0, -0.4, 0);
 	glEnd();
-	glTranslatef(-ptomira.x, -ptomira.y, -1);
+	glTranslatef(-ptomira.x, -ptomira.y, -2.8);
 }
 
 void Jugador::Mouse(int button, int state, int x, int y){
@@ -53,14 +65,14 @@ void Jugador::Motion(int x, int y){
 	if (botonpulsado == true){
 		ptomira.x = ((float)x - 400) / 16.82f;
 		ptomira.y = ((float)y - 300) / -16.82f;
-		ptomira.z = 1;
+		ptomira.z = 2.8;
 	}
 }
 
 void Jugador::PassiveMotion(int x, int y){
 	ptomira.x = ((float)x - 400) / 16.82f;
 	ptomira.y = ((float)y - 300) / -16.82f;
-	ptomira.z = 1;
+	ptomira.z = 2.8;
 }
 
 void Jugador::Pinta(){
@@ -152,15 +164,19 @@ void Jugador::Rota(){
 void Jugador::KeyOperations(void){
 	if (keyStates['w']) {
 		posicion.y += 0.2;
+		limites.posicion.y += 0.2;
 	}
 	if (keyStates['s']) {
 		posicion.y -= 0.2;
+		limites.posicion.y -= 0.2;
 	}
 	if (keyStates['d']) {
 		posicion.x += 0.2;
+		limites.posicion.x += 0.2;
 	}
 	if (keyStates['a']) {
 		posicion.x -= 0.2;
+		limites.posicion.x -= 0.2;
 	}
 }
 
@@ -179,4 +195,8 @@ void Jugador::Anima(){
 		c1.Anima();
 	else
 		c1.Dibuja();
+}
+
+CrashBox Jugador::getCrashBox(){
+	return limites;
 }
