@@ -166,6 +166,7 @@ void OnTimer(int value){
 	n1.rotaJugador();
 	Interaccion::interaccion(l1, n1.getLisObs());
 	Interaccion::interaccion(n1.getJugador(), n1.getLisObs());
+	Interaccion::ldv(n1.getJugador(),n1.getLisObs(),n1.getLisEnem());
 	l1.actualizarDisparos(25);
 	n1.actualizaLisObs();
 	n1.actualizaLisEnem();

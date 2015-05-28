@@ -24,11 +24,14 @@ void ListaEnemigos::actualizarEnemigos(){
 }
 
 void ListaEnemigos::mueveEnemigos(){
-	for (int i = 0; i < n_enemigos; i++) lista[i]->Mueve();
+	for (int i = 0; i < n_enemigos; i++) lista[i]->MueveAleat();
 }
 
-void ListaEnemigos::updateEnemigos(){
-	for (int i = 0; i < n_enemigos; i++) lista[i]->Update();
+void ListaEnemigos::updateEnemigos(Vector3D jugador){
+	for (int i = 0; i < n_enemigos; i++) {
+		lista[i]->Update();
+		lista[i]->lin.direccion = jugador;
+	}
 }
 
 void ListaEnemigos::rotaEnemigos(){

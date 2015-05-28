@@ -15,7 +15,7 @@ public:
 	void dibujarEnemigos();
 	void actualizarEnemigos();
 	void mueveEnemigos();
-	void updateEnemigos();
+	void updateEnemigos(Vector3D jugador);
 	void rotaEnemigos();
 };
 

@@ -38,3 +38,4 @@ void ListaObstaculos::actualizarObstaculos(){
 		}
 	} while (obs_destruido);
 }
+

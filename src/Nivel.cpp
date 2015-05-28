@@ -77,7 +77,7 @@ void Nivel::mueveLisEnem(){
 }
 
 void Nivel::updateLisEnem(){
-	lenem.updateEnemigos();
+	lenem.updateEnemigos(j.posicion);
 }
 
 void Nivel::rotaLisEnem(){
