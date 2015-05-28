@@ -62,6 +62,21 @@ void Interaccion::interaccion(Jugador jugador, ListaObstaculos obstaculo){
 			float distancia = Vector3D::modulo(jug.posicion - obs.posicion);
 			if (distancia <= (jug.radio + obs.radio)) {
 				printf("a");
+				/*while (jugador.keyStates['a']){
+					jugador.keyStates['d'] = true;
+				}
+				while (jugador.keyStates['d'] == true){
+					jugador.keyStates['a'] = true;
+				}
+				while (jugador.keyStates['w']){
+					jugador.keyStates['s'] = true;
+					jugador.keyStates['w'] = false;
+
+				}
+				while (jugador.keyStates['s']){
+					jugador.keyStates['w'] = true;
+					jugador.keyStates['s'] = false;
+				}*/
 				break;
 			}
 		}
@@ -69,7 +84,61 @@ void Interaccion::interaccion(Jugador jugador, ListaObstaculos obstaculo){
 			bool colision = colision_CR(jug.posicion, jug.radio, obs.posicion, obs.alto, obs.ancho);
 			if (colision) {
 				printf("b");
+				/*if (jugador.keyStates['a']){
+					jugador.posicion.x += 0.2;
+					jugador.limites.posicion.x += 0.2;
+				}
+				if (jugador.keyStates['d']){
+					jugador.posicion.x -= 0.2;
+					jugador.limites.posicion.x -= 0.2;
+				}
+				if (jugador.keyStates['w']){
+					jugador.posicion.y -= 0.2;
+					jugador.limites.posicion.y -= 0.2;
+				}
+				if (jugador.keyStates['s']){
+					jugador.posicion.y += 0.2;
+					jugador.limites.posicion.y += 0.2;
+				}*/
 			}
 		}
+	}
+}
+
+
+void Interaccion::ldv(Jugador jugador, ListaObstaculos obstaculo, ListaEnemigos enemigo){
+	CrashBox obs, lin;
+	for (int i = 0; i < enemigo.n_enemigos; i++){
+		Vector3D v = Vector3D::creavector(enemigo.lista[i]->posicion, jugador.posicion);
+		float modulo = v.modulo(v);
+		glColor3ub(255,255,255);
+		glBegin(GL_LINES);
+		glVertex3f(jugador.posicion.x, jugador.posicion.y, 1);
+		glVertex3f(enemigo.lista[i]->posicion.x, enemigo.lista[i]->posicion.y, 1);
+		glEnd();
+
+		lin = enemigo.lista[i]->lin;		
+		for (int j = 0; j < obstaculo.n_obstaculos; j++){
+			obs = obstaculo.lista[j]->limites;
+			
+			/////////////////////////
+			if (obs.tipo == CIRCULO){
+				float c = -(enemigo.lista[i]->posicion.x*v.x + enemigo.lista[i]->posicion.y*v.y);
+				float distancia = (obstaculo.lista[j]->posicion.x*v.x + obstaculo.lista[j]->posicion.y*v.y+c)/modulo;
+				if (distancia > obs.radio) {
+					//printf("te veo ");
+					break;
+				}
+			}
+			/*else if (obs.tipo == RECTANGULO){
+				bool colision = colision_CR(dis.posicion, dis.radio, obs.posicion, obs.alto, obs.ancho);
+				if (colision) {
+					disparo.lista[i]->destruye();
+					if (obstaculo.lista[j]->se_destruye) obstaculo.lista[j]->destruir = true;
+					break;
+				}
+			}*/
+		}
+		/////////////////////
 	}
 }
