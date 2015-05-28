@@ -5,7 +5,7 @@
 
 
 
-Jugador::Jugador(void) :colision(false), lastKey('a')
+Jugador::Jugador(void) :colision(false)
 {
 	posicion.x = posicion.y = 0;
 	posicion.z = 2.8;
@@ -18,7 +18,7 @@ Jugador::Jugador(void) :colision(false), lastKey('a')
 	keyStates['w'] = false;
 }
 
-Jugador::Jugador(Vector3D pos) :colision(false), lastKey('a')
+Jugador::Jugador(Vector3D pos) :colision(false)
 {
 	this->posicion.x = pos.x;
 	this->posicion.y = pos.y;
@@ -171,22 +171,18 @@ void Jugador::KeyOperations(void){
 	if (keyStates['w']) {
 		posicion.y += 0.2;
 		limites.posicion.y += 0.2;
-		lastKey = 'w';
 	}
 	if (keyStates['s']) {
 		posicion.y -= 0.2;
 		limites.posicion.y -= 0.2;
-		lastKey = 's';
 	}
 	if (keyStates['d']) {
 		posicion.x += 0.2;
 		limites.posicion.x += 0.2;
-		lastKey = 'd';
 	}
 	if (keyStates['a']) {
 		posicion.x -= 0.2;
 		limites.posicion.x -= 0.2;
-		lastKey = 'a';
 	}
 }
 

@@ -76,7 +76,7 @@ void Nivel::updateEnemigos(){
 
 void Nivel::interacciones(){
 	Interaccion::interaccion(ldis, lobs);
-	if (Interaccion::interaccion(j, lobs)) j.posicion = j.pos_anterior;
+//(Interaccion::interaccion(j, lobs)) j.posicion = j.pos_anterior;
 //	else j.colision = false;
 	Interaccion::ldv(lobs, lenem);
 }
