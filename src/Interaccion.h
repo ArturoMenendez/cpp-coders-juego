@@ -3,7 +3,6 @@
 #include "ListaDisparos.h"
 #include "ListaObstaculos.h"
 #include "Jugador.h"
-#include "ListaEnemigos.h"
 
 class Interaccion
 {
@@ -12,6 +11,4 @@ public:
 	~Interaccion();
 	static void interaccion(ListaDisparos disparo, ListaObstaculos obstaculo);
 	static void interaccion(Jugador jugador, ListaObstaculos obstaculo);
-	static void ldv(Jugador jugador, ListaObstaculos obstaculo, ListaEnemigos enemigo);
 };
-

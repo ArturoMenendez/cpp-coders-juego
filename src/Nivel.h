@@ -40,4 +40,3 @@ public:
 	Nivel();
 	~Nivel();
 };
-

@@ -33,16 +33,16 @@ void Disparo::dibujar(){
 	glColor3ub(rojo, verde, azul);
 	glutSolidSphere(radio, 20, 20);
 	glTranslatef(0, 0, -pos.z);
-	//limites.Dibuja();
+	limites.Dibuja();
 	glTranslatef(-pos.x, -pos.y, 0);
 
 }
 
 void Disparo::updateDisparo(const int t){
 	//actualiza la posicion
-	limites.posicion.x = pos.x = pos.x + vel.x * 2;
+	limites.posicion.x = pos.x = pos.x + vel.x*2;
 	limites.posicion.y = pos.y = pos.y + vel.y * 2;
-
+	
 	//actualiza el tiempo de vida
 	vida -= t;
 	if (vida < 0) destruir = true;

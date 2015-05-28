@@ -24,7 +24,7 @@ void ListaEnemigos::actualizarEnemigos(){
 }
 
 void ListaEnemigos::mueveEnemigos(){
-	for (int i = 0; i < n_enemigos; i++) lista[i]->MueveAleat();
+	for (int i = 0; i < n_enemigos; i++) lista[i]->Mueve();
 }
 
 void ListaEnemigos::updateEnemigos(){

@@ -12,7 +12,7 @@ class Disparo
 	Vector3D pos;
 	Vector3D vel;
 	float radio;
-	int daño;
+	int daÃ±o;
 	int vida;
 
 public:
@@ -27,4 +27,3 @@ public:
 	void destruye();
 
 };
-

@@ -16,7 +16,6 @@ public:
 	bool* keyStates = new bool[256];
 	Pierna p1, p2;
 	Cilindro c1;
-	char letra = 'a';
 
 	//metodos
 	Jugador(void);

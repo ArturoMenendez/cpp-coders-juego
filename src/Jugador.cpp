@@ -1,8 +1,6 @@
 #include "glut.h"
 #include "bitmap.h"
 #include "Jugador.h"
-#include "stdio.h"
-
 
 Jugador::Jugador(void)
 {
@@ -30,7 +28,6 @@ Jugador::Jugador(Vector3D pos){
 	limites.posicion.z = 0;
 	limites.radio = 0.5;
 	limites.tipo = CIRCULO;
-
 }
 
 Jugador::~Jugador(void)
