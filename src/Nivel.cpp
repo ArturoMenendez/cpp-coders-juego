@@ -55,7 +55,6 @@ void Nivel::Dibuja(){
 	lobs.dibujarObstaculos();
 }
 
-
 ListaObstaculos Nivel::getLisObs(){
 	return lobs;
 }

@@ -40,8 +40,6 @@ void Obstaculo::Dibuja(){
 		glScalef(tamanio.x, tamanio.y, tamanio.z);
 		glutSolidCube(1);
 		glPopMatrix();
-		glTranslatef(0, 0, -tamanio.z / 2);
-		glTranslatef(-posicion.x, -posicion.y, -posicion.z);
 		break;
 		
 	case(2) :
