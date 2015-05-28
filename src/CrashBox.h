@@ -4,6 +4,7 @@
 
 #define RECTANGULO 0
 #define CIRCULO 1
+#define LINEA 2
 
 class CrashBox
 {

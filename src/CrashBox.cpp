@@ -24,6 +24,7 @@ CrashBox::CrashBox(Vector3D posicion, Vector3D direccion, float largo){
 	this->posicion.z = 0;
 	this->largo = largo;
 	this->direccion = direccion;
+	tipo = LINEA;
 }
 
 CrashBox::CrashBox()

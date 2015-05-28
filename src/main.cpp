@@ -5,11 +5,10 @@
 #include "Interaccion.h"
 #include "Nivel.h"
 
-ListaDisparos l1;
+
 float vistax = 0, vistay = 0, zoom = 50;
 float theta = 0;
 bool* keyStates = new bool[256];
-Jugador j1;
 Nivel n1;
 
 //los callback, funciones que seran llamadas automaticamente por la glut
@@ -129,7 +128,6 @@ void OnDraw(){
 	glVertex3f(-20.0, 15.0, 0.0);
 	glEnd();
 
-	l1.dibujarDisparos();
 	n1.LeeNivel();
 	n1.Dibuja();
 
@@ -164,24 +162,18 @@ void KeyOperations(){
 void OnTimer(int value){
 
 	n1.rotaJugador();
-	Interaccion::interaccion(l1, n1.getLisObs());
-	Interaccion::interaccion(n1.getJugador(), n1.getLisObs());
-	Interaccion::ldv(n1.getJugador(),n1.getLisObs(),n1.getLisEnem());
-	l1.actualizarDisparos(25);
-	n1.actualizaLisObs();
-	n1.actualizaLisEnem();
-	n1.mueveLisEnem();
-	n1.updateLisEnem();
-	n1.rotaLisEnem();
+	n1.interacciones();
+	n1.actualizaListas();
+	n1.updateEnemigos();
+
 	glutTimerFunc(25, OnTimer, 0);
 	glutPostRedisplay();
 }
 
 void OnMouseDown(int button, int state, int x, int y){
-	Jugador j=n1.getJugador();
 	n1.OnMouseDown(button, state, x, y);
 	if ((button == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN)){
-		l1.agregarDisparos(j);
+		n1.nuevoDisparo();
 	}
 }
 

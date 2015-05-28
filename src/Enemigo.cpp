@@ -5,7 +5,7 @@
 #include "Enemigo.h"
 #include "math.h"
 
-Enemigo::Enemigo(void) :t(40)
+Enemigo::Enemigo(void) :t(40), teveo(false)
 {
 	posicion.x = posicion.y = 0;
 	posicion.z = 1;
@@ -18,7 +18,8 @@ Enemigo::Enemigo(void) :t(40)
 	lin.direccion = posicion;
 }
 
-Enemigo::Enemigo(Vector3D pos,int id): t(40){
+Enemigo::Enemigo(Vector3D pos, int id) : t(40), teveo(false)
+{
 	this->posicion.x = pos.x;
 	this->posicion.y = pos.y;
 	this->posicion.z = pos.z;
@@ -172,9 +173,18 @@ void Enemigo::Anima(){
 }
 
 void Enemigo::MueveAleat(){
-	posicion.x += direccion.x / 40;	
-	posicion.y += direccion.y / 40;
-	lin.posicion = posicion;
+	if (teveo == false){
+		posicion.x += direccion.x / 40;
+		posicion.y += direccion.y / 40;
+		lin.posicion = posicion;
+	}
+	else{
+		Vector3D d = Vector3D::creavector(lin.posicion, lin.direccion);
+		d = Vector3D::unitario(d);
+		posicion.x += d.x / 10;
+		posicion.y += d.y / 10;
+		lin.posicion = posicion;
+	}
 }
 
 void Enemigo::Update(){
@@ -184,7 +194,6 @@ void Enemigo::Update(){
 		direccion.y = (rand() / (float)RAND_MAX) * 2;
 		direccion.x -= (rand() / (float)RAND_MAX) * 2;
 		direccion.y -= (rand() / (float)RAND_MAX) * 2;
+		direccion = Vector3D::unitario(direccion);
 	}
-	lin.direccion.x = direccion.x * 10;
-	lin.direccion.y = direccion.y * 10;
 }

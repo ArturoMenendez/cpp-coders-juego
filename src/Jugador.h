@@ -9,14 +9,16 @@ class Jugador
 public:
 	//variables
 	Vector3D posicion;
+	Vector3D pos_anterior;
 	Vector3D ptomira;
 	CrashBox limites;
 	bool botonpulsado;
+	bool colision;
 	float angrot;
 	bool* keyStates = new bool[256];
 	Pierna p1, p2;
 	Cilindro c1;
-	char letra = 'a';
+
 
 	//metodos
 	Jugador(void);

@@ -19,6 +19,7 @@ public:
 	bool destruir;
 	int t;
 	int recorrido;
+	bool teveo;
 	//metodos
 	Enemigo(void);
 	Enemigo(Vector3D,int);

@@ -62,21 +62,6 @@ void Interaccion::interaccion(Jugador jugador, ListaObstaculos obstaculo){
 			float distancia = Vector3D::modulo(jug.posicion - obs.posicion);
 			if (distancia <= (jug.radio + obs.radio)) {
 				printf("a");
-				/*while (jugador.keyStates['a']){
-					jugador.keyStates['d'] = true;
-				}
-				while (jugador.keyStates['d'] == true){
-					jugador.keyStates['a'] = true;
-				}
-				while (jugador.keyStates['w']){
-					jugador.keyStates['s'] = true;
-					jugador.keyStates['w'] = false;
-
-				}
-				while (jugador.keyStates['s']){
-					jugador.keyStates['w'] = true;
-					jugador.keyStates['s'] = false;
-				}*/
 				break;
 			}
 		}
@@ -84,61 +69,94 @@ void Interaccion::interaccion(Jugador jugador, ListaObstaculos obstaculo){
 			bool colision = colision_CR(jug.posicion, jug.radio, obs.posicion, obs.alto, obs.ancho);
 			if (colision) {
 				printf("b");
-				/*if (jugador.keyStates['a']){
-					jugador.posicion.x += 0.2;
-					jugador.limites.posicion.x += 0.2;
-				}
-				if (jugador.keyStates['d']){
-					jugador.posicion.x -= 0.2;
-					jugador.limites.posicion.x -= 0.2;
-				}
-				if (jugador.keyStates['w']){
-					jugador.posicion.y -= 0.2;
-					jugador.limites.posicion.y -= 0.2;
-				}
-				if (jugador.keyStates['s']){
-					jugador.posicion.y += 0.2;
-					jugador.limites.posicion.y += 0.2;
-				}*/
 			}
 		}
 	}
 }
 
 
-void Interaccion::ldv(Jugador jugador, ListaObstaculos obstaculo, ListaEnemigos enemigo){
+void Interaccion::ldv(ListaObstaculos obstaculo, ListaEnemigos enemigo){
 	CrashBox obs, lin;
-	for (int i = 0; i < enemigo.n_enemigos; i++){
-		Vector3D v = Vector3D::creavector(enemigo.lista[i]->posicion, jugador.posicion);
-		float modulo = v.modulo(v);
-		glColor3ub(255,255,255);
-		glBegin(GL_LINES);
-		glVertex3f(jugador.posicion.x, jugador.posicion.y, 1);
-		glVertex3f(enemigo.lista[i]->posicion.x, enemigo.lista[i]->posicion.y, 1);
-		glEnd();
+	int num_lados_col = 0;
 
-		lin = enemigo.lista[i]->lin;		
+	for (int i = 0; i < enemigo.n_enemigos; i++){
+		int vision_enemigo = 0;
+		lin = enemigo.lista[i]->lin;
+		Vector3D v = Vector3D::creavector(lin.posicion, lin.direccion);
+		float aux = v.x;
+		v.x = -v.y;
+		v.y = aux;
+		float modulo = Vector3D::modulo(v);
+		float c = -(enemigo.lista[i]->posicion.x*v.x + enemigo.lista[i]->posicion.y*v.y);
 		for (int j = 0; j < obstaculo.n_obstaculos; j++){
 			obs = obstaculo.lista[j]->limites;
-			
-			/////////////////////////
 			if (obs.tipo == CIRCULO){
-				float c = -(enemigo.lista[i]->posicion.x*v.x + enemigo.lista[i]->posicion.y*v.y);
-				float distancia = (obstaculo.lista[j]->posicion.x*v.x + obstaculo.lista[j]->posicion.y*v.y+c)/modulo;
+				float distancia = abs(((obstaculo.lista[j]->posicion.x*v.x) + (obstaculo.lista[j]->posicion.y*v.y) + c)) / modulo;
 				if (distancia > obs.radio) {
-					//printf("te veo ");
-					break;
+					vision_enemigo++;
+
 				}
 			}
-			/*else if (obs.tipo == RECTANGULO){
-				bool colision = colision_CR(dis.posicion, dis.radio, obs.posicion, obs.alto, obs.ancho);
-				if (colision) {
-					disparo.lista[i]->destruye();
-					if (obstaculo.lista[j]->se_destruye) obstaculo.lista[j]->destruir = true;
-					break;
+			else if (obs.tipo == RECTANGULO){
+				Vector3D v1(obs.posicion.x - obs.ancho / 2, obs.posicion.y - obs.alto / 2, 0);
+				Vector3D v2(obs.posicion.x + obs.ancho / 2, obs.posicion.y - obs.alto / 2, 0);
+				Vector3D v3(obs.posicion.x + obs.ancho / 2, obs.posicion.y + obs.alto / 2, 0);
+				Vector3D v4(obs.posicion.x - obs.ancho / 2, obs.posicion.y + obs.alto / 2, 0);
+
+				//coeficientes rectas horizontales
+				Vector3D horizontal = Vector3D::creavector(v2, v3);
+				//coeficientes rectas verticales
+				Vector3D vertical = Vector3D::creavector(v1, v2);
+
+
+
+				if (v.x*horizontal.y - v.y*horizontal.x != 0){
+					//pared sur
+					if ((lin.posicion.y > v1.y && lin.direccion.y < v1.y) || (lin.posicion.y<v1.y && lin.direccion.y>v1.y)){
+						float x = ((-v.y*v1.y) - c) / v.x;
+
+						if (x>obs.posicion.x - obs.ancho / 2 && x<obs.posicion.x + obs.ancho / 2){
+							num_lados_col++;
+						}
+					}
+					//pared norte
+					if ((lin.posicion.y > obs.posicion.y + obs.alto / 2 && lin.direccion.y < obs.posicion.y + obs.alto / 2) || (lin.posicion.y<obs.posicion.y + obs.alto / 2 && lin.direccion.y>obs.posicion.y + obs.alto / 2)){
+						float x = ((-v.y*v3.y) - c) / v.x;
+						if (x>obs.posicion.x - obs.ancho / 2 && x < obs.posicion.x + obs.ancho / 2){
+							num_lados_col++;
+						}
+					}
 				}
-			}*/
+
+				if (v.x*vertical.y - v.y*vertical.x != 0){
+					if ((lin.posicion.x > v1.x && lin.direccion.x < v1.x) || (lin.posicion.x<v1.x && lin.direccion.x>v1.x)){
+						float y = ((-v.x*v1.x) - c) / v.y;
+
+						if (y > v1.y && y<v4.y){
+							num_lados_col++;
+						}
+					}
+					//pared este
+					if ((lin.posicion.x > v3.x && lin.direccion.x < v3.x) || (lin.posicion.x<v3.x && lin.direccion.x>v3.x)){
+						float y = ((-v.x*v3.x) - c) / v.y;
+						if (y > v2.y && y < v3.y){
+							num_lados_col++;
+
+						}
+					}
+				}
+				if (num_lados_col < 2){
+					vision_enemigo++;
+				}
+			}
 		}
-		/////////////////////
+		if (vision_enemigo == obstaculo.n_obstaculos){
+			enemigo.lista[i]->teveo = true;
+			printf("b");
+		}
+		else{
+			enemigo.lista[i]->teveo = false;
+			printf("a");
+		}
 	}
 }

@@ -1,4 +1,5 @@
 #include "Nivel.h"
+#include "Interaccion.h"
 
 
 Nivel::Nivel()
@@ -53,39 +54,31 @@ void Nivel::Dibuja(){
 	j.Dibuja();
 	j.Pinta();
 	lobs.dibujarObstaculos();
+	ldis.dibujarDisparos();
+
 }
 
-
-ListaObstaculos Nivel::getLisObs(){
-	return lobs;
+void Nivel::nuevoDisparo(){
+	ldis.agregarDisparos(j);
 }
 
-void Nivel::actualizaLisObs(){
+void Nivel::actualizaListas(){
 	lobs.actualizarObstaculos();
-}
-
-ListaEnemigos Nivel::getLisEnem(){
-	return lenem;
-}
-
-void Nivel::actualizaLisEnem(){
 	lenem.actualizarEnemigos();
+	ldis.actualizarDisparos(25);
 }
 
-void Nivel::mueveLisEnem(){
+void Nivel::updateEnemigos(){
 	lenem.mueveEnemigos();
-}
-
-void Nivel::updateLisEnem(){
 	lenem.updateEnemigos(j.posicion);
-}
-
-void Nivel::rotaLisEnem(){
 	lenem.rotaEnemigos();
 }
 
-Jugador Nivel::getJugador(){
-	return j;
+void Nivel::interacciones(){
+	Interaccion::interaccion(ldis, lobs);
+	if (Interaccion::interaccion(j, lobs)) j.posicion = j.pos_anterior;
+//	else j.colision = false;
+	Interaccion::ldv(lobs, lenem);
 }
 
 void Nivel::rotaJugador(){

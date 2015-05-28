@@ -4,10 +4,12 @@
 #include "stdio.h"
 
 
-Jugador::Jugador(void)
+
+Jugador::Jugador(void) :colision(false), lastKey('a')
 {
 	posicion.x = posicion.y = 0;
 	posicion.z = 2.8;
+	pos_anterior = posicion;
 	p1.mov.z = 1;
 	p1.ang = p1.mov.y;
 	keyStates['a'] = false;
@@ -16,10 +18,12 @@ Jugador::Jugador(void)
 	keyStates['w'] = false;
 }
 
-Jugador::Jugador(Vector3D pos){
+Jugador::Jugador(Vector3D pos) :colision(false), lastKey('a')
+{
 	this->posicion.x = pos.x;
 	this->posicion.y = pos.y;
 	this->posicion.z = 2.8;
+	pos_anterior = posicion;
 	p1.mov.z = 1;
 	p1.ang = p1.mov.y;
 	keyStates['a'] = false;
@@ -30,7 +34,6 @@ Jugador::Jugador(Vector3D pos){
 	limites.posicion.z = 0;
 	limites.radio = 0.5;
 	limites.tipo = CIRCULO;
-
 }
 
 Jugador::~Jugador(void)
@@ -168,18 +171,22 @@ void Jugador::KeyOperations(void){
 	if (keyStates['w']) {
 		posicion.y += 0.2;
 		limites.posicion.y += 0.2;
+		lastKey = 'w';
 	}
 	if (keyStates['s']) {
 		posicion.y -= 0.2;
 		limites.posicion.y -= 0.2;
+		lastKey = 's';
 	}
 	if (keyStates['d']) {
 		posicion.x += 0.2;
 		limites.posicion.x += 0.2;
+		lastKey = 'd';
 	}
 	if (keyStates['a']) {
 		posicion.x -= 0.2;
 		limites.posicion.x -= 0.2;
+		lastKey = 'a';
 	}
 }
 

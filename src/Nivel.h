@@ -2,6 +2,7 @@
 #include "stdio.h"
 #include "ListaObstaculos.h"
 #include "ListaEnemigos.h"
+#include "ListaDisparos.h"
 #include "Jugador.h"
 
 #define NUM_NIVELES 10
@@ -14,22 +15,21 @@ class Nivel
 	bool pasanivel[NUM_NIVELES];
 	char buffer[20];
 	float param[8];
-	ListaObstaculos lobs;
 	Jugador j;
+	ListaObstaculos lobs;
+	ListaDisparos ldis;
 	ListaEnemigos lenem;
 	int act;
 public:
 	void LeeNivel();
 	void Carga();
 	void Dibuja();
-	ListaObstaculos getLisObs();
-	void actualizaLisObs();
-	ListaEnemigos getLisEnem();
-	void actualizaLisEnem();
-	void mueveLisEnem();
-	void updateLisEnem();
-	void rotaLisEnem();
-	Jugador getJugador();
+
+	void actualizaListas();
+	void nuevoDisparo();
+	void updateEnemigos();
+	void interacciones();
+
 	void rotaJugador();
 	void KeyOperations();
 	void OnKeyboardDown(unsigned char, int, int);
@@ -39,5 +39,6 @@ public:
 	void OnPassiveMotion(int x, int y);
 	Nivel();
 	~Nivel();
+
 };
 

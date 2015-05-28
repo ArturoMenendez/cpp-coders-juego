@@ -40,14 +40,12 @@ void Obstaculo::Dibuja(){
 		glScalef(tamanio.x, tamanio.y, tamanio.z);
 		glutSolidCube(1);
 		glPopMatrix();
-		glTranslatef(0, 0, -tamanio.z / 2);
-		glTranslatef(-posicion.x, -posicion.y, -posicion.z);
 		break;
 		
 	case(2) :
 		static bitmap bidon("bidon.bmp");
 		static bitmap bidon_tapa("bidon_tapa.bmp");
-
+		glPushMatrix();
 		glTranslatef(posicion.x, posicion.y, posicion.z);
 		bidon.usarTextura();
 		glColor3ub(255, 255, 255);
@@ -69,7 +67,7 @@ void Obstaculo::Dibuja(){
 		glDisable(GL_TEXTURE_2D);
 		glTranslatef(0, 0, -tamanio.z);
 		glTranslatef(-posicion.x, -posicion.y, -posicion.z);
-
+		glPopMatrix();
 	}
 	glEnable(GL_LIGHTING);
 }
