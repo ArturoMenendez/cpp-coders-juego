@@ -50,30 +50,81 @@ void Interaccion::interaccion(ListaDisparos disparo, ListaObstaculos obstaculo){
 	}
 }
 
-//Crear lista objetos y comprobra colisones con todos
 
-void Interaccion::interaccion(Jugador jugador, ListaObstaculos obstaculo){
+void Interaccion::interaccion(Jugador &jugador, ListaObstaculos obstaculo){
 	CrashBox jug, obs;
 
 	jug = jugador.getCrashBox();
 	for (int j = 0; j < obstaculo.n_obstaculos; j++){
 		obs = obstaculo.lista[j]->limites;
 		if (obs.tipo == CIRCULO){
-			float distancia = Vector3D::modulo(jug.posicion - obs.posicion);
+			float distancia = Vector3D::modulo(obs.posicion - jug.posicion);
 			if (distancia <= (jug.radio + obs.radio)) {
-				printf("a");
+				/*Vector3D direc = Vector3D::creavector(obs.posicion, jug.posicion);
+				direc.unitario(direc);
+				float aux = 1.2F * (jug.radio + obs.radio - distancia);
+				direc = direc * aux;
+				jugador.posicion = jugador.posicion + direc;
+				jugador.limites.posicion = jugador.limites.posicion + direc;*/
+				jugador.posicion = jugador.pos_anterior;
+				jugador.limites.posicion = jugador.pos_anterior;
+				jugador.limites.posicion.z = 0;
 				break;
 			}
 		}
 		else if (obs.tipo == RECTANGULO){
 			bool colision = colision_CR(jug.posicion, jug.radio, obs.posicion, obs.alto, obs.ancho);
 			if (colision) {
-				printf("b");
+				jugador.posicion = jugador.pos_anterior;
+				jugador.limites.posicion = jugador.pos_anterior;
+				jugador.limites.posicion.z = 0;
+				break;
 			}
 		}
 	}
+	jugador.pos_anterior = jugador.posicion;
 }
 
+void Interaccion::interaccion(ListaEnemigos enemigo, ListaObstaculos obstaculo){
+	CrashBox enem, obs;
+	for (int i = 0; i < enemigo.n_enemigos; i++){
+		enem = enemigo.lista[i]->getCrashBox();
+		for (int j = 0; j < obstaculo.n_obstaculos; j++){
+			obs = obstaculo.lista[j]->limites;
+			if (obs.tipo == CIRCULO){
+				float distancia = Vector3D::modulo(obs.posicion - enem.posicion);
+				if (distancia <= (enem.radio + obs.radio)) {
+					Vector3D direc = Vector3D::creavector(obs.posicion, enem.posicion);
+					direc.unitario(direc);
+					float aux = 1.2F * (enem.radio + obs.radio - distancia);
+					direc = direc * aux;
+					enemigo.lista[i]->posicion = enemigo.lista[i]->posicion + direc;
+					enemigo.lista[i]->limites.posicion = enemigo.lista[i]->limites.posicion + direc;
+			/*		enemigo.lista[i]->posicion = enemigo.lista[i]->pos_anterior;
+					enemigo.lista[i]->limites.posicion = enemigo.lista[i]->pos_anterior;
+					enemigo.lista[i]->limites.posicion.z = 0;
+					break;*/
+				}
+			}
+			else if (obs.tipo == RECTANGULO){
+				bool colision = colision_CR(enem.posicion, enem.radio, obs.posicion, obs.alto, obs.ancho);
+				if (colision) {
+					Vector3D direc = Vector3D::creavector(obs.posicion, enem.posicion);
+					direc.unitario(direc);
+					float aux = 0.01F;
+					direc = direc * aux;
+					enemigo.lista[i]->posicion = enemigo.lista[i]->posicion + direc;
+					enemigo.lista[i]->limites.posicion = enemigo.lista[i]->limites.posicion + direc;
+				/*	enemigo.lista[i]->posicion = enemigo.lista[i]->pos_anterior;
+					enemigo.lista[i]->limites.posicion = enemigo.lista[i]->pos_anterior;
+					enemigo.lista[i]->limites.posicion.z = 0;
+					break;*/
+				}
+			}
+		}
+		enemigo.lista[i]->pos_anterior = enemigo.lista[i]->posicion;
+	}
+}
 
 void Interaccion::ldv(ListaObstaculos obstaculo, ListaEnemigos enemigo){
 	CrashBox obs, lin;
@@ -152,11 +203,11 @@ void Interaccion::ldv(ListaObstaculos obstaculo, ListaEnemigos enemigo){
 		}
 		if (vision_enemigo == obstaculo.n_obstaculos){
 			enemigo.lista[i]->teveo = true;
-			printf("b");
+		//	printf("b");
 		}
 		else{
 			enemigo.lista[i]->teveo = false;
-			printf("a");
+		//	printf("a");
 		}
 	}
 }

@@ -16,6 +16,10 @@ Jugador::Jugador(void) :colision(false)
 	keyStates['s'] = false;
 	keyStates['d'] = false;
 	keyStates['w'] = false;
+	limites.posicion = posicion;
+	limites.posicion.z = 0;
+	limites.radio = 0.5;
+	limites.tipo = CIRCULO;
 }
 
 Jugador::Jugador(Vector3D pos) :colision(false)
@@ -23,14 +27,14 @@ Jugador::Jugador(Vector3D pos) :colision(false)
 	this->posicion.x = pos.x;
 	this->posicion.y = pos.y;
 	this->posicion.z = 2.8;
-	pos_anterior = posicion;
 	p1.mov.z = 1;
 	p1.ang = p1.mov.y;
 	keyStates['a'] = false;
 	keyStates['s'] = false;
 	keyStates['d'] = false;
 	keyStates['w'] = false;
-	limites.posicion = pos;
+	limites.posicion.x = pos.x;
+	limites.posicion.y = pos.y;
 	limites.posicion.z = 0;
 	limites.radio = 0.5;
 	limites.tipo = CIRCULO;
@@ -151,6 +155,8 @@ void Jugador::Pinta(){
 	glTranslatef(-posicion.x, -posicion.y, 0);
 
 	glEnable(GL_LIGHTING);
+
+	limites.Dibuja();
 }
 
 void Jugador::Rota(){

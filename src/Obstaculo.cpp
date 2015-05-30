@@ -70,4 +70,6 @@ void Obstaculo::Dibuja(){
 		glPopMatrix();
 	}
 	glEnable(GL_LIGHTING);
+
+	limites.Dibuja();
 }

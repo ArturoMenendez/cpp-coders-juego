@@ -37,12 +37,14 @@ CrashBox::~CrashBox()
 
 void CrashBox::Dibuja(){
 	glColor3ub(255, 0, 0);
-	/*glTranslatef(0, 0, 0.1);
-	GLUquadric* obj = gluNewQuadric();
-	gluDisk(obj, radio, radio + 0.05, 20, 20);
-	glTranslatef(0, 0, -0.1);*/
-	glBegin(GL_LINES);
+	if (tipo == CIRCULO){
+		glTranslatef(posicion.x, posicion.y, 0.1+posicion.z);
+		GLUquadric* obj = gluNewQuadric();
+		gluDisk(obj, radio, radio + 0.05, 20, 20);
+		glTranslatef(-posicion.x, -posicion.y, -0.1-posicion.z);
+	}
+	/*glBegin(GL_LINES);
 	glVertex3f(posicion.x, posicion.y, 1);
 	glVertex3f(direccion.x, direccion.y, 1);
-	glEnd();
+	glEnd();*/
 }

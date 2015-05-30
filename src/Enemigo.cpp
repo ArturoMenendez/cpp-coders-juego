@@ -16,9 +16,10 @@ Enemigo::Enemigo(void) :t(40), teveo(false)
 	lin.posicion = posicion;
 	lin.largo = 15;
 	lin.direccion = posicion;
+	pos_anterior = posicion;
 }
 
-Enemigo::Enemigo(Vector3D pos, int id) : t(40), teveo(false)
+Enemigo::Enemigo(Vector3D pos, int id) : t(40), teveo(false), limites(pos, 1.1F)
 {
 	this->posicion.x = pos.x;
 	this->posicion.y = pos.y;
@@ -31,6 +32,7 @@ Enemigo::Enemigo(Vector3D pos, int id) : t(40), teveo(false)
 	lin.posicion = posicion;
 	lin.largo = 15;
 	lin.direccion = posicion;
+	pos_anterior = posicion;
 }
 
 Enemigo::~Enemigo(void)
@@ -155,6 +157,8 @@ void Enemigo::Dibuja(){
 	glTranslatef(-posicion.x, -posicion.y, 0);*/
 
 	//glEnable(GL_LIGHTING);
+
+	limites.Dibuja();
 }
 
 void Enemigo::Rota(){
@@ -176,6 +180,8 @@ void Enemigo::MueveAleat(){
 	if (teveo == false){
 		posicion.x += direccion.x / 40;
 		posicion.y += direccion.y / 40;
+		limites.posicion = posicion;
+		limites.posicion.z = 0;
 		lin.posicion = posicion;
 	}
 	else{
@@ -183,6 +189,8 @@ void Enemigo::MueveAleat(){
 		d = Vector3D::unitario(d);
 		posicion.x += d.x / 10;
 		posicion.y += d.y / 10;
+		limites.posicion = posicion;
+		limites.posicion.z = 0;
 		lin.posicion = posicion;
 	}
 }
@@ -196,4 +204,8 @@ void Enemigo::Update(){
 		direccion.y -= (rand() / (float)RAND_MAX) * 2;
 		direccion = Vector3D::unitario(direccion);
 	}
+}
+
+CrashBox Enemigo::getCrashBox(){
+	return limites;
 }
