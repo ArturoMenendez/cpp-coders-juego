@@ -16,7 +16,6 @@ public:
 	Vector3D operator*(float&);
 	float operator*(Vector3D&);
 	Vector3D operator/(float&);
-	Vector3D();
-	Vector3D(float x, float y, float z);
+	Vector3D(float x = 0.0F, float y = 0.0F, float z = 0.0F);
 	~Vector3D(void);
 };

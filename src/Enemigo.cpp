@@ -5,10 +5,8 @@
 #include "Enemigo.h"
 #include "math.h"
 
-Enemigo::Enemigo(void) :t0(40), teveo(false)
+Enemigo::Enemigo(void) :t0(40), teveo(false), vida(2), posicion(0,0,0)
 {
-	posicion.x = posicion.y = 0;
-	posicion.z = 0;
 	angrot = 0;
 	lin.posicion = posicion;
 	lin.largo = 15;
@@ -17,26 +15,20 @@ Enemigo::Enemigo(void) :t0(40), teveo(false)
 	t = t0;
 }
 
-Enemigo::Enemigo(Vector3D pos, int id) : t(40), teveo(false), limites(pos, 1.1F)
+Enemigo::Enemigo(Vector3D pos, int id) : t(40), teveo(false), limites(pos, 1.1F), vida(2), posicion(0, 0, 0)
 {
-	this->posicion.x = pos.x;
-	this->posicion.y = pos.y;
-	this->posicion.z = pos.z;
+	posicion = pos;
 	this->id = id;
 	angrot = 0;
 	lin.posicion = posicion;
 	lin.largo = 15;
 	lin.direccion = posicion;
 	pos_anterior = posicion;
+	t = t0;
 }
 
 Enemigo::~Enemigo(void)
 {
-}
-
-
-void Enemigo::Dibuja(){	
-
 }
 
 void Enemigo::Rota(){
@@ -55,13 +47,12 @@ void Enemigo::Rota(){
 		Vector3D v1 = Vector3D::creavector(limites.posicion, lin.direccion);
 		if (lin.direccion.y >= limites.posicion.y)
 			angrot = Vector3D::angvect(dirx, v1);
-		
-			
+
+
 		if (lin.direccion.y < limites.posicion.y){
 			float aux = Vector3D::angvect(dirx, v1);
 			angrot = -aux;
 		}
-
 	}
 }
 
@@ -103,4 +94,8 @@ void Enemigo::Update(){
 
 CrashBox Enemigo::getCrashBox(){
 	return limites;
+}
+
+void Enemigo::act_Vida(int danio){
+	vida -= danio;
 }

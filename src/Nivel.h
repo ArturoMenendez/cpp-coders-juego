@@ -4,6 +4,7 @@
 #include "ListaEnemigos.h"
 #include "ListaDisparos.h"
 #include "Jugador.h"
+#include "Pared.h"
 
 #define NUM_NIVELES 10
 
@@ -20,6 +21,7 @@ class Nivel
 	ListaDisparos ldis;
 	ListaEnemigos lenem;
 	int act;
+	Pared caja[4];
 public:
 	void LeeNivel();
 	void Carga();
@@ -39,4 +41,6 @@ public:
 	void OnPassiveMotion(int x, int y);
 	Nivel();
 	~Nivel();
+
 };
+

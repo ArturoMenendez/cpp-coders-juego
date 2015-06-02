@@ -1,14 +1,12 @@
 #include "CaC.h"
 
 
-CaC::CaC()
+CaC::CaC() : Enemigo()
 {
 }
 
-
-CaC::CaC(Vector3D posicion)
+CaC::CaC(Vector3D pos, int id) : Enemigo(pos, id)
 {
-	this->posicion = posicion;
 }
 
 CaC::~CaC()

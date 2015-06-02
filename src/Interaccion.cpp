@@ -50,6 +50,23 @@ void Interaccion::interaccion(ListaDisparos disparo, ListaObstaculos obstaculo){
 	}
 }
 
+void Interaccion::interaccion(ListaDisparos disparo, ListaEnemigos enemigo){
+	CrashBox dis, enem;
+
+	for (int i = 0; i < disparo.tam_lista; i++){
+		dis = disparo.lista[i]->getCrashBox();
+		for (int j = 0; j < enemigo.n_enemigos; j++){
+			enem = enemigo.lista[j]->limites;
+			float distancia = Vector3D::modulo(dis.posicion - enem.posicion);
+			if (distancia <= (dis.radio + enem.radio)) {
+				disparo.lista[i]->destruye();
+				enemigo.lista[j]->act_Vida(disparo.lista[i]->getDanio());
+//			if (obstaculo.lista[j]->se_destruye) obstaculo.lista[j]->destruir = true;
+//				break;	
+			}
+		}
+	}
+}
 
 void Interaccion::interaccion(Jugador &jugador, ListaObstaculos obstaculo){
 	CrashBox jug, obs;
@@ -100,7 +117,7 @@ void Interaccion::interaccion(ListaEnemigos enemigo, ListaObstaculos obstaculo){
 					direc = direc * aux;
 					enemigo.lista[i]->posicion = enemigo.lista[i]->posicion + direc;
 					enemigo.lista[i]->limites.posicion = enemigo.lista[i]->limites.posicion + direc;
-					/*		enemigo.lista[i]->posicion = enemigo.lista[i]->pos_anterior;
+			/*		enemigo.lista[i]->posicion = enemigo.lista[i]->pos_anterior;
 					enemigo.lista[i]->limites.posicion = enemigo.lista[i]->pos_anterior;
 					enemigo.lista[i]->limites.posicion.z = 0;
 					break;*/
@@ -115,7 +132,7 @@ void Interaccion::interaccion(ListaEnemigos enemigo, ListaObstaculos obstaculo){
 					direc = direc * aux;
 					enemigo.lista[i]->posicion = enemigo.lista[i]->posicion + direc;
 					enemigo.lista[i]->limites.posicion = enemigo.lista[i]->limites.posicion + direc;
-					/*	enemigo.lista[i]->posicion = enemigo.lista[i]->pos_anterior;
+				/*	enemigo.lista[i]->posicion = enemigo.lista[i]->pos_anterior;
 					enemigo.lista[i]->limites.posicion = enemigo.lista[i]->pos_anterior;
 					enemigo.lista[i]->limites.posicion.z = 0;
 					break;*/
@@ -123,6 +140,44 @@ void Interaccion::interaccion(ListaEnemigos enemigo, ListaObstaculos obstaculo){
 			}
 		}
 		enemigo.lista[i]->pos_anterior = enemigo.lista[i]->posicion;
+	}
+}
+
+void Interaccion::interaccion(ListaEnemigos enemigos){
+	CrashBox enem1, enem2;
+
+	for (int i = 0; i < enemigos.n_enemigos; i++){
+		enem1 = enemigos.lista[i]->getCrashBox();
+		for (int j = i; j < enemigos.n_enemigos; j++){
+			enem2 = enemigos.lista[j]->getCrashBox();
+			float distancia = Vector3D::modulo(enem1.posicion - enem2.posicion);
+			if (distancia <= (enem1.radio + enem2.radio)) {
+				Vector3D direc = Vector3D::creavector(enem1.posicion, enem2.posicion);
+				direc.unitario(direc);
+				float aux = 1.2F * (enem1.radio + enem2.radio - distancia);
+				direc = direc * aux;
+				enemigos.lista[j]->posicion = enemigos.lista[j]->posicion + direc;
+				enemigos.lista[j]->limites.posicion = enemigos.lista[j]->limites.posicion + direc;
+			}
+		}
+	}
+}
+
+void Interaccion::interaccion(Jugador jugador, ListaEnemigos enemigo){
+	CrashBox jug, enem;
+
+	jug = jugador.limites;
+	for (int i = 0; i < enemigo.n_enemigos; i++){
+		enem = enemigo.lista[i]->getCrashBox();
+		float distancia = Vector3D::modulo(jug.posicion - enem.posicion);
+		if (distancia <= (jug.radio + enem.radio)) {
+			Vector3D direc = Vector3D::creavector(jug.posicion, enem.posicion);
+			direc.unitario(direc);
+			float aux = 1.2F * (jug.radio + enem.radio - distancia);
+			direc = direc * aux;
+			enemigo.lista[i]->posicion = enemigo.lista[i]->posicion + direc;
+			enemigo.lista[i]->limites.posicion = enemigo.lista[i]->limites.posicion + direc;
+		}
 	}
 }
 
@@ -203,11 +258,11 @@ void Interaccion::ldv(ListaObstaculos obstaculo, ListaEnemigos enemigo){
 		}
 		if (vision_enemigo == obstaculo.n_obstaculos){
 			enemigo.lista[i]->teveo = true;
-			//	printf("b");
+		//	printf("b");
 		}
 		else{
 			enemigo.lista[i]->teveo = false;
-			//	printf("a");
+		//	printf("a");
 		}
 	}
 }

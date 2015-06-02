@@ -1,7 +1,6 @@
 #include "Nivel.h"
 #include "Interaccion.h"
 
-
 /*******************************************************/
 /*******LISTA DE VARIABLES PARA CARGAR ELEMENTOS *******/
 /**************EN LOS .TXT DE LOS NIVELES***************/
@@ -27,9 +26,15 @@
 
 Nivel::Nivel()
 {
+	Pared sup(-20.0F, 15.0F, 20.0F, 15.0F), der(20.0F, 15.0F, 20.0F, -15.0F), inf(20.0F, -15.0F, -20.0F, -15.0F), izq(-20.0F, -15.0F, -20.0F, 15.0F);
+	caja[0] = sup;
+	caja[1] = der;
+	caja[2] = inf;
+	caja[3] = izq;
 	act = 0;
 	pasanivel[0] = true;
 }
+
 
 Nivel::~Nivel()
 {
@@ -40,7 +45,7 @@ void Nivel::LeeNivel(){
 		sprintf(buffer, "nivel%i.txt", act);
 		pfile[act] = fopen(buffer, "r");
 		param[0] = 1;
-		//pfile = fopen("nivel0.txt", "r");
+	//pfile = fopen("nivel0.txt", "r");
 		if (pfile != NULL){
 			while (param[0] != 0){
 				for (int i = 0; i < 8; i++){
@@ -72,6 +77,7 @@ void Nivel::Carga(){
 }
 
 void Nivel::Dibuja(){
+	for (int i = 0; i < 4; i++)	caja[i].Dibuja();
 	lenem.dibujarEnemigos();
 	j.Dibuja();
 	j.Pinta();
@@ -86,7 +92,7 @@ void Nivel::nuevoDisparo(){
 
 void Nivel::actualizaListas(){
 	lobs.actualizarObstaculos();
-	lenem.actualizarEnemigos();
+	lenem.detruirEnemigo();
 	ldis.actualizarDisparos(25);
 }
 
@@ -98,8 +104,11 @@ void Nivel::updateEnemigos(){
 
 void Nivel::interacciones(){
 	Interaccion::interaccion(ldis, lobs);
-	Interaccion::interaccion(j, lobs);
+	Interaccion::interaccion(ldis, lenem);
+	Interaccion::interaccion(j, lobs, caja);
 	Interaccion::interaccion(lenem, lobs);
+	Interaccion::interaccion(lenem);
+	Interaccion::interaccion(j, lenem);
 	Interaccion::ldv(lobs, lenem);
 }
 

@@ -2,7 +2,8 @@
 #include "bitmap.h"
 #include "Jugador.h"
 #include "stdio.h"
-
+#define MAX_X 20
+#define MAX_Y 15
 
 
 Jugador::Jugador(void) :colision(false)
@@ -174,19 +175,19 @@ void Jugador::Rota(){
 }
 
 void Jugador::KeyOperations(void){
-	if (keyStates['w']) {
+	if (keyStates['w'] && (posicion.y< (MAX_Y-0.5))) {
 		posicion.y += 0.2;
 		limites.posicion.y += 0.2;
 	}
-	if (keyStates['s']) {
+	if (keyStates['s'] && (posicion.y > (-MAX_Y+0.5))) {
 		posicion.y -= 0.2;
 		limites.posicion.y -= 0.2;
 	}
-	if (keyStates['d']) {
+	if (keyStates['d'] && (posicion.x < (MAX_X-0.5))) {
 		posicion.x += 0.2;
 		limites.posicion.x += 0.2;
 	}
-	if (keyStates['a']) {
+	if (keyStates['a'] && (posicion.x > (-MAX_X+0.5))) {
 		posicion.x -= 0.2;
 		limites.posicion.x -= 0.2;
 	}

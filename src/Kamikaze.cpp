@@ -1,16 +1,12 @@
 #include "Kamikaze.h"
 
 
-Kamikaze::Kamikaze()
+Kamikaze::Kamikaze() : Enemigo()
 {
 }
 
-
-Kamikaze::Kamikaze(Vector3D posicion)
+Kamikaze::Kamikaze(Vector3D pos, int id) : Enemigo(pos, id)
 {
-	this->posicion = posicion;
-	mov_teveo = 10;
-	rueda = 0;
 }
 
 Kamikaze::~Kamikaze()

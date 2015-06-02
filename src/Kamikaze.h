@@ -7,7 +7,7 @@ class Kamikaze :
 public:
 	int rueda;
 	Kamikaze();
-	Kamikaze(Vector3D);
+	Kamikaze(Vector3D,int);
 	~Kamikaze();
 	void Dibuja();
 };

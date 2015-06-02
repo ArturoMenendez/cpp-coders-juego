@@ -16,7 +16,7 @@ public:
 	~ListaEnemigos();
 	void agregarEnemigo(Vector3D posicion, int tipo);
 	void dibujarEnemigos();
-	void actualizarEnemigos();
+	void detruirEnemigo();
 	void mueveEnemigos();
 	void updateEnemigos(Vector3D jugador);
 	void rotaEnemigos();

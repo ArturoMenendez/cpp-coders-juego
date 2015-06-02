@@ -13,19 +13,20 @@ ListaEnemigos::~ListaEnemigos()
 
 void ListaEnemigos::agregarEnemigo(Vector3D posicion, int tipo){
 	if (n_enemigos < MAX_ENEMIGOS) {
+		Enemigo* nuevo;
 		switch (tipo){
 		case (5) : {
-			Enemigo* nuevo_ad = new ADistancia(posicion);
-			lista[n_enemigos++] = nuevo_ad;
+			nuevo = new ADistancia(posicion, 5);
+			lista[n_enemigos++] = nuevo;
 			break; }
 		case(6) : {
-			Enemigo* nuevo_cac = new CaC(posicion);
-			lista[n_enemigos++] = nuevo_cac;
+			nuevo = new CaC(posicion, 6);
+			lista[n_enemigos++] = nuevo;
 			break; }
 		case(7) : {
-			Enemigo* nuevo_k = new Kamikaze(posicion);
-			lista[n_enemigos++] = nuevo_k;
-			break;}
+			nuevo = new Kamikaze(posicion, 7);
+			lista[n_enemigos++] = nuevo;
+			break; }
 		default:
 			break;
 		}
@@ -36,7 +37,14 @@ void ListaEnemigos::dibujarEnemigos(){
 	for (int i = 0; i < n_enemigos; i++) lista[i]->Dibuja();
 }
 
-void ListaEnemigos::actualizarEnemigos(){
+void ListaEnemigos::detruirEnemigo(){
+	for (int i = 0; i < n_enemigos; i++) {
+		if (lista[i]->vida <= 0){
+			delete lista[i];
+			n_enemigos--;
+			for (int j = i; j < n_enemigos; j++)	lista[j] = lista[j + 1];
+		}
+	}
 }
 
 void ListaEnemigos::mueveEnemigos(){

@@ -1,11 +1,12 @@
 #include "ADistancia.h"
 
 
-ADistancia::ADistancia(Vector3D posicion)
+ADistancia::ADistancia() :Enemigo()
 {
-	this->posicion = posicion;
-	mov_teveo = 100;
-	t0 = 30;
+}
+
+ADistancia::ADistancia(Vector3D pos, int id) : Enemigo(pos, id)
+{
 }
 
 

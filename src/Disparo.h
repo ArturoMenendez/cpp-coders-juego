@@ -12,7 +12,7 @@ class Disparo
 	Vector3D pos;
 	Vector3D vel;
 	float radio;
-	int daño;
+	int danio;
 	int vida;
 
 public:
@@ -25,6 +25,7 @@ public:
 	void updateDisparo(const int t);
 	CrashBox getCrashBox();
 	void destruye();
+	int getDanio() { return danio; }
 
 };
 

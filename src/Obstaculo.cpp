@@ -3,9 +3,6 @@
 #include "stdio.h"
 #include "bitmap.h"
 
-
-
-
 Obstaculo::Obstaculo(Vector3D posicion, Vector3D tamanio, int tipo, bool destruccion) : destruir(false)
 {
 	this->posicion = posicion;
@@ -32,8 +29,7 @@ Obstaculo::~Obstaculo()
 void Obstaculo::Dibuja(){
 	glDisable(GL_LIGHTING);
 	switch (id){
-	case(1) : {
-		glEnable(GL_LIGHTING);
+	case(1) :{
 		glPushMatrix();
 		glColor3ub(120, 150, 80);
 		glTranslatef(posicion.x, posicion.y, posicion.z);
@@ -43,7 +39,7 @@ void Obstaculo::Dibuja(){
 		glPopMatrix();
 		break;
 	}
-	case(2) :{
+	case(2) : {
 		static bitmap bidon("bidon.bmp");
 		static bitmap bidon_tapa("bidon_tapa.bmp");
 		glPushMatrix();
@@ -69,7 +65,7 @@ void Obstaculo::Dibuja(){
 		glTranslatef(0, 0, -tamanio.z);
 		glTranslatef(-posicion.x, -posicion.y, -posicion.z);
 		glPopMatrix();
-
+		break;
 	}
 
 	case(8) : {
@@ -95,7 +91,8 @@ void Obstaculo::Dibuja(){
 		glPopMatrix();
 		break;
 	}
+		glEnable(GL_LIGHTING);
+
+		limites.Dibuja();
 	}
-	glEnable(GL_LIGHTING);
-	limites.Dibuja();
 }

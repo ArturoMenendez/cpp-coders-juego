@@ -5,7 +5,7 @@
 #define PI 3.1416
 
 
-Disparo::Disparo(Jugador personaje) : destruir(false), radio(0.3), vida(1000), rojo(255), verde(0), azul(0){
+Disparo::Disparo(Jugador personaje) : destruir(false), radio(0.3), vida(1000), rojo(255), verde(0), azul(0), danio(1){
 	Vector3D velocidad;
 	float f = 3;
 	pos.x = personaje.posicion.x + (1.4*cos(personaje.angrot * 2 * PI / 360)) + (0.7*sin(personaje.angrot * 2 * PI / 360)); 
