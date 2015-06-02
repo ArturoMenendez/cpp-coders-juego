@@ -1,5 +1,8 @@
 #pragma once
 #include "Enemigo.h"
+#include "CaC.h"
+#include "ADistancia.h"
+#include "Kamikaze.h"
 #include "Vector3D.h"
 #define MAX_ENEMIGOS 20
 

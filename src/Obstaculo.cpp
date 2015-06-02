@@ -32,7 +32,8 @@ Obstaculo::~Obstaculo()
 void Obstaculo::Dibuja(){
 	glDisable(GL_LIGHTING);
 	switch (id){
-	case(1) :
+	case(1) : {
+		glEnable(GL_LIGHTING);
 		glPushMatrix();
 		glColor3ub(120, 150, 80);
 		glTranslatef(posicion.x, posicion.y, posicion.z);
@@ -41,8 +42,8 @@ void Obstaculo::Dibuja(){
 		glutSolidCube(1);
 		glPopMatrix();
 		break;
-		
-	case(2) :
+	}
+	case(2) :{
 		static bitmap bidon("bidon.bmp");
 		static bitmap bidon_tapa("bidon_tapa.bmp");
 		glPushMatrix();
@@ -68,8 +69,33 @@ void Obstaculo::Dibuja(){
 		glTranslatef(0, 0, -tamanio.z);
 		glTranslatef(-posicion.x, -posicion.y, -posicion.z);
 		glPopMatrix();
+
+	}
+
+	case(8) : {
+		glEnable(GL_LIGHTING);
+		glPushMatrix();
+		glColor3ub(180, 180, 220);
+		glTranslatef(posicion.x, posicion.y, posicion.z);
+		glTranslatef(0, 0, tamanio.z / 2);
+		glScalef(tamanio.x, tamanio.y, tamanio.z);
+		glutSolidCube(1);
+		glPopMatrix();
+		break;
+	}
+
+	case(9) : {
+		glEnable(GL_LIGHTING);
+		glPushMatrix();
+		glColor3ub(180, 180, 220);
+		glTranslatef(posicion.x, posicion.y, posicion.z);
+		glTranslatef(0, 0, tamanio.z / 2);
+		glScalef(tamanio.x, tamanio.y, tamanio.z);
+		glutSolidCube(1);
+		glPopMatrix();
+		break;
+	}
 	}
 	glEnable(GL_LIGHTING);
-
 	limites.Dibuja();
 }

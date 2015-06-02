@@ -1,15 +1,17 @@
-#include "glut.h"
-#include "bitmap.h"
+/*#include "glut.h"
+
 #include "ListaObstaculos.h"
 #include "ListaDisparos.h"
 #include "Interaccion.h"
 #include "Nivel.h"
-
-
+#include "OpenGL.h"*/
+#include "bitmap.h"
+#include "Gestor.h"
 float vistax = 0, vistay = 0, zoom = 50;
 float theta = 0;
 bool* keyStates = new bool[256];
 Nivel n1;
+Gestor g;
 
 //los callback, funciones que seran llamadas automaticamente por la glut
 //cuando sucedan eventos
@@ -71,8 +73,8 @@ void OnDraw(){
 	static float antorcha[4] = { -16.0, 11.0, 2.0, 1 };
 	static bitmap suelo("suelo.bmp");
 	static bitmap bola("bola.bmp");
-	
-	
+
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -127,6 +129,8 @@ void OnDraw(){
 	glVertex3f(-20.0, 15.0, 10.0);
 	glVertex3f(-20.0, 15.0, 0.0);
 	glEnd();
+
+	//OpenGL::Print("HOLA MUNDO", 0,0);
 
 	n1.LeeNivel();
 	n1.Dibuja();

@@ -39,6 +39,4 @@ public:
 	void OnPassiveMotion(int x, int y);
 	Nivel();
 	~Nivel();
-
 };
-

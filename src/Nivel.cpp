@@ -2,12 +2,34 @@
 #include "Interaccion.h"
 
 
+/*******************************************************/
+/*******LISTA DE VARIABLES PARA CARGAR ELEMENTOS *******/
+/**************EN LOS .TXT DE LOS NIVELES***************/
+/*******************************************************/
+/*******1-MURO******************************************/
+/*******2-BARRIL****************************************/
+/*******3-LAVA******************************************/
+/*******4-JUGADOR***************************************/
+/*******5-ENEMIGO A DISTANCIA***************************/
+/*******6-ENEMIGO CUERPO A CUERPO***********************/
+/*******7-ENEMIGO KAMIKAZE******************************/
+/*******8-PUERTA ENTRADA********************************/
+/*******9-PUERTA SALIDA*********************************/
+/*******10-CODIGO DE ACCESO*****************************/
+/*******11-FRAGMENTO CODIGO CLASE***********************/
+/*******************************************************/
+/*******************************************************/
+/*******************************************************/
+/*******************************************************/
+/*******************************************************/
+/*******************************************************/
+/*******************************************************/
+
 Nivel::Nivel()
 {
 	act = 0;
 	pasanivel[0] = true;
 }
-
 
 Nivel::~Nivel()
 {
@@ -18,7 +40,7 @@ void Nivel::LeeNivel(){
 		sprintf(buffer, "nivel%i.txt", act);
 		pfile[act] = fopen(buffer, "r");
 		param[0] = 1;
-	//pfile = fopen("nivel0.txt", "r");
+		//pfile = fopen("nivel0.txt", "r");
 		if (pfile != NULL){
 			while (param[0] != 0){
 				for (int i = 0; i < 8; i++){
@@ -38,7 +60,7 @@ void Nivel::Carga(){
 	Vector3D pos = Vector3D(param[1], param[2], param[3]);
 	Vector3D tam = Vector3D(param[4], param[5], param[6]);
 
-	if (param[0] == 1 || param[0] == 2 || param[0] == 3){
+	if (param[0] == 1 || param[0] == 2 || param[0] == 3 || param[0] == 8 || param[0] == 9){
 		lobs.agregarObstaculo(pos, tam, (int)param[0], (bool)param[7]);
 	}
 	if (param[0] == 4){
@@ -70,7 +92,7 @@ void Nivel::actualizaListas(){
 
 void Nivel::updateEnemigos(){
 	lenem.mueveEnemigos();
-	lenem.updateEnemigos(j.posicion);
+	lenem.updateEnemigos(j.limites.posicion);
 	lenem.rotaEnemigos();
 }
 

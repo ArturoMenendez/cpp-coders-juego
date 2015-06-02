@@ -16,4 +16,3 @@ public:
 	static void ldv(ListaObstaculos obstaculo, ListaEnemigos enemigo);
 
 };
-

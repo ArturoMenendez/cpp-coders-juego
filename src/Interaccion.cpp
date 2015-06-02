@@ -100,7 +100,7 @@ void Interaccion::interaccion(ListaEnemigos enemigo, ListaObstaculos obstaculo){
 					direc = direc * aux;
 					enemigo.lista[i]->posicion = enemigo.lista[i]->posicion + direc;
 					enemigo.lista[i]->limites.posicion = enemigo.lista[i]->limites.posicion + direc;
-			/*		enemigo.lista[i]->posicion = enemigo.lista[i]->pos_anterior;
+					/*		enemigo.lista[i]->posicion = enemigo.lista[i]->pos_anterior;
 					enemigo.lista[i]->limites.posicion = enemigo.lista[i]->pos_anterior;
 					enemigo.lista[i]->limites.posicion.z = 0;
 					break;*/
@@ -115,7 +115,7 @@ void Interaccion::interaccion(ListaEnemigos enemigo, ListaObstaculos obstaculo){
 					direc = direc * aux;
 					enemigo.lista[i]->posicion = enemigo.lista[i]->posicion + direc;
 					enemigo.lista[i]->limites.posicion = enemigo.lista[i]->limites.posicion + direc;
-				/*	enemigo.lista[i]->posicion = enemigo.lista[i]->pos_anterior;
+					/*	enemigo.lista[i]->posicion = enemigo.lista[i]->pos_anterior;
 					enemigo.lista[i]->limites.posicion = enemigo.lista[i]->pos_anterior;
 					enemigo.lista[i]->limites.posicion.z = 0;
 					break;*/
@@ -203,11 +203,11 @@ void Interaccion::ldv(ListaObstaculos obstaculo, ListaEnemigos enemigo){
 		}
 		if (vision_enemigo == obstaculo.n_obstaculos){
 			enemigo.lista[i]->teveo = true;
-		//	printf("b");
+			//	printf("b");
 		}
 		else{
 			enemigo.lista[i]->teveo = false;
-		//	printf("a");
+			//	printf("a");
 		}
 	}
 }
