@@ -1,9 +1,10 @@
 #include "stdlib.h"
 #include "glut.h"
-#include "stdio.h"
 #include "bitmap.h"
 #include "Enemigo.h"
 #include "math.h"
+#define MAX_X	20.0f
+#define MAX_Y	12.5f
 
 Enemigo::Enemigo(void) :t0(40), teveo(false), vida(2), posicion(0,0,0)
 {
@@ -15,7 +16,7 @@ Enemigo::Enemigo(void) :t0(40), teveo(false), vida(2), posicion(0,0,0)
 	t = t0;
 }
 
-Enemigo::Enemigo(Vector3D pos, int id) : t(40), teveo(false), limites(pos, 1.1F), vida(2), posicion(0, 0, 0)
+Enemigo::Enemigo(Vector3D pos, int id) : t0(40), teveo(false), limites(pos, 1.1F), vida(2)
 {
 	posicion = pos;
 	this->id = id;
@@ -39,8 +40,7 @@ void Enemigo::Rota(){
 		if (posicion.y + direccion.y >= posicion.y)
 			angrot = Vector3D::angvect(dirx, v1);
 		if (posicion.y + direccion.y < posicion.y){
-			float aux = Vector3D::angvect(dirx, v1);
-			angrot = -aux;
+			angrot = -Vector3D::angvect(dirx, v1);
 		}
 	}
 	else{
@@ -50,8 +50,7 @@ void Enemigo::Rota(){
 
 
 		if (lin.direccion.y < limites.posicion.y){
-			float aux = Vector3D::angvect(dirx, v1);
-			angrot = -aux;
+			angrot = -Vector3D::angvect(dirx, v1);
 		}
 	}
 }
@@ -77,11 +76,14 @@ void Enemigo::MueveAleat(){
 		limites.posicion.z = 0;
 		lin.posicion = posicion;
 	}
+	if (posicion.x > MAX_X - limites.radio) posicion.x = MAX_X - limites.radio;
+	if (posicion.x < -MAX_X + limites.radio) posicion.x = -MAX_X + limites.radio;
+	if (posicion.y> MAX_Y - limites.radio) posicion.y = MAX_Y - limites.radio;
+	if (posicion.y < -MAX_Y + limites.radio) posicion.y = -MAX_Y + limites.radio;
 }
 
 void Enemigo::Update(){
 	if (teveo == false){
-		t += 1;
 		if (t % t0 == 0){
 			direccion.x = (rand() / (float)RAND_MAX);
 			direccion.y = (rand() / (float)RAND_MAX);
@@ -89,6 +91,8 @@ void Enemigo::Update(){
 			direccion.y -= (rand() / (float)RAND_MAX);
 			direccion = Vector3D::unitario(direccion);
 		}
+		t++;
+		if (t > 40)	t = 1;
 	}
 }
 

@@ -18,6 +18,7 @@ public:
 	bool* keyStates = new bool[256];
 	Pierna p1, p2;
 	Cilindro c1;
+	int vida;
 
 
 	//metodos
@@ -25,6 +26,7 @@ public:
 	Jugador(Vector3D);
 	~Jugador(void);
 	CrashBox getCrashBox();
+	void act_Vida(int danio);
 	void Mouse(int, int, int, int);
 	void Motion(int, int);
 	void PassiveMotion(int, int);

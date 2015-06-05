@@ -1,5 +1,6 @@
 #include "Nivel.h"
 #include "Interaccion.h"
+#include "Texto.h"
 
 /*******************************************************/
 /*******LISTA DE VARIABLES PARA CARGAR ELEMENTOS *******/
@@ -26,7 +27,7 @@
 
 Nivel::Nivel()
 {
-	Pared sup(-20.0F, 15.0F, 20.0F, 15.0F), der(20.0F, 15.0F, 20.0F, -15.0F), inf(20.0F, -15.0F, -20.0F, -15.0F), izq(-20.0F, -15.0F, -20.0F, 15.0F);
+	Pared sup(-20.0F, 12.5F, 20.0F, 12.5F), der(20.0F, 12.5F, 20.0F, -12.5F), inf(20.0F, -12.5F, -20.0F, -12.5F), izq(-20.0F, -12.5F, -20.0F, 12.5F);
 	caja[0] = sup;
 	caja[1] = der;
 	caja[2] = inf;
@@ -83,29 +84,34 @@ void Nivel::Dibuja(){
 	j.Pinta();
 	lobs.dibujarObstaculos();
 	ldis.dibujarDisparos();
-
+	if (j.vida <= 0) {
+		Texto::setPos(-10.0, 0.0, 10.0);
+		Texto::text("GAME OVER", 2, 255, 0, 100);
+	}
+	marcador.dibujar();
 }
 
 void Nivel::nuevoDisparo(){
-	ldis.agregarDisparos(j);
+	ldis.agregarDisparos(j,1000,1);
 }
 
 void Nivel::actualizaListas(){
 	lobs.actualizarObstaculos();
+	lobs.animarObstaculos();
 	lenem.detruirEnemigo();
 	ldis.actualizarDisparos(25);
+	marcador.actualizarMarcador(j.vida, 0.025f);
 }
 
 void Nivel::updateEnemigos(){
 	lenem.mueveEnemigos();
-	lenem.updateEnemigos(j.limites.posicion);
-	lenem.rotaEnemigos();
+	lenem.updateEnemigos(j.limites.posicion, ldis);
 }
 
 void Nivel::interacciones(){
 	Interaccion::interaccion(ldis, lobs);
-	Interaccion::interaccion(ldis, lenem);
-	Interaccion::interaccion(j, lobs, caja);
+	Interaccion::interaccion(ldis, lenem, j);
+	Interaccion::interaccion(j, lobs);
 	Interaccion::interaccion(lenem, lobs);
 	Interaccion::interaccion(lenem);
 	Interaccion::interaccion(j, lenem);

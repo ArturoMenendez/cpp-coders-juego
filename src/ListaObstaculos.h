@@ -15,5 +15,6 @@ public:
 	void agregarObstaculo(Vector3D posicion, Vector3D tamanio, int tipo, bool destruccion);
 	void dibujarObstaculos();
 	void actualizarObstaculos();
+	void animarObstaculos();
 };
 

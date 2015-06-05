@@ -4,7 +4,9 @@
 #include "ListaDisparos.h"
 #include "Interaccion.h"
 #include "Nivel.h"
-#include "OpenGL.h"
+#include "Texto.h"
+#include <string.h>
+
 
 float vistax = 0, vistay = 0, zoom = 50;
 float theta = 0;
@@ -28,19 +30,25 @@ int main(int argc, char* argv[])
 	//Inicializar el gestor de ventanas GLUT
 	//y crear la ventana
 	glutInit(&argc, argv);
-	glutInitWindowPosition(250, 100);
-	glutInitWindowSize(800, 600);
+	glutInitWindowPosition(0, 0);
+	glutInitWindowSize(900, 675);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutCreateWindow("C++ Coders: Raiders of the Lost Class");
 
+	glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
+	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);				// Black Background
+	glClearDepth(1.0f);
 	//habilitar luces y definir perspectiva
 	glEnable(GL_LIGHT0);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_COLOR_MATERIAL);
 	glMatrixMode(GL_PROJECTION);
-	gluPerspective(40.0, 800 / 600.0f, 0.1, 150);
-
+	gluPerspective(40.0, 900 / 675.0f, 0.1, 150);
+	glTranslatef(0.0,-2.5,0.0);
+							// Enables Depth Testing
+	glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	//Registrar los callbacks
 	glutDisplayFunc(OnDraw);
 	glutTimerFunc(25, OnTimer, 0);//le decimos que dentro de 25ms llame 1 vez a la funcion OnTimer()
@@ -76,62 +84,31 @@ void OnDraw(){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(vistax, vistay, zoom, 0.0, 0, 0.0, 0.0, 1.0, 0.0);
+	gluLookAt(vistax, vistay, zoom, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
-	glDisable(GL_LIGHTING);
+	glEnable(GL_LIGHTING);
 	suelo.usarTextura();
 	glBegin(GL_QUADS);	//SUELO
 	glColor3ub(255, 255, 255);
 	glTexCoord2f(3.0, 2.0);
-	glVertex3f(-20.0, 15.0, 0.0);
+	glNormal3f(0, 0, 1);
+	glVertex3f(-20.0, 12.5, 0.0);
 	glTexCoord2f(0.0, 2.0);
-	glVertex3f(20.0, 15.0, 0.0);
+	glNormal3f(0, 0, 1);
+	glVertex3f(20.0, 12.5, 0.0);
 	glTexCoord2f(0.0, 0.0);
-	glVertex3f(20.0, -15.0, 0.0);
+	glNormal3f(0, 0, 1);
+	glVertex3f(20.0, -12.5, 0.0);
 	glTexCoord2f(3.0, 0.0);
-	glVertex3f(-20.0, -15.0, 0.0);
+	glNormal3f(0, 0, 1);
+	glVertex3f(-20.0, -12.5, 0.0);
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 
-	glEnable(GL_LIGHTING);
-	/*
-	glBegin(GL_QUADS);	//PARED SUPERIOR
-	glColor3ub(255, 0, 0);
-	glNormal3f(0, 0, 0);//normales para iluminacion
-	glVertex3f(-20.0, 15.0, 0.0);
-	glNormal3f(0, 0, 10);
-	glVertex3f(-20.0, 15.0, 10.0);
-	glVertex3f(20.0, 15.0, 10.0);
-	glNormal3f(0, 0, 0);
-	glVertex3f(20.0, 15.0, 0.0);
-	glEnd();
-	glBegin(GL_QUADS);	//PARED DERECHA
-	glColor3ub(0, 255, 0);
-	glVertex3f(20.0, 15.0, 0.0);
-	glVertex3f(20.0, 15.0, 10.0);
-	glVertex3f(20.0, -15.0, 10.0);
-	glVertex3f(20.0, -15.0, 0.0);
-	glEnd();
-	glBegin(GL_QUADS);	//PARED INFERIOR
-	glColor3ub(255, 0, 0);
-	glVertex3f(20.0, -15.0, 0.0);
-	glVertex3f(20.0, -15.0, 10.0);
-	glVertex3f(-20.0, -15.0, 10.0);
-	glVertex3f(-20.0, -15.0, 0.0);
-	glEnd();
-	glBegin(GL_QUADS);	//PARED IZQUIERDA
-	glColor3ub(0, 255, 0);
-	glVertex3f(-20.0, -15.0, 0.0);
-	glVertex3f(-20.0, -15.0, 10.0);
-	glVertex3f(-20.0, 15.0, 10.0);
-	glVertex3f(-20.0, 15.0, 0.0);
-	glEnd();
-	*/
 	n1.LeeNivel();
 	n1.Dibuja();
-	OpenGL::Print("HOLA MUNDO", 0, 0);
-	glEnable(GL_LIGHTING);
-
+	
+	
 	glutSwapBuffers();
 }
 

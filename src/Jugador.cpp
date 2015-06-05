@@ -2,28 +2,15 @@
 #include "bitmap.h"
 #include "Jugador.h"
 #include "stdio.h"
-#define MAX_X 20
-#define MAX_Y 15
+#define MAX_X 20.0f
+#define MAX_Y 12.5f
 
 
-Jugador::Jugador(void) :colision(false)
+Jugador::Jugador(void)
 {
-	posicion.x = posicion.y = 0;
-	posicion.z = 2.8;
-	pos_anterior = posicion;
-	p1.mov.z = 1;
-	p1.ang = p1.mov.y;
-	keyStates['a'] = false;
-	keyStates['s'] = false;
-	keyStates['d'] = false;
-	keyStates['w'] = false;
-	limites.posicion = posicion;
-	limites.posicion.z = 0;
-	limites.radio = 0.5;
-	limites.tipo = CIRCULO;
 }
 
-Jugador::Jugador(Vector3D pos) :colision(false)
+Jugador::Jugador(Vector3D pos) :colision(false), vida(10)
 {
 	this->posicion.x = pos.x;
 	this->posicion.y = pos.y;
@@ -37,7 +24,7 @@ Jugador::Jugador(Vector3D pos) :colision(false)
 	limites.posicion.x = pos.x;
 	limites.posicion.y = pos.y;
 	limites.posicion.z = 0;
-	limites.radio = 0.5;
+	limites.radio = 0.8;
 	limites.tipo = CIRCULO;
 }
 
@@ -47,7 +34,7 @@ Jugador::~Jugador(void)
 
 void Jugador::Dibuja(){
 	GLUquadricObj* pepe = gluNewQuadric();
-	glColor3f(200, 255, 255);
+	glColor3f(255, 255, 255);
 	glTranslatef(ptomira.x, ptomira.y, 2.8);
 	gluDisk(pepe, 0.4, 0.6, 20, 20);
 	glBegin(GL_LINES);
@@ -90,7 +77,7 @@ void Jugador::Pinta(){
 	GLUquadric* obj = gluNewQuadric();
 	static bitmap cuerpo("cuerpo.bmp");
 	static bitmap cabeza("cabeza.bmp");
-	glDisable(GL_LIGHTING);
+	//glDisable(GL_LIGHTING);
 
 	glTranslatef(posicion.x, posicion.y, 0);
 
@@ -175,22 +162,24 @@ void Jugador::Rota(){
 }
 
 void Jugador::KeyOperations(void){
-	if (keyStates['w'] && (posicion.y< (MAX_Y-0.5))) {
+	if (keyStates['w']) {
 		posicion.y += 0.2;
-		limites.posicion.y += 0.2;
 	}
-	if (keyStates['s'] && (posicion.y > (-MAX_Y+0.5))) {
+	if (keyStates['s']) {
 		posicion.y -= 0.2;
-		limites.posicion.y -= 0.2;
 	}
-	if (keyStates['d'] && (posicion.x < (MAX_X-0.5))) {
+	if (keyStates['d']) {
 		posicion.x += 0.2;
-		limites.posicion.x += 0.2;
 	}
-	if (keyStates['a'] && (posicion.x > (-MAX_X+0.5))) {
+	if (keyStates['a']) {
 		posicion.x -= 0.2;
-		limites.posicion.x -= 0.2;
 	}
+	if (posicion.x > MAX_X - limites.radio) posicion.x = MAX_X - limites.radio;
+	if (posicion.x < -MAX_X + limites.radio) posicion.x = -MAX_X + limites.radio;
+	if (posicion.y> MAX_Y - limites.radio) posicion.y = MAX_Y - limites.radio;
+	if (posicion.y < -MAX_Y + limites.radio) posicion.y = -MAX_Y + limites.radio;
+	limites.posicion.x = posicion.x;
+	limites.posicion.y = posicion.y;
 }
 
 void Jugador::NoMueve(unsigned char key){
@@ -212,4 +201,8 @@ void Jugador::Anima(){
 
 CrashBox Jugador::getCrashBox(){
 	return limites;
+}
+
+void Jugador::act_Vida(int danio){
+	vida -= danio;
 }

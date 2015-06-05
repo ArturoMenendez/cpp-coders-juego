@@ -42,9 +42,8 @@ void OpenGL::Print(char *mensaje, int x, int y, unsigned char r, unsigned char g
 	glRasterPos3f(x, glutGet(GLUT_WINDOW_HEIGHT)-18-y, 0);
 	int len = strlen (mensaje );
 	for (int i = 0; i < len; i++) 
-		glutBitmapCharacter (GLUT_BITMAP_TIMES_ROMAN_24, mensaje[i] );
-	
-	
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, mensaje[i]);
+
 	glMatrixMode(GL_TEXTURE);
 	glPopMatrix();
 

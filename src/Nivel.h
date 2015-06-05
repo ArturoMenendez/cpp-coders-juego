@@ -5,6 +5,7 @@
 #include "ListaDisparos.h"
 #include "Jugador.h"
 #include "Pared.h"
+#include "Marcador.h"
 
 #define NUM_NIVELES 10
 
@@ -22,6 +23,7 @@ class Nivel
 	ListaEnemigos lenem;
 	int act;
 	Pared caja[4];
+	Marcador marcador;
 public:
 	void LeeNivel();
 	void Carga();

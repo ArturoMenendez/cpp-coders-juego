@@ -8,5 +8,6 @@ public:
 	CaC(Vector3D,int);
 	~CaC();
 	void Dibuja();
+	bool atacar(int t);
 };
 

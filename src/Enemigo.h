@@ -16,7 +16,8 @@ public:
 	float angrot;
 	int id;
 	int vida;
-	int t0, t;
+	int t0;
+	int t;
 	bool teveo;
 	float mov_teveo = 20, mov_noteveo = 20;
 	//metodos
@@ -32,4 +33,5 @@ public:
 	void Update();
 	CrashBox getCrashBox();
 	void act_Vida(int danio);
+	virtual bool atacar(int t) = 0;
 };

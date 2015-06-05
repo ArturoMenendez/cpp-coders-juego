@@ -5,7 +5,7 @@ Kamikaze::Kamikaze() : Enemigo()
 {
 }
 
-Kamikaze::Kamikaze(Vector3D pos, int id) : Enemigo(pos, id)
+Kamikaze::Kamikaze(Vector3D pos, int id) : Enemigo(pos, id), rueda(0)
 {
 }
 
@@ -17,13 +17,13 @@ void Kamikaze::Dibuja()
 {
 	glEnable(GL_LIGHTING);
 	static bitmap cuerpo("bola.bmp");
-	//lin.Dibuja();
-	//limites.Dibuja();
+
+	limites.Dibuja();
 	glPushMatrix();
 	glTranslatef(posicion.x, posicion.y, 1);
 	glRotatef(angrot, 0, 0, 1);
 	///////////////////////////
-	rueda+=4;
+	rueda+=4.5F;
 	glPushMatrix();
 	glRotatef(rueda,0,1,0);
 	cuerpo.usarTextura();
@@ -40,4 +40,11 @@ void Kamikaze::Dibuja()
 	///////////////////////////
 	glPopMatrix();
 	glDisable(GL_LIGHTING);
+}
+
+bool Kamikaze::atacar(int t){
+	static bool ataca = false;
+	if (t == 0) ataca = true;
+	if (ataca) return true;
+	else return false;
 }

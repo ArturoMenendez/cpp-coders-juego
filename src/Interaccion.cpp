@@ -1,6 +1,8 @@
 #include "Interaccion.h"
 #include <math.h>
 #include "stdio.h"
+#define MAX_X 20
+#define MAX_Y 15
 
 bool colision_CR(Vector3D pos_dis, float r_dis, Vector3D pos_obs, float alto_obs, float ancho_obs){
 	float distancia_X = abs(pos_dis.x - pos_obs.x);
@@ -34,7 +36,7 @@ void Interaccion::interaccion(ListaDisparos disparo, ListaObstaculos obstaculo){
 				float distancia = Vector3D::modulo(dis.posicion - obs.posicion);
 				if (distancia <= (dis.radio + obs.radio)) {
 					disparo.lista[i]->destruye();
-					if (obstaculo.lista[j]->se_destruye) obstaculo.lista[j]->destruir = true;
+					if (obstaculo.lista[j]->se_destruye && (disparo.lista[i]->getTipo() == false)) obstaculo.lista[j]->destruir = true;
 					break;
 				}
 			}
@@ -42,27 +44,38 @@ void Interaccion::interaccion(ListaDisparos disparo, ListaObstaculos obstaculo){
 				bool colision = colision_CR(dis.posicion, dis.radio, obs.posicion, obs.alto, obs.ancho);
 				if (colision) {
 					disparo.lista[i]->destruye();
-					if (obstaculo.lista[j]->se_destruye) obstaculo.lista[j]->destruir = true;
+					if (obstaculo.lista[j]->se_destruye && (disparo.lista[i]->getTipo() == false)) obstaculo.lista[j]->destruir = true;
 					break;
 				}
 			}
 		}
+		if ((dis.posicion.x + dis.radio > MAX_X) || (dis.posicion.x - dis.radio < -MAX_X) || (dis.posicion.y + dis.radio > MAX_Y) || (dis.posicion.y - dis.radio < -MAX_Y))
+			disparo.lista[i]->destruye();
 	}
 }
 
-void Interaccion::interaccion(ListaDisparos disparo, ListaEnemigos enemigo){
-	CrashBox dis, enem;
+void Interaccion::interaccion(ListaDisparos disparo, ListaEnemigos enemigo, Jugador &jugador){
+	CrashBox dis, obj;
 
 	for (int i = 0; i < disparo.tam_lista; i++){
-		dis = disparo.lista[i]->getCrashBox();
-		for (int j = 0; j < enemigo.n_enemigos; j++){
-			enem = enemigo.lista[j]->limites;
-			float distancia = Vector3D::modulo(dis.posicion - enem.posicion);
-			if (distancia <= (dis.radio + enem.radio)) {
+		if (disparo.lista[i]->getTipo()) {
+			dis = disparo.lista[i]->getCrashBox();
+			obj = jugador.limites;
+			float distancia = Vector3D::modulo(dis.posicion - obj.posicion);
+			if (distancia <= (dis.radio + obj.radio)) {
 				disparo.lista[i]->destruye();
-				enemigo.lista[j]->act_Vida(disparo.lista[i]->getDanio());
-//			if (obstaculo.lista[j]->se_destruye) obstaculo.lista[j]->destruir = true;
-//				break;	
+				jugador.act_Vida(disparo.lista[i]->getDanio());
+			}
+		}
+		else{
+			dis = disparo.lista[i]->getCrashBox();
+			for (int j = 0; j < enemigo.n_enemigos; j++){
+				obj = enemigo.lista[j]->limites;
+				float distancia = Vector3D::modulo(dis.posicion - obj.posicion);
+				if (distancia <= (dis.radio + obj.radio)) {
+					disparo.lista[i]->destruye();
+					enemigo.lista[j]->act_Vida(disparo.lista[i]->getDanio());
+				}
 			}
 		}
 	}
@@ -139,6 +152,7 @@ void Interaccion::interaccion(ListaEnemigos enemigo, ListaObstaculos obstaculo){
 				}
 			}
 		}
+		/**/
 		enemigo.lista[i]->pos_anterior = enemigo.lista[i]->posicion;
 	}
 }
@@ -156,6 +170,8 @@ void Interaccion::interaccion(ListaEnemigos enemigos){
 				direc.unitario(direc);
 				float aux = 1.2F * (enem1.radio + enem2.radio - distancia);
 				direc = direc * aux;
+				enemigos.lista[i]->posicion = enemigos.lista[i]->posicion - direc;
+				enemigos.lista[i]->limites.posicion = enemigos.lista[i]->limites.posicion - direc;
 				enemigos.lista[j]->posicion = enemigos.lista[j]->posicion + direc;
 				enemigos.lista[j]->limites.posicion = enemigos.lista[j]->limites.posicion + direc;
 			}
@@ -170,13 +186,14 @@ void Interaccion::interaccion(Jugador jugador, ListaEnemigos enemigo){
 	for (int i = 0; i < enemigo.n_enemigos; i++){
 		enem = enemigo.lista[i]->getCrashBox();
 		float distancia = Vector3D::modulo(jug.posicion - enem.posicion);
-		if (distancia <= (jug.radio + enem.radio)) {
+		if (distancia <= (jug.radio + enem.radio)){
 			Vector3D direc = Vector3D::creavector(jug.posicion, enem.posicion);
 			direc.unitario(direc);
 			float aux = 1.2F * (jug.radio + enem.radio - distancia);
 			direc = direc * aux;
 			enemigo.lista[i]->posicion = enemigo.lista[i]->posicion + direc;
 			enemigo.lista[i]->limites.posicion = enemigo.lista[i]->limites.posicion + direc;
+			if (enemigo.lista[i]->id == 7)	enemigo.lista[i]->atacar(0);	//kamikaze
 		}
 	}
 }
@@ -255,6 +272,7 @@ void Interaccion::ldv(ListaObstaculos obstaculo, ListaEnemigos enemigo){
 					vision_enemigo++;
 				}
 			}
+			else vision_enemigo++;
 		}
 		if (vision_enemigo == obstaculo.n_obstaculos){
 			enemigo.lista[i]->teveo = true;

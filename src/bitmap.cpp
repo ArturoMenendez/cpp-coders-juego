@@ -58,6 +58,11 @@ bool bitmap::verEstado(){
 void bitmap::usarTextura(){
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, texture);
+	if (bytes_pixel == 4) {
+		glPushAttrib(GL_ALL_ATTRIB_BITS);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	}
 }
 
 bitmap::~bitmap(){

@@ -8,5 +8,6 @@ public:
 	ADistancia(Vector3D, int id);
 	~ADistancia();
 	void Dibuja();
+	bool atacar(int t);
 };
 

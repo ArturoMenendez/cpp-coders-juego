@@ -4,11 +4,12 @@
 class Kamikaze :
 	public Enemigo
 {
-public:
 	int rueda;
+public:
 	Kamikaze();
 	Kamikaze(Vector3D,int);
 	~Kamikaze();
 	void Dibuja();
+	bool atacar(int t);
 };
 

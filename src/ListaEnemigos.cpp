@@ -1,5 +1,8 @@
 #include "ListaEnemigos.h"
-
+#include "ListaDisparos.h"
+#define ADISTANCIA	5
+#define CAC			6
+#define KAMIKAZE	7
 
 ListaEnemigos::ListaEnemigos()
 {
@@ -16,15 +19,15 @@ void ListaEnemigos::agregarEnemigo(Vector3D posicion, int tipo){
 		Enemigo* nuevo;
 		switch (tipo){
 		case (5) : {
-			nuevo = new ADistancia(posicion, 5);
+			nuevo = new ADistancia(posicion, ADISTANCIA);
 			lista[n_enemigos++] = nuevo;
 			break; }
 		case(6) : {
-			nuevo = new CaC(posicion, 6);
+			nuevo = new CaC(posicion, CAC);
 			lista[n_enemigos++] = nuevo;
 			break; }
 		case(7) : {
-			nuevo = new Kamikaze(posicion, 7);
+			nuevo = new Kamikaze(posicion, KAMIKAZE);
 			lista[n_enemigos++] = nuevo;
 			break; }
 		default:
@@ -48,16 +51,23 @@ void ListaEnemigos::detruirEnemigo(){
 }
 
 void ListaEnemigos::mueveEnemigos(){
-	for (int i = 0; i < n_enemigos; i++) lista[i]->MueveAleat();
-}
-
-void ListaEnemigos::updateEnemigos(Vector3D jugador){
 	for (int i = 0; i < n_enemigos; i++) {
-		lista[i]->Update();
-		lista[i]->lin.direccion = jugador;
+		lista[i]->MueveAleat();
+		lista[i]->Rota();
 	}
 }
 
-void ListaEnemigos::rotaEnemigos(){
-	for (int i = 0; i < n_enemigos; i++) lista[i]->Rota();
+void ListaEnemigos::updateEnemigos(Vector3D jugador, ListaDisparos &ldis){
+	for (int i = 0; i < n_enemigos; i++) {
+		lista[i]->Update();
+		lista[i]->lin.direccion = jugador;
+		if (lista[i]->atacar(25)) {
+			if (lista[i]->id == ADISTANCIA)		ldis.agregarDisparos(*lista[i], 1000, 1, true); //modificar
+			if (lista[i]->id == CAC)	ldis.agregarDisparos(*lista[i], 100, 2, false);
+			if (lista[i]->id == KAMIKAZE)	{
+				ldis.agregarDisparos(*lista[i], 100, 5, false);
+				lista[i]->act_Vida(100);
+			}
+		}
+	}
 }

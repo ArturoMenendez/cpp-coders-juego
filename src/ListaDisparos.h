@@ -1,6 +1,7 @@
 #pragma once
 #include "Disparo.h"
 #include "Jugador.h"
+#include "Enemigo.h"
 #define MAX_DISPAROS 100
 
 class ListaDisparos
@@ -11,7 +12,8 @@ public:
 public:
 	ListaDisparos();
 	~ListaDisparos();
-	void agregarDisparos(Jugador tirador);
+	void agregarDisparos(Jugador tirador, int vida, int danio);
+	void agregarDisparos(Enemigo &tirador, int vida, int danio, bool dibujar);
 	void actualizarDisparos(const int t);
 	void dibujarDisparos();
 };
