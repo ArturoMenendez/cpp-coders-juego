@@ -6,7 +6,7 @@
 #define MAX_X	20.0f
 #define MAX_Y	12.5f
 
-Enemigo::Enemigo(void) :t0(40), teveo(false), vida(2), posicion(0,0,0)
+Enemigo::Enemigo(void) :t0(40), teveo(false), vida(2), posicion(0, 0, 0), giraanima(5), contador(0), f_explo(7)
 {
 	angrot = 0;
 	lin.posicion = posicion;
@@ -14,9 +14,10 @@ Enemigo::Enemigo(void) :t0(40), teveo(false), vida(2), posicion(0,0,0)
 	lin.direccion = posicion;
 	pos_anterior = posicion;
 	t = t0;
+
 }
 
-Enemigo::Enemigo(Vector3D pos, int id) : t0(40), teveo(false), limites(pos, 1.1F), vida(2)
+Enemigo::Enemigo(Vector3D pos, int id) : t0(40), teveo(false), limites(pos, 1.1F), vida(2), contador(0), giraanima(0), f_explo(7)
 {
 	posicion = pos;
 	this->id = id;
@@ -55,10 +56,6 @@ void Enemigo::Rota(){
 	}
 }
 
-void Enemigo::Anima(){
-
-}
-
 void Enemigo::MueveAleat(){
 	if (teveo == false){
 		posicion.x += direccion.x / mov_noteveo;
@@ -84,6 +81,7 @@ void Enemigo::MueveAleat(){
 
 void Enemigo::Update(){
 	if (teveo == false){
+		
 		if (t % t0 == 0){
 			direccion.x = (rand() / (float)RAND_MAX);
 			direccion.y = (rand() / (float)RAND_MAX);
@@ -91,7 +89,7 @@ void Enemigo::Update(){
 			direccion.y -= (rand() / (float)RAND_MAX);
 			direccion = Vector3D::unitario(direccion);
 		}
-		t++;
+		t ++;
 		if (t > 40)	t = 1;
 	}
 }
@@ -102,4 +100,26 @@ CrashBox Enemigo::getCrashBox(){
 
 void Enemigo::act_Vida(int danio){
 	vida -= danio;
+}
+
+void Enemigo::GiraAnima(){
+	glRotatef(giraanima,0,0,-1);
+	giraanima += 4.5;
+}
+
+void Enemigo::Explota(){
+	glDisable(GL_LIGHTING);
+		glPushMatrix();
+		glTranslatef(posicion.x, posicion.y, 5);
+		glScalef(contador / f_explo, contador / f_explo, contador / f_explo);
+		glColor3ub(200, 10, 10);
+		glutSolidOctahedron();
+		glColor3ub(30, 30, 30);
+		glutSolidSphere(0.7, 20, 20);
+		glRotatef(50, 0.2, 0.4, 0.7);
+		glColor3ub(255, 150, 30);
+		glutSolidOctahedron();
+		glPopMatrix();
+		contador++;
+		glEnable(GL_LIGHTING);
 }

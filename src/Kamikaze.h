@@ -10,6 +10,7 @@ public:
 	Kamikaze(Vector3D,int);
 	~Kamikaze();
 	void Dibuja();
+	void Anima();
 	bool atacar(int t);
 };
 

@@ -20,6 +20,9 @@ public:
 	int t;
 	bool teveo;
 	float mov_teveo = 20, mov_noteveo = 20;
+	float giraanima;
+	float contador;
+	float f_explo;
 	//metodos
 
 	Enemigo(void);
@@ -27,11 +30,13 @@ public:
 	virtual ~Enemigo(void);
 	
 	virtual void Dibuja() = 0;
-	void Rota();
-	void Anima();
-	void MueveAleat();
-	void Update();
+	virtual void Rota();
+	virtual void Anima() = 0;
+	void GiraAnima();
+	virtual void MueveAleat();
+	virtual void Update();
 	CrashBox getCrashBox();
 	void act_Vida(int danio);
 	virtual bool atacar(int t) = 0;
+	virtual void Explota();
 };

@@ -30,6 +30,11 @@ void ListaEnemigos::agregarEnemigo(Vector3D posicion, int tipo){
 			nuevo = new Kamikaze(posicion, KAMIKAZE);
 			lista[n_enemigos++] = nuevo;
 			break; }
+		case(12) : {
+			nuevo = new BossCaC(posicion, 12);
+			lista[n_enemigos++] = nuevo;
+			break;
+		}
 		default:
 			break;
 		}
@@ -40,15 +45,16 @@ void ListaEnemigos::dibujarEnemigos(){
 	for (int i = 0; i < n_enemigos; i++) lista[i]->Dibuja();
 }
 
-void ListaEnemigos::detruirEnemigo(){
+void ListaEnemigos::destruirEnemigo(){
 	for (int i = 0; i < n_enemigos; i++) {
-		if (lista[i]->vida <= 0){
+		if (lista[i]->vida <= 0 && lista[i]->contador >= 15){
 			delete lista[i];
 			n_enemigos--;
 			for (int j = i; j < n_enemigos; j++)	lista[j] = lista[j + 1];
+			}
 		}
 	}
-}
+
 
 void ListaEnemigos::mueveEnemigos(){
 	for (int i = 0; i < n_enemigos; i++) {
@@ -70,4 +76,8 @@ void ListaEnemigos::updateEnemigos(Vector3D jugador, ListaDisparos &ldis){
 			}
 		}
 	}
+}
+
+void ListaEnemigos::rotaEnemigos(){
+	for (int i = 0; i < n_enemigos; i++) lista[i]->Rota();
 }

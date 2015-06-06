@@ -5,9 +5,10 @@ class ADistancia : public Enemigo
 public:
 	
 	ADistancia();
-	ADistancia(Vector3D, int id);
+	ADistancia(Vector3D, int);
 	~ADistancia();
 	void Dibuja();
+	void Anima();
 	bool atacar(int t);
 };
 

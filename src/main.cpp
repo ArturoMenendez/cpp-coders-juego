@@ -45,10 +45,11 @@ int main(int argc, char* argv[])
 	glEnable(GL_COLOR_MATERIAL);
 	glMatrixMode(GL_PROJECTION);
 	gluPerspective(40.0, 900 / 675.0f, 0.1, 150);
-	glTranslatef(0.0,-2.5,0.0);
-							// Enables Depth Testing
+	glTranslatef(0.0, -2.5, 0.0);
+	// Enables Depth Testing
 	glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+
 	//Registrar los callbacks
 	glutDisplayFunc(OnDraw);
 	glutTimerFunc(25, OnTimer, 0);//le decimos que dentro de 25ms llame 1 vez a la funcion OnTimer()
@@ -90,7 +91,7 @@ void OnDraw(){
 	suelo.usarTextura();
 	glBegin(GL_QUADS);	//SUELO
 	glColor3ub(255, 255, 255);
-	glTexCoord2f(3.0, 2.0);
+	glTexCoord2f(3.0, 2.0); 
 	glNormal3f(0, 0, 1);
 	glVertex3f(-20.0, 12.5, 0.0);
 	glTexCoord2f(0.0, 2.0);
@@ -105,10 +106,11 @@ void OnDraw(){
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 
+	glEnable(GL_LIGHTING);
+	
 	n1.LeeNivel();
 	n1.Dibuja();
-	
-	
+
 	glutSwapBuffers();
 }
 

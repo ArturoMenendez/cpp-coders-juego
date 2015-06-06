@@ -43,6 +43,7 @@ Disparo::~Disparo(){
 }
 
 void Disparo::dibujar(){
+
 	if (1){
 		glPushMatrix();
 		glTranslatef(pos.x, pos.y, pos.z);
@@ -50,6 +51,7 @@ void Disparo::dibujar(){
 		glutSolidSphere(radio, 20, 20);
 		glPopMatrix();
 	}
+
 }
 
 void Disparo::updateDisparo(const int t){

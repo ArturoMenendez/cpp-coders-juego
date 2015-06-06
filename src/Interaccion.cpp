@@ -2,7 +2,7 @@
 #include <math.h>
 #include "stdio.h"
 #define MAX_X 20
-#define MAX_Y 15
+#define MAX_Y 12.5
 
 bool colision_CR(Vector3D pos_dis, float r_dis, Vector3D pos_obs, float alto_obs, float ancho_obs){
 	float distancia_X = abs(pos_dis.x - pos_obs.x);
@@ -25,6 +25,7 @@ Interaccion::~Interaccion()
 {
 }
 
+//disparo con obstaculo
 void Interaccion::interaccion(ListaDisparos disparo, ListaObstaculos obstaculo){
 	CrashBox dis, obs;
 
@@ -54,6 +55,7 @@ void Interaccion::interaccion(ListaDisparos disparo, ListaObstaculos obstaculo){
 	}
 }
 
+//disparo con enemigo
 void Interaccion::interaccion(ListaDisparos disparo, ListaEnemigos enemigo, Jugador &jugador){
 	CrashBox dis, obj;
 
@@ -81,6 +83,7 @@ void Interaccion::interaccion(ListaDisparos disparo, ListaEnemigos enemigo, Juga
 	}
 }
 
+//jugador con obstaculo
 void Interaccion::interaccion(Jugador &jugador, ListaObstaculos obstaculo){
 	CrashBox jug, obs;
 
@@ -115,6 +118,7 @@ void Interaccion::interaccion(Jugador &jugador, ListaObstaculos obstaculo){
 	jugador.pos_anterior = jugador.posicion;
 }
 
+//enemigo con obstaculo
 void Interaccion::interaccion(ListaEnemigos enemigo, ListaObstaculos obstaculo){
 	CrashBox enem, obs;
 	for (int i = 0; i < enemigo.n_enemigos; i++){
@@ -130,10 +134,10 @@ void Interaccion::interaccion(ListaEnemigos enemigo, ListaObstaculos obstaculo){
 					direc = direc * aux;
 					enemigo.lista[i]->posicion = enemigo.lista[i]->posicion + direc;
 					enemigo.lista[i]->limites.posicion = enemigo.lista[i]->limites.posicion + direc;
-			/*		enemigo.lista[i]->posicion = enemigo.lista[i]->pos_anterior;
-					enemigo.lista[i]->limites.posicion = enemigo.lista[i]->pos_anterior;
-					enemigo.lista[i]->limites.posicion.z = 0;
-					break;*/
+					/*		enemigo.lista[i]->posicion = enemigo.lista[i]->pos_anterior;
+							enemigo.lista[i]->limites.posicion = enemigo.lista[i]->pos_anterior;
+							enemigo.lista[i]->limites.posicion.z = 0;
+							break;*/
 				}
 			}
 			else if (obs.tipo == RECTANGULO){
@@ -145,18 +149,20 @@ void Interaccion::interaccion(ListaEnemigos enemigo, ListaObstaculos obstaculo){
 					direc = direc * aux;
 					enemigo.lista[i]->posicion = enemigo.lista[i]->posicion + direc;
 					enemigo.lista[i]->limites.posicion = enemigo.lista[i]->limites.posicion + direc;
-				/*	enemigo.lista[i]->posicion = enemigo.lista[i]->pos_anterior;
-					enemigo.lista[i]->limites.posicion = enemigo.lista[i]->pos_anterior;
-					enemigo.lista[i]->limites.posicion.z = 0;
-					break;*/
+					/*	enemigo.lista[i]->posicion = enemigo.lista[i]->pos_anterior;
+						enemigo.lista[i]->limites.posicion = enemigo.lista[i]->pos_anterior;
+						enemigo.lista[i]->limites.posicion.z = 0;
+						break;*/
 				}
 			}
+
 		}
-		/**/
+		
 		enemigo.lista[i]->pos_anterior = enemigo.lista[i]->posicion;
 	}
 }
 
+//enemigo con enemigo
 void Interaccion::interaccion(ListaEnemigos enemigos){
 	CrashBox enem1, enem2;
 
@@ -179,6 +185,7 @@ void Interaccion::interaccion(ListaEnemigos enemigos){
 	}
 }
 
+//jugador con enemigos
 void Interaccion::interaccion(Jugador jugador, ListaEnemigos enemigo){
 	CrashBox jug, enem;
 
@@ -186,7 +193,7 @@ void Interaccion::interaccion(Jugador jugador, ListaEnemigos enemigo){
 	for (int i = 0; i < enemigo.n_enemigos; i++){
 		enem = enemigo.lista[i]->getCrashBox();
 		float distancia = Vector3D::modulo(jug.posicion - enem.posicion);
-		if (distancia <= (jug.radio + enem.radio)){
+		if (distancia <= (jug.radio + enem.radio)) {
 			Vector3D direc = Vector3D::creavector(jug.posicion, enem.posicion);
 			direc.unitario(direc);
 			float aux = 1.2F * (jug.radio + enem.radio - distancia);
@@ -198,6 +205,7 @@ void Interaccion::interaccion(Jugador jugador, ListaEnemigos enemigo){
 	}
 }
 
+//lineas de vision
 void Interaccion::ldv(ListaObstaculos obstaculo, ListaEnemigos enemigo){
 	CrashBox obs, lin;
 	int num_lados_col = 0;

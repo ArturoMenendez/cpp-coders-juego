@@ -32,9 +32,10 @@ Obstaculo::~Obstaculo()
 }
 
 void Obstaculo::Dibuja(){
-	
+	static bitmap borde("borde.bmp");
+	static bitmap lava("lava.bmp");
 	switch (id){
-	case(1) :{
+	case(1) : {
 		glPushMatrix();
 		glColor3ub(120, 150, 80);
 		glTranslatef(posicion.x, posicion.y, posicion.z);
@@ -58,6 +59,7 @@ void Obstaculo::Dibuja(){
 		gluDeleteQuadric(lado);
 		glDisable(GL_TEXTURE_2D);
 
+
 		glTranslatef(0, 0, tamanio.z);
 		bidon_tapa.usarTextura();
 		GLUquadricObj* tapa = gluNewQuadric();
@@ -69,7 +71,6 @@ void Obstaculo::Dibuja(){
 		glPopMatrix();
 		break;
 	}
-
 	case(3) : {
 		static bitmap lava("lava.bmp");
 		static bitmap borde("borde.bmp");
@@ -89,7 +90,7 @@ void Obstaculo::Dibuja(){
 		glVertex3f(posicion.x + tamanio.x / 2.0F, posicion.y - tamanio.y / 2.0F, 0);
 		glEnd();
 		glDisable(GL_TEXTURE_2D);
-		glColor3ub(255 ,255 ,255);
+		glColor3ub(255, 255, 255);
 		borde.usarTextura();
 		glBegin(GL_QUADS);
 		glTexCoord2f(0, 0);
@@ -107,8 +108,7 @@ void Obstaculo::Dibuja(){
 		break;
 	}
 
-	case(8) :
-	case(9) : {
+	case(8) : {
 		glPushMatrix();
 		glColor3ub(180, 180, 220);
 		glTranslatef(posicion.x, posicion.y, posicion.z);
@@ -119,6 +119,16 @@ void Obstaculo::Dibuja(){
 		break;
 	}
 
+	case(9) : {
+		glPushMatrix();
+		glColor3ub(180, 180, 220);
+		glTranslatef(posicion.x, posicion.y, posicion.z);
+		glTranslatef(0, 0, tamanio.z / 2);
+		glScalef(tamanio.x, tamanio.y, tamanio.z);
+		glutSolidCube(1);
+		glPopMatrix();
+		break;
+	}
 		limites.Dibuja();
 	}
 }

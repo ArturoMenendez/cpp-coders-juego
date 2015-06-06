@@ -186,11 +186,9 @@ void Jugador::NoMueve(unsigned char key){
 	keyStates[key] = false;
 }
 
-
 void Jugador::Mueve(unsigned char key){
 	keyStates[key] = true;
 }
-
 
 void Jugador::Anima(){
 	if (keyStates['w'] == true || keyStates['d'] == true || keyStates['s'] == true || keyStates['a'] == true)
