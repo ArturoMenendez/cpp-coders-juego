@@ -17,7 +17,7 @@ public:
 	static void interaccion(ListaEnemigos enemigo, ListaObstaculos obstaculo);
 	static void interaccion(ListaEnemigos enemigos);
 	static void interaccion(Jugador jugador, ListaEnemigos enemigo);
-	static void ldv(ListaObstaculos obstaculo, ListaEnemigos enemigo);
+	static void ldv(ListaObstaculos obstaculo, ListaEnemigos enemigo, Jugador j);
 
 };
 

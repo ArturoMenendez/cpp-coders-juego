@@ -119,7 +119,7 @@ void Nivel::interacciones(){
 	Interaccion::interaccion(lenem, lobs);
 	Interaccion::interaccion(lenem);
 	Interaccion::interaccion(j, lenem);
-	Interaccion::ldv(lobs, lenem);
+	Interaccion::ldv(lobs, lenem, j);
 }
 
 void Nivel::rotaJugador(){

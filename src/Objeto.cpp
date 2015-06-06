@@ -1,21 +1,23 @@
 #include "Objeto.h"
 
-
-Objeto::Objeto(Vector3D posicion)
+Objeto::Objeto() 
 {
-	this->posicion = posicion;
-	limites.posicion = posicion;
 }
 
+Objeto::Objeto(Vector3D pos) : posicion(pos), limites(pos, 0.5f), aux(0), tipo(CODIGO)
+{
+}
 
 Objeto::~Objeto()
 {
 }
 
-
 void Objeto::Anima(){
-		glRotatef(giraanima, 0, 0, -1);
-		giraanima += 2;
+	glRotatef(aux, 0, 0, -1);
+	if (aux<180) glTranslatef(0, 0, +0.1f);
+	else glTranslatef(0, 0, -0.1f);
+	aux += 2;
+	if (aux >= 360) aux = 0;
 }
 
 CrashBox Objeto::getCrashBox(){

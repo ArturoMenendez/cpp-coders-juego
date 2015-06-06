@@ -19,6 +19,7 @@ public:
 	Pierna p1, p2;
 	Cilindro c1;
 	int vida;
+	bool movimiento;
 
 
 	//metodos

@@ -38,15 +38,12 @@ void Interaccion::interaccion(ListaDisparos disparo, ListaObstaculos obstaculo){
 				if (distancia <= (dis.radio + obs.radio)) {
 					disparo.lista[i]->destruye();
 					if (obstaculo.lista[j]->se_destruye && (disparo.lista[i]->getTipo() == false)) obstaculo.lista[j]->destruir = true;
-					break;
 				}
 			}
 			else if (obs.tipo == RECTANGULO){
-				bool colision = colision_CR(dis.posicion, dis.radio, obs.posicion, obs.alto, obs.ancho);
-				if (colision) {
+				if (colision_CR(dis.posicion, dis.radio, obs.posicion, obs.alto, obs.ancho)) {
 					disparo.lista[i]->destruye();
 					if (obstaculo.lista[j]->se_destruye && (disparo.lista[i]->getTipo() == false)) obstaculo.lista[j]->destruir = true;
-					break;
 				}
 			}
 		}
@@ -86,6 +83,7 @@ void Interaccion::interaccion(ListaDisparos disparo, ListaEnemigos enemigo, Juga
 //jugador con obstaculo
 void Interaccion::interaccion(Jugador &jugador, ListaObstaculos obstaculo){
 	CrashBox jug, obs;
+	float vel = 0.05f;
 
 	jug = jugador.getCrashBox();
 	for (int j = 0; j < obstaculo.n_obstaculos; j++){
@@ -102,20 +100,29 @@ void Interaccion::interaccion(Jugador &jugador, ListaObstaculos obstaculo){
 				jugador.posicion = jugador.pos_anterior;
 				jugador.limites.posicion = jugador.pos_anterior;
 				jugador.limites.posicion.z = 0;
-				break;
 			}
 		}
 		else if (obs.tipo == RECTANGULO){
-			bool colision = colision_CR(jug.posicion, jug.radio, obs.posicion, obs.alto, obs.ancho);
-			if (colision) {
+			if (colision_CR(jug.posicion, jug.radio, obs.posicion, obs.alto, obs.ancho)) {
 				jugador.posicion = jugador.pos_anterior;
 				jugador.limites.posicion = jugador.pos_anterior;
 				jugador.limites.posicion.z = 0;
-				break;
 			}
 		}
+		else if (obs.tipo == AGUJERO){
+			if (colision_CR(jug.posicion, 0.1f, obs.posicion, obs.alto, obs.ancho)) {
+				jugador.movimiento = false;
+				if(jugador.posicion.z > -4) jugador.posicion.z -= 0.1f;
+				else jugador.vida = 0;
+				Vector3D direc = Vector3D::creavector(jug.posicion, obs.posicion);
+				direc.unitario(direc);
+				jugador.posicion = jugador.posicion + direc*vel;
+				jugador.limites.posicion = jugador.posicion;
+				jugador.limites.posicion.z = 0;
+			}
+		}
+		jugador.pos_anterior = jugador.posicion;
 	}
-	jugador.pos_anterior = jugador.posicion;
 }
 
 //enemigo con obstaculo
@@ -140,9 +147,9 @@ void Interaccion::interaccion(ListaEnemigos enemigo, ListaObstaculos obstaculo){
 							break;*/
 				}
 			}
-			else if (obs.tipo == RECTANGULO){
-				bool colision = colision_CR(enem.posicion, enem.radio, obs.posicion, obs.alto, obs.ancho);
-				if (colision) {
+			else if ((obs.tipo == RECTANGULO) || (obs.tipo == AGUJERO)){
+				if ((obs.tipo == AGUJERO) && (enemigo.lista[i]->id == 6)) break;	//Para enemigo CaC. Se supone que levita
+				if (colision_CR(enem.posicion, enem.radio, obs.posicion, obs.alto, obs.ancho)) {
 					Vector3D direc = Vector3D::creavector(obs.posicion, enem.posicion);
 					direc.unitario(direc);
 					float aux = 0.01F;
@@ -157,7 +164,6 @@ void Interaccion::interaccion(ListaEnemigos enemigo, ListaObstaculos obstaculo){
 			}
 
 		}
-		
 		enemigo.lista[i]->pos_anterior = enemigo.lista[i]->posicion;
 	}
 }
@@ -206,7 +212,7 @@ void Interaccion::interaccion(Jugador jugador, ListaEnemigos enemigo){
 }
 
 //lineas de vision
-void Interaccion::ldv(ListaObstaculos obstaculo, ListaEnemigos enemigo){
+void Interaccion::ldv(ListaObstaculos obstaculo, ListaEnemigos enemigo, Jugador j){
 	CrashBox obs, lin;
 	int num_lados_col = 0;
 
