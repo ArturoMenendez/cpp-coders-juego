@@ -13,7 +13,6 @@
 class Nivel
 {
 	FILE *pfile[NUM_NIVELES];
-	//FILE *pfile;
 	bool pasanivel[NUM_NIVELES];
 	char buffer[20];
 	float param[8];
@@ -28,19 +27,27 @@ public:
 	void LeeNivel();
 	void Carga();
 	void Dibuja();
+	void Borrar();
+
 
 	void actualizaListas();
 	void nuevoDisparo();
 	void updateEnemigos();
 	void interacciones();
-
 	void rotaJugador();
+	
+
 	void KeyOperations();
 	void OnKeyboardDown(unsigned char, int, int);
 	void OnKeyboardUp(unsigned char, int, int);
 	void OnMouseDown(int button, int state, int x, int y);
 	void OnMotion(int x, int y);
 	void OnPassiveMotion(int x, int y);
+
+	int GetNivel(){ return act; }
+	void SetNivel(int numero){ act = numero; }
+	bool GetPasaNivel(int numero){ return pasanivel[numero]; }
+	void SetPasaNivel(int numero){ pasanivel[numero] = true; }
 	Nivel();
 	~Nivel();
 

@@ -3,6 +3,8 @@
 #include "Pierna.h"
 #include "CrashBox.h"
 #include "bitmap.h"
+#define MAX_X	20.0f
+#define MAX_Y	12.5f
 
 class Enemigo
 {
@@ -11,6 +13,7 @@ public:
 	Vector3D posicion;
 	Vector3D pos_anterior;
 	Vector3D direccion;
+	Vector3D objetivo;
 	CrashBox limites;
 	CrashBox lin;
 	float angrot;
@@ -19,7 +22,7 @@ public:
 	int t0;
 	int t;
 	bool teveo;
-	float mov_teveo = 20, mov_noteveo = 20;
+	float mov_teveo, mov_noteveo;
 	float giraanima;
 	float contador;
 	float f_explo;

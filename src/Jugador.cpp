@@ -21,9 +21,7 @@ Jugador::Jugador(Vector3D pos) :colision(false), vida(10), movimiento(true)
 	keyStates['s'] = false;
 	keyStates['d'] = false;
 	keyStates['w'] = false;
-	limites.posicion.x = pos.x;
-	limites.posicion.y = pos.y;
-	limites.posicion.z = pos.z;
+	limites.posicion = pos;
 	limites.radio = 0.8;
 	limites.tipo = CIRCULO;
 }
@@ -78,9 +76,9 @@ void Jugador::Pinta(){
 	static bitmap cuerpo("cuerpo.bmp");
 	static bitmap cabeza("cabeza.bmp");
 	//glDisable(GL_LIGHTING);
+
 	glPushMatrix();
 	glTranslatef(posicion.x, posicion.y, posicion.z);
-
 	glRotatef(angrot, 0, 0, 1);
 
 	glColor3ub(100, 100, 100);//cabeza

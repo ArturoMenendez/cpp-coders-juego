@@ -19,8 +19,8 @@ Obstaculo::Obstaculo(Vector3D posicion, Vector3D tamanio, int tipo, bool destruc
 		limites.tipo = RECTANGULO;
 	}
 	else if (tipo == 3) {
-		limites.ancho = tamanio.x - 0.2f;
-		limites.alto = tamanio.y - 0.2f;
+		limites.ancho = tamanio.x;
+		limites.alto = tamanio.y;
 		limites.tipo = AGUJERO;
 	}
 	se_destruye = destruccion;
@@ -77,29 +77,30 @@ void Obstaculo::Dibuja(){
 
 		glPushMatrix();
 		glColor3f(brillo, brillo, brillo);
+		glTranslatef(posicion.x, posicion.y, 0.02F);
 		lava.usarTextura();
 		glBegin(GL_QUADS);
 		glTexCoord2f(movimiento, movimiento);
-		glVertex3f(posicion.x - tamanio.x / 2.0F, posicion.y - tamanio.y / 2.0F, 0.001);
+		glVertex3f(posicion.x - tamanio.x / 2.0F, posicion.y - tamanio.y / 2.0F, 0);
 		glTexCoord2f(movimiento, 1 + movimiento);
-		glVertex3f(posicion.x - tamanio.x / 2.0F, posicion.y + tamanio.y / 2.0F, 0.001);
+		glVertex3f(posicion.x - tamanio.x / 2.0F, posicion.y + tamanio.y / 2.0F, 0);
 		glTexCoord2f(1 + movimiento, 1 + movimiento);
-		glVertex3f(posicion.x + tamanio.x / 2.0F, posicion.y + tamanio.y / 2.0F, 0.001);
+		glVertex3f(posicion.x + tamanio.x / 2.0F, posicion.y + tamanio.y / 2.0F, 0);
 		glTexCoord2f(1 + movimiento, movimiento);
-		glVertex3f(posicion.x + tamanio.x / 2.0F, posicion.y - tamanio.y / 2.0F, 0.001);
+		glVertex3f(posicion.x + tamanio.x / 2.0F, posicion.y - tamanio.y / 2.0F, 0);
 		glEnd();
 		glDisable(GL_TEXTURE_2D);
 		glColor3ub(255, 255, 255);
 		borde.usarTextura();
 		glBegin(GL_QUADS);
 		glTexCoord2f(0, 0);
-		glVertex3f(posicion.x - tamanio.x / 2.0F, posicion.y - tamanio.y / 2.0F, 0.002);
+		glVertex3f(posicion.x - tamanio.x / 2.0F, posicion.y - tamanio.y / 2.0F, 0.001);
 		glTexCoord2f(0, 1);
-		glVertex3f(posicion.x - tamanio.x / 2.0F, posicion.y + tamanio.y / 2.0F, 0.002);
+		glVertex3f(posicion.x - tamanio.x / 2.0F, posicion.y + tamanio.y / 2.0F, 0.001);
 		glTexCoord2f(1, 1);
-		glVertex3f(posicion.x + tamanio.x / 2.0F, posicion.y + tamanio.y / 2.0F, 0.002);
+		glVertex3f(posicion.x + tamanio.x / 2.0F, posicion.y + tamanio.y / 2.0F, 0.001);
 		glTexCoord2f(1, 0);
-		glVertex3f(posicion.x + tamanio.x / 2.0F, posicion.y - tamanio.y / 2.0F, 0.002);
+		glVertex3f(posicion.x + tamanio.x / 2.0F, posicion.y - tamanio.y / 2.0F, 0.001);
 		glEnd();
 		glDisable(GL_BLEND);
 		glDisable(GL_TEXTURE_2D);
@@ -107,16 +108,7 @@ void Obstaculo::Dibuja(){
 		break;
 	}
 
-	case(8) : {
-		glPushMatrix();
-		glColor3ub(180, 180, 220);
-		glTranslatef(posicion.x, posicion.y, posicion.z);
-		glTranslatef(0, 0, tamanio.z / 2);
-		glScalef(tamanio.x, tamanio.y, tamanio.z);
-		glutSolidCube(1);
-		glPopMatrix();
-		break;
-	}
+	case(8) :
 
 	case(9) : {
 		glPushMatrix();

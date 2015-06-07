@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Vector3D.h"
 #include "Jugador.h"
 #include "CrashBox.h"
@@ -22,7 +23,7 @@ public:
 	bool destruir;
 
 	Disparo(Jugador personaje, int vida, int danio);
-	Disparo(Enemigo &enem, int vida, int danio, bool dibujar);
+	Disparo(Enemigo &enem, int vida, int danio, bool dibujar, float desfase);
 	Disparo();
 	~Disparo();
 	void dibujar();

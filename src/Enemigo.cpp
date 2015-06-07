@@ -3,10 +3,9 @@
 #include "bitmap.h"
 #include "Enemigo.h"
 #include "math.h"
-#define MAX_X	20.0f
-#define MAX_Y	12.5f
 
-Enemigo::Enemigo(void) :t0(40), teveo(false), vida(2), posicion(0, 0, 0), giraanima(5), contador(0), f_explo(7)
+
+Enemigo::Enemigo(void) :t0(40), teveo(false), vida(2), posicion(0, 0, 0), giraanima(5), contador(0), f_explo(7), objetivo(0, 0, 0)
 {
 	angrot = 0;
 	lin.posicion = posicion;
@@ -17,7 +16,7 @@ Enemigo::Enemigo(void) :t0(40), teveo(false), vida(2), posicion(0, 0, 0), giraan
 
 }
 
-Enemigo::Enemigo(Vector3D pos, int id) : t0(40), teveo(false), limites(pos, 1.1F), vida(2), contador(0), giraanima(0), f_explo(7)
+Enemigo::Enemigo(Vector3D pos, int id) : t0(40), teveo(false), limites(pos, 1.1F), vida(2), contador(0), giraanima(0), f_explo(7), objetivo(0, 0, 0), mov_teveo(20), mov_noteveo(20)
 {
 	posicion = pos;
 	this->id = id;
@@ -82,15 +81,15 @@ void Enemigo::MueveAleat(){
 void Enemigo::Update(){
 	if (teveo == false){
 		
-		if (t % t0 == 0){
+		if (t > t0){
 			direccion.x = (rand() / (float)RAND_MAX);
 			direccion.y = (rand() / (float)RAND_MAX);
 			direccion.x -= (rand() / (float)RAND_MAX);
 			direccion.y -= (rand() / (float)RAND_MAX);
 			direccion = Vector3D::unitario(direccion);
+			t = 0;
 		}
 		t ++;
-		if (t > 40)	t = 1;
 	}
 }
 

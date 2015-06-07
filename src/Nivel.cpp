@@ -19,6 +19,8 @@ Nivel::~Nivel()
 {
 }
 
+
+
 void Nivel::LeeNivel(){
 	if (pasanivel[act]){
 		sprintf(buffer, "nivel%i.txt", act);
@@ -56,7 +58,7 @@ void Nivel::LeeNivel(){
 /*******10-CODIGO DE ACCESO*****************************/
 /*******11-FRAGMENTO CODIGO CLASE***********************/
 /*******12-JEFE CUERPO A CUERPO*************************/
-/*******************************************************/
+/*******13-JEFE A DISTANCIA*****************************/
 /*******************************************************/
 /*******************************************************/
 /*******************************************************/
@@ -74,12 +76,33 @@ void Nivel::Carga(){
 	if (param[0] == 4){
 		j = Jugador(pos);
 	}
-	if (param[0] == 5 || param[0] == 6 || param[0] == 7 || param[0] == 12){
+	if (param[0] == 5 || param[0] == 6 || param[0] == 7 || param[0] == 12 ||param[0]==13){
 		lenem.agregarEnemigo(pos, (int)param[0]);
 	}
 }
 
 void Nivel::Dibuja(){
+	static bitmap suelo("suelo.bmp");
+	glEnable(GL_LIGHTING);
+	suelo.usarTextura();
+	glBegin(GL_QUADS);	//SUELO
+	glColor3ub(255, 255, 255);
+	glTexCoord2f(3.0, 2.0);
+	glNormal3f(0, 0, 1);
+	glVertex3f(-20.0, 12.5, 0.0);
+	glTexCoord2f(0.0, 2.0);
+	glNormal3f(0, 0, 1);
+	glVertex3f(20.0, 12.5, 0.0);
+	glTexCoord2f(0.0, 0.0);
+	glNormal3f(0, 0, 1);
+	glVertex3f(20.0, -12.5, 0.0);
+	glTexCoord2f(3.0, 0.0);
+	glNormal3f(0, 0, 1);
+	glVertex3f(-20.0, -12.5, 0.0);
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
+
+	glEnable(GL_LIGHTING);
 	for (int i = 0; i < 4; i++)	caja[i].Dibuja();
 	lenem.dibujarEnemigos();
 	j.Dibuja();
@@ -94,6 +117,13 @@ void Nivel::Dibuja(){
 	marcador.dibujar();
 
 }
+
+void Nivel::Borrar(){
+	ldis.borraDisparos();
+	lenem.borraEnemigos();
+	lobs.borraObstaculos();
+}
+
 
 void Nivel::nuevoDisparo(){
 	ldis.agregarDisparos(j, 1000, 1);
@@ -126,6 +156,8 @@ void Nivel::rotaJugador(){
 	j.Rota();
 	j.Anima();
 }
+
+
 
 void Nivel::KeyOperations(){
 	j.KeyOperations();

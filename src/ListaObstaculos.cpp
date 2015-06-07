@@ -42,3 +42,9 @@ void ListaObstaculos::actualizarObstaculos(){
 void ListaObstaculos::animarObstaculos(){
 	for (int i = 0; i < n_obstaculos; i++) if (lista[i]->id == AGUJERO) lista[i]->movTextura();
 }
+
+void ListaObstaculos::borraObstaculos(){
+	for (int i = 0; i < n_obstaculos; i++)
+		delete lista[i];
+	n_obstaculos = 0;
+}

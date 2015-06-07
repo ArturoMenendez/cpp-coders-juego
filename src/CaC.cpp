@@ -42,7 +42,10 @@ void CaC::Dibuja()
 		glPopMatrix();
 		glTranslatef(0.7, 0, 1);
 		glColor3ub(200, 200, 200);
+		glPushMatrix();
+		GiraAnima();
 		gluDisk(obj, 0, 0.5, 20, 20);
+		glPopMatrix();
 		gluDeleteQuadric(obj);
 		glPopMatrix();
 	}

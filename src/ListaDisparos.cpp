@@ -17,8 +17,8 @@ void ListaDisparos::agregarDisparos(Jugador tirador, int vida, int danio){
 
 }
 
-void ListaDisparos::agregarDisparos(Enemigo &tirador, int vida, int danio, bool dibujar){
-	Disparo* nuevo_disparo = new Disparo(tirador, vida, danio, dibujar);
+void ListaDisparos::agregarDisparos(Enemigo &tirador, int vida, int danio, bool dibujar, float desfase){
+	Disparo* nuevo_disparo = new Disparo(tirador, vida, danio, dibujar, desfase);
 	if (tam_lista < MAX_DISPAROS) lista[tam_lista++] = nuevo_disparo;
 }
 
@@ -45,4 +45,10 @@ void ListaDisparos::actualizarDisparos(const int t){
 
 void ListaDisparos::dibujarDisparos(){
 	for (int i = 0; i < tam_lista; i++) lista[i]->dibujar();
+}
+
+void ListaDisparos::borraDisparos(){
+	for (int i = 0; i < tam_lista; i++)
+		delete lista[i];
+	tam_lista = 0;
 }

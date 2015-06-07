@@ -6,12 +6,12 @@ BossCaC::BossCaC() :Enemigo()
 {
 }
 
-BossCaC::BossCaC(Vector3D posicion, int id) : Enemigo(posicion, id), enreposo(true), preangrot(0), prevobjetivo(0, 0, 0), asdf(0)
+BossCaC::BossCaC(Vector3D posicion, int id) : Enemigo(posicion, id), enreposo(true), cont(0)
 {
 	mov_teveo = 1.5;
 	vida = 2;
-	t0= 80;
-	t = 79;
+	t0=80;
+	t = 0;
 	limites.radio = 3;
 	f_explo = 2;
 }
@@ -22,7 +22,7 @@ BossCaC::~BossCaC()
 
 void BossCaC::Dibuja(){
 	if (vida > 0){
-		static bitmap asdf("bola.bmp");
+		static bitmap texrueda("bola.bmp");
 		glPushMatrix();
 		lin.Dibuja();
 		limites.Dibuja();
@@ -37,7 +37,7 @@ void BossCaC::Dibuja(){
 		glRotatef(90, 1, 0, 0);
 
 		GiraAnima();
-		asdf.usarTextura();
+		texrueda.usarTextura();
 		GLUquadricObj *rueda = gluNewQuadric();
 		gluQuadricOrientation(rueda, GLU_OUTSIDE);
 		gluQuadricTexture(rueda, GL_TRUE);
@@ -84,23 +84,26 @@ void BossCaC::Anima(){
 
 void BossCaC::Update(){
 
-	if (t%t0 == 0){
-		//objetivo = lin.direccion;
+	if (t>t0){
+		
 		enreposo = true;
+		t = 0;
 		//d = Vector3D::creavector(lin.posicion, objetivo);
 		//d = Vector3D::unitario(d);
 	}
 	t++;
+	
 }
 void BossCaC::MueveAleat(){
 	if (enreposo == false){
 		
-		posicion.x += d.x / mov_teveo;
-		posicion.y += d.y / mov_teveo;
+		posicion.x += objetivo.x / mov_teveo;
+		posicion.y += objetivo.y / mov_teveo;
 		limites.posicion = posicion;
 		limites.posicion.z = 0;
 		lin.posicion = posicion;
 	}
+
 	if (posicion.x > MAX_X - limites.radio) posicion.x = MAX_X - limites.radio;
 	if (posicion.x < -MAX_X + limites.radio) posicion.x = -MAX_X + limites.radio;
 	if (posicion.y> MAX_Y - limites.radio) posicion.y = MAX_Y - limites.radio;
@@ -138,20 +141,29 @@ void BossCaC::Rota(){
 		Vector3D v1 = Vector3D::creavector(limites.posicion, lin.direccion);
 		if (lin.direccion.y >= limites.posicion.y)
 			angrot = Vector3D::angvect(dirx, v1);
-
-
 		if (lin.direccion.y < limites.posicion.y){
 			float aux = Vector3D::angvect(dirx, v1);
 			angrot = -aux;
 		}
-		asdf++;
-		if (asdf == 40){
-			enreposo = false;
-			objetivo = lin.direccion;
-			d = Vector3D::creavector(lin.posicion, objetivo);
-			d = Vector3D::unitario(d);
-			asdf = 0;
+		cont++;
+		if (cont >= 20){
+			enreposo = false;			
+			objetivo = Vector3D::creavector(lin.posicion,lin.direccion);
+			objetivo = Vector3D::unitario(objetivo);
+			cont = 0;
 		}
+		//objetivo = lin.direccion;
+
 	}
 
+}
+
+bool BossCaC::atacar(int t){
+	static int time = 250;
+	time -= t;
+	if (time < 0) {
+		time = 250;
+		return true;
+	}
+	else return false;
 }

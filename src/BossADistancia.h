@@ -1,23 +1,19 @@
 #pragma once
 #include "Enemigo.h"
-class BossCaC :
+class BossADistancia :
 	public Enemigo
 {
 public:
 	//variables
-	Vector3D d;
-	bool enreposo;
 	int cont;
-	float aux;
 	//metodos
-	BossCaC();
-	BossCaC(Vector3D, int);
-	~BossCaC();
+	BossADistancia(Vector3D, int);
+	~BossADistancia();
 	void Dibuja();
 	void Anima();
+	bool atacar(int t);
 	void MueveAleat();
 	void Update();
 	void Rota();
-	bool atacar(int);
 };
 

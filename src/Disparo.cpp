@@ -1,6 +1,9 @@
+#include "stdlib.h"
 #include "Disparo.h"
 #include "Vector3D.h"
 #include "glut.h"
+#include"BossCaC.h"
+
 #include <math.h>
 #define PI 3.1416
 
@@ -20,13 +23,34 @@ Disparo::Disparo(Jugador personaje, int vida, int danio) : destruir(false), radi
 	limites.tipo = CIRCULO;
 }
 
-Disparo::Disparo(Enemigo &enem, int life, int damage, bool dibujar) : destruir(false), radio(0.3), vida(life), rojo(0), verde(0), azul(255), danio(damage), enemigo(true), dib(dibujar){
+Disparo::Disparo(Enemigo &enem, int life, int damage, bool dibujar, float desfase) : destruir(false), radio(0.3), vida(life), rojo(0), verde(0), azul(255), danio(damage), enemigo(true), dib(dibujar){
 	Vector3D velocidad;
 	float f = 3;
 	pos.x = enem.posicion.x;
 	pos.y = enem.posicion.y;
 	pos.z = 2.8;
-	velocidad = velocidad.creavector(pos, enem.lin.direccion);
+	if (enem.id == 12){
+		velocidad = velocidad.creavector(pos, pos+enem.objetivo);
+	}
+	if (enem.id == 13){
+		if (enem.teveo){
+			velocidad = velocidad.creavector(pos, enem.lin.direccion);
+			velocidad.x += desfase*(rand() / (float)RAND_MAX);
+			velocidad.y += desfase*(rand() / (float)RAND_MAX);
+		}
+		else{
+			Vector3D aux=enem.posicion;
+			aux.x += cos(desfase);
+			aux.y += sin(desfase);
+			aux.z = 0;
+			velocidad = velocidad.creavector(pos, aux);
+		}
+	}
+	else{
+		velocidad = velocidad.creavector(pos, enem.lin.direccion);
+
+	}
+
 	velocidad = velocidad.unitario(velocidad);
 	vel = velocidad / f;
 	limites.posicion = pos;

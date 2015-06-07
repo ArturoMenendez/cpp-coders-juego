@@ -16,5 +16,6 @@ public:
 	void dibujarObstaculos();
 	void actualizarObstaculos();
 	void animarObstaculos();
+	void borraObstaculos();
 };
 
