@@ -9,6 +9,7 @@ Obstaculo::Obstaculo(Vector3D posicion, Vector3D tamanio, int tipo, bool destruc
 	this->tamanio = tamanio;
 	id = tipo;
 	limites.posicion = posicion;
+	limites.posicion.z = 0;
 	if (tipo == 2) {
 		limites.radio = tamanio.x;
 		limites.tipo = CIRCULO;
@@ -23,6 +24,16 @@ Obstaculo::Obstaculo(Vector3D posicion, Vector3D tamanio, int tipo, bool destruc
 		limites.alto = tamanio.y;
 		limites.tipo = AGUJERO;
 	}
+	else if (tipo == 8){
+		limites.ancho = tamanio.x;
+		limites.alto = tamanio.y;
+		limites.tipo = PUERTAENTRADA;
+	}
+	else if (tipo == 9) {
+		limites.ancho = tamanio.x;
+		limites.alto = tamanio.y;
+		limites.tipo = PUERTASALIDA;
+	}
 	se_destruye = destruccion;
 }
 
@@ -32,8 +43,6 @@ Obstaculo::~Obstaculo()
 }
 
 void Obstaculo::Dibuja(){
-	static bitmap borde("borde.bmp");
-	static bitmap lava("lava.bmp");
 	switch (id){
 	case(1) : {
 		glPushMatrix();
@@ -49,6 +58,7 @@ void Obstaculo::Dibuja(){
 		static bitmap bidon("bidon.bmp");
 		static bitmap bidon_tapa("bidon_tapa.bmp");
 		glPushMatrix();
+		limites.Dibuja();
 		glTranslatef(posicion.x, posicion.y, posicion.z);
 		bidon.usarTextura();
 		glColor3ub(255, 255, 255);
@@ -68,42 +78,45 @@ void Obstaculo::Dibuja(){
 		gluDisk(tapa, 0, tamanio.y, 20, 20);
 		gluDeleteQuadric(tapa);
 		glDisable(GL_TEXTURE_2D);
+
 		glPopMatrix();
 		break;
+
 	}
 	case(3) : {
 		static bitmap lava("lava.bmp");
 		static bitmap borde("borde.bmp");
 
 		glPushMatrix();
+		glDisable(GL_LIGHTING);
 		glColor3f(brillo, brillo, brillo);
-		glTranslatef(posicion.x, posicion.y, 0.02F);
 		lava.usarTextura();
 		glBegin(GL_QUADS);
 		glTexCoord2f(movimiento, movimiento);
-		glVertex3f(posicion.x - tamanio.x / 2.0F, posicion.y - tamanio.y / 2.0F, 0);
+		glVertex3f(posicion.x - tamanio.x / 2.0F, posicion.y - tamanio.y / 2.0F, 0.001);
 		glTexCoord2f(movimiento, 1 + movimiento);
-		glVertex3f(posicion.x - tamanio.x / 2.0F, posicion.y + tamanio.y / 2.0F, 0);
+		glVertex3f(posicion.x - tamanio.x / 2.0F, posicion.y + tamanio.y / 2.0F, 0.001);
 		glTexCoord2f(1 + movimiento, 1 + movimiento);
-		glVertex3f(posicion.x + tamanio.x / 2.0F, posicion.y + tamanio.y / 2.0F, 0);
+		glVertex3f(posicion.x + tamanio.x / 2.0F, posicion.y + tamanio.y / 2.0F, 0.001);
 		glTexCoord2f(1 + movimiento, movimiento);
-		glVertex3f(posicion.x + tamanio.x / 2.0F, posicion.y - tamanio.y / 2.0F, 0);
+		glVertex3f(posicion.x + tamanio.x / 2.0F, posicion.y - tamanio.y / 2.0F, 0.001);
 		glEnd();
 		glDisable(GL_TEXTURE_2D);
 		glColor3ub(255, 255, 255);
 		borde.usarTextura();
 		glBegin(GL_QUADS);
 		glTexCoord2f(0, 0);
-		glVertex3f(posicion.x - tamanio.x / 2.0F, posicion.y - tamanio.y / 2.0F, 0.001);
+		glVertex3f(posicion.x - tamanio.x / 2.0F, posicion.y - tamanio.y / 2.0F, 0.002);
 		glTexCoord2f(0, 1);
-		glVertex3f(posicion.x - tamanio.x / 2.0F, posicion.y + tamanio.y / 2.0F, 0.001);
+		glVertex3f(posicion.x - tamanio.x / 2.0F, posicion.y + tamanio.y / 2.0F, 0.002);
 		glTexCoord2f(1, 1);
-		glVertex3f(posicion.x + tamanio.x / 2.0F, posicion.y + tamanio.y / 2.0F, 0.001);
+		glVertex3f(posicion.x + tamanio.x / 2.0F, posicion.y + tamanio.y / 2.0F, 0.002);
 		glTexCoord2f(1, 0);
-		glVertex3f(posicion.x + tamanio.x / 2.0F, posicion.y - tamanio.y / 2.0F, 0.001);
+		glVertex3f(posicion.x + tamanio.x / 2.0F, posicion.y - tamanio.y / 2.0F, 0.002);
 		glEnd();
 		glDisable(GL_BLEND);
 		glDisable(GL_TEXTURE_2D);
+		glEnable(GL_LIGHTING);
 		glPopMatrix();
 		break;
 	}
@@ -120,7 +133,7 @@ void Obstaculo::Dibuja(){
 		glPopMatrix();
 		break;
 	}
-		limites.Dibuja();
+			limites.Dibuja();
 	}
 }
 

@@ -2,6 +2,8 @@
 #include "Nivel.h"
 #include "OpenGL.h"
 #include "glut.h"
+#include "Texto.h"
+
 
 class Gestor
 {
@@ -16,15 +18,21 @@ public:
 		FIN
 	};
 	Estado estado;
+	bool pasar;
 	//metodos
+	//constructor y destructor
 	Gestor();
 	virtual ~Gestor();
 
+	//metodos que afectan a los entes fisicos
 	void Dibuja();
 	void Mueve();
 	void Update();
-	void JugadorDispara();
 
+	//metodos para control del juego
+	void Condiciones();
+
+	//metodos relacionados mayormente con glut 
 	void OnKeyboardDown(unsigned char);
 	void OnKeyboardUp(unsigned char);
 	void KeyOperations();
@@ -35,4 +43,3 @@ protected:
 	Nivel nivel;
 
 };
-

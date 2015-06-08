@@ -20,6 +20,8 @@ public:
 	Cilindro c1;
 	int vida;
 	bool movimiento;
+	bool tocapuerta;
+	int contador;
 
 
 	//metodos
@@ -33,6 +35,7 @@ public:
 	void PassiveMotion(int, int);
 	void Pinta();
 	void Dibuja();
+	void Explota();
 	void Rota();
 	void Mueve(unsigned char);
 	void Anima();

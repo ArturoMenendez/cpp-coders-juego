@@ -6,7 +6,7 @@ class Mejora :
 protected:
 	int vida;
 public:
-	Mejora(Vector3D pos);
+	Mejora(Vector3D pos, int id, int val);
 	~Mejora();
 };
 

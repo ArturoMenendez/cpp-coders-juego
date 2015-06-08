@@ -13,10 +13,11 @@ Disparo::Disparo(Jugador personaje, int vida, int danio) : destruir(false), radi
 	float f = 3;
 	pos.x = personaje.posicion.x + (1.4*cos(personaje.angrot * 2 * PI / 360)) + (0.7*sin(personaje.angrot * 2 * PI / 360)); 
 	pos.y = personaje.posicion.y - (0.7*cos(personaje.angrot * 2 * PI / 360)) + (1.4*sin(personaje.angrot * 2 * PI / 360)); 
-	pos.z = 2.8;
+	pos.z = 0;
 	velocidad = velocidad.creavector(pos, personaje.ptomira);
 	velocidad = velocidad.unitario(velocidad);
 	vel = velocidad / f;
+	pos.z = 2.8;
 	limites.posicion = pos;
 	limites.posicion.z = 0;
 	limites.radio = radio;
@@ -28,7 +29,7 @@ Disparo::Disparo(Enemigo &enem, int life, int damage, bool dibujar, float desfas
 	float f = 3;
 	pos.x = enem.posicion.x;
 	pos.y = enem.posicion.y;
-	pos.z = 2.8;
+	pos.z = 1.7;
 	if (enem.id == 12){
 		velocidad = velocidad.creavector(pos, pos+enem.objetivo);
 	}

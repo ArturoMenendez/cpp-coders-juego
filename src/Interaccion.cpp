@@ -107,22 +107,34 @@ void Interaccion::interaccion(Jugador &jugador, ListaObstaculos obstaculo){
 				jugador.limites.posicion = jugador.pos_anterior;
 				jugador.limites.posicion.z = 0;
 			}
-			else if (obs.tipo == AGUJERO){
-				if (colision_CR(jug.posicion, 0.1f, obs.posicion, obs.alto, obs.ancho)) {
-					jugador.movimiento = false;
-					if (jugador.posicion.z > -4) jugador.posicion.z -= 0.1f;
-					else jugador.vida = 0;
-					Vector3D direc = Vector3D::creavector(jug.posicion, obs.posicion);
-					direc.unitario(direc);
-					jugador.posicion = jugador.posicion + direc*vel;
-					jugador.limites.posicion = jugador.posicion;
-					jugador.limites.posicion.z = 0;
-				}
+		}
+		else if (obs.tipo == AGUJERO){
+			if (colision_CR(jug.posicion, 0.1f, obs.posicion, obs.alto, obs.ancho)) {
+				jugador.movimiento = false;
+				if (jugador.posicion.z > -4) jugador.posicion.z -= 0.1f;
+				else jugador.vida = 0;
+				Vector3D direc = Vector3D::creavector(jug.posicion, obs.posicion);
+				direc.unitario(direc);
+				jugador.posicion = jugador.posicion + direc*vel;
+				jugador.limites.posicion = jugador.posicion;
+				jugador.limites.posicion.z = 0;
 			}
-			jugador.pos_anterior = jugador.posicion;
+		}
+
+
+		else if (obs.tipo == PUERTASALIDA){
+			if (colision_CR(jug.posicion, jug.radio, obs.posicion, obs.alto, obs.ancho)) {
+				jugador.tocapuerta = true;
+			}
+			else
+			{
+				jugador.tocapuerta = false;
+			}
 		}
 	}
+	jugador.pos_anterior = jugador.posicion;
 }
+
 
 //enemigo con obstaculo
 void Interaccion::interaccion(ListaEnemigos enemigo, ListaObstaculos obstaculo){
@@ -141,9 +153,9 @@ void Interaccion::interaccion(ListaEnemigos enemigo, ListaObstaculos obstaculo){
 					enemigo.lista[i]->posicion = enemigo.lista[i]->posicion + direc;
 					enemigo.lista[i]->limites.posicion = enemigo.lista[i]->limites.posicion + direc;
 					/*		enemigo.lista[i]->posicion = enemigo.lista[i]->pos_anterior;
-							enemigo.lista[i]->limites.posicion = enemigo.lista[i]->pos_anterior;
-							enemigo.lista[i]->limites.posicion.z = 0;
-							break;*/
+					enemigo.lista[i]->limites.posicion = enemigo.lista[i]->pos_anterior;
+					enemigo.lista[i]->limites.posicion.z = 0;
+					break;*/
 				}
 			}
 			else if ((obs.tipo == RECTANGULO) || (obs.tipo == AGUJERO)){
@@ -151,19 +163,21 @@ void Interaccion::interaccion(ListaEnemigos enemigo, ListaObstaculos obstaculo){
 				if (colision_CR(enem.posicion, enem.radio, obs.posicion, obs.alto, obs.ancho)) {
 					Vector3D direc = Vector3D::creavector(obs.posicion, enem.posicion);
 					direc.unitario(direc);
-					float aux = 0.01F;
+					float aux;
+					if (enemigo.lista[i]->id == 7) aux = 0.05F;
+					else aux = 0.02F;
 					direc = direc * aux;
 					enemigo.lista[i]->posicion = enemigo.lista[i]->posicion + direc;
 					enemigo.lista[i]->limites.posicion = enemigo.lista[i]->limites.posicion + direc;
 					/*	enemigo.lista[i]->posicion = enemigo.lista[i]->pos_anterior;
-						enemigo.lista[i]->limites.posicion = enemigo.lista[i]->pos_anterior;
-						enemigo.lista[i]->limites.posicion.z = 0;
-						break;*/
+					enemigo.lista[i]->limites.posicion = enemigo.lista[i]->pos_anterior;
+					enemigo.lista[i]->limites.posicion.z = 0;
+					break;*/
 				}
 			}
 
 		}
-		
+
 		enemigo.lista[i]->pos_anterior = enemigo.lista[i]->posicion;
 	}
 }
@@ -207,6 +221,12 @@ void Interaccion::interaccion(Jugador jugador, ListaEnemigos enemigo){
 			enemigo.lista[i]->posicion = enemigo.lista[i]->posicion + direc;
 			enemigo.lista[i]->limites.posicion = enemigo.lista[i]->limites.posicion + direc;
 			if (enemigo.lista[i]->id == 7)	enemigo.lista[i]->atacar(0);	//kamikaze
+			////////
+			//////// ALGUN PROBLEMA AQUI CUANDO EL KAMIKAZE SE AUTODESTRUYE
+			//////// PARECE QUE SE QUEDA GUARDADO QUE ESTA EN CONTACTO CON EL JUGADOR
+			//////// al reaparecer lo detecta y dispara en la direccion en la que esta el jugador, aunque no esten en contacto
+			////////
+
 		}
 	}
 }
@@ -214,88 +234,86 @@ void Interaccion::interaccion(Jugador jugador, ListaEnemigos enemigo){
 //lineas de vision
 void Interaccion::ldv(ListaObstaculos obstaculo, ListaEnemigos enemigo, Jugador j){
 	CrashBox obs, lin;
-	int num_lados_col = 0;
+	int num_lados_col;
 
 	for (int i = 0; i < enemigo.n_enemigos; i++){
 
-			int vision_enemigo = 0;
-			lin = enemigo.lista[i]->lin;
-			Vector3D v = Vector3D::creavector(lin.posicion, lin.direccion);
-			float aux = v.x;
-			v.x = -v.y;
-			v.y = aux;
-			float modulo = Vector3D::modulo(v);
-			float c = -(enemigo.lista[i]->posicion.x*v.x + enemigo.lista[i]->posicion.y*v.y);
-			for (int j = 0; j < obstaculo.n_obstaculos; j++){
-				obs = obstaculo.lista[j]->limites;
-				if (obs.tipo == CIRCULO){
-					float distancia = abs(((obstaculo.lista[j]->posicion.x*v.x) + (obstaculo.lista[j]->posicion.y*v.y) + c)) / modulo;
-					if (distancia > obs.radio) {
-						vision_enemigo++;
+		int vision_enemigo = 0;
+		lin = enemigo.lista[i]->lin;
+		Vector3D v = Vector3D::creavector(lin.posicion, lin.direccion);
+		float aux = v.x;
+		v.x = -v.y;
+		v.y = aux;
+		float modulo = Vector3D::modulo(v);
+		float c = -(enemigo.lista[i]->posicion.x*v.x + enemigo.lista[i]->posicion.y*v.y);
+		for (int j = 0; j < obstaculo.n_obstaculos; j++){
+			obs = obstaculo.lista[j]->limites;
+			if (obs.tipo == CIRCULO){
+				float distancia = abs(((obstaculo.lista[j]->posicion.x*v.x) + (obstaculo.lista[j]->posicion.y*v.y) + c)) / modulo;
+				if (distancia > obs.radio) {
+					vision_enemigo++;
+				}
+			}
+			else if (obs.tipo == RECTANGULO){
+				num_lados_col = 0;
+				Vector3D v1(obs.posicion.x - obs.ancho / 2, obs.posicion.y - obs.alto / 2, 0);
+				Vector3D v2(obs.posicion.x + obs.ancho / 2, obs.posicion.y - obs.alto / 2, 0);
+				Vector3D v3(obs.posicion.x + obs.ancho / 2, obs.posicion.y + obs.alto / 2, 0);
+				Vector3D v4(obs.posicion.x - obs.ancho / 2, obs.posicion.y + obs.alto / 2, 0);
 
+				//coeficientes rectas horizontales
+				Vector3D horizontal = Vector3D::creavector(v2, v3);
+				//coeficientes rectas verticales
+				Vector3D vertical = Vector3D::creavector(v1, v2);
+
+
+
+				if (v.x*horizontal.y - v.y*horizontal.x != 0){
+					//pared sur
+					if ((lin.posicion.y > v1.y && lin.direccion.y < v1.y) || (lin.posicion.y<v1.y && lin.direccion.y>v1.y)){
+						float x = ((-v.y*v1.y) - c) / v.x;
+
+						if (x>obs.posicion.x - obs.ancho / 2 && x<obs.posicion.x + obs.ancho / 2){
+							num_lados_col++;
+						}
+					}
+					//pared norte
+					if ((lin.posicion.y > obs.posicion.y + obs.alto / 2 && lin.direccion.y < obs.posicion.y + obs.alto / 2) || (lin.posicion.y<obs.posicion.y + obs.alto / 2 && lin.direccion.y>obs.posicion.y + obs.alto / 2)){
+						float x = ((-v.y*v3.y) - c) / v.x;
+						if (x>obs.posicion.x - obs.ancho / 2 && x < obs.posicion.x + obs.ancho / 2){
+							num_lados_col++;
+						}
 					}
 				}
-				else if (obs.tipo == RECTANGULO){
-					Vector3D v1(obs.posicion.x - obs.ancho / 2, obs.posicion.y - obs.alto / 2, 0);
-					Vector3D v2(obs.posicion.x + obs.ancho / 2, obs.posicion.y - obs.alto / 2, 0);
-					Vector3D v3(obs.posicion.x + obs.ancho / 2, obs.posicion.y + obs.alto / 2, 0);
-					Vector3D v4(obs.posicion.x - obs.ancho / 2, obs.posicion.y + obs.alto / 2, 0);
 
-					//coeficientes rectas horizontales
-					Vector3D horizontal = Vector3D::creavector(v2, v3);
-					//coeficientes rectas verticales
-					Vector3D vertical = Vector3D::creavector(v1, v2);
+				if (v.x*vertical.y - v.y*vertical.x != 0){
+					if ((lin.posicion.x > v1.x && lin.direccion.x < v1.x) || (lin.posicion.x<v1.x && lin.direccion.x>v1.x)){
+						float y = ((-v.x*v1.x) - c) / v.y;
 
-
-
-					if (v.x*horizontal.y - v.y*horizontal.x != 0){
-						//pared sur
-						if ((lin.posicion.y > v1.y && lin.direccion.y < v1.y) || (lin.posicion.y<v1.y && lin.direccion.y>v1.y)){
-							float x = ((-v.y*v1.y) - c) / v.x;
-
-							if (x>obs.posicion.x - obs.ancho / 2 && x<obs.posicion.x + obs.ancho / 2){
-								num_lados_col++;
-							}
-						}
-						//pared norte
-						if ((lin.posicion.y > obs.posicion.y + obs.alto / 2 && lin.direccion.y < obs.posicion.y + obs.alto / 2) || (lin.posicion.y<obs.posicion.y + obs.alto / 2 && lin.direccion.y>obs.posicion.y + obs.alto / 2)){
-							float x = ((-v.y*v3.y) - c) / v.x;
-							if (x>obs.posicion.x - obs.ancho / 2 && x < obs.posicion.x + obs.ancho / 2){
-								num_lados_col++;
-							}
+						if (y > v1.y && y<v4.y){
+							num_lados_col++;
 						}
 					}
+					//pared este
+					if ((lin.posicion.x > v3.x && lin.direccion.x < v3.x) || (lin.posicion.x<v3.x && lin.direccion.x>v3.x)){
+						float y = ((-v.x*v3.x) - c) / v.y;
+						if (y > v2.y && y < v3.y){
+							num_lados_col++;
 
-					if (v.x*vertical.y - v.y*vertical.x != 0){
-						if ((lin.posicion.x > v1.x && lin.direccion.x < v1.x) || (lin.posicion.x<v1.x && lin.direccion.x>v1.x)){
-							float y = ((-v.x*v1.x) - c) / v.y;
-
-							if (y > v1.y && y<v4.y){
-								num_lados_col++;
-							}
 						}
-						//pared este
-						if ((lin.posicion.x > v3.x && lin.direccion.x < v3.x) || (lin.posicion.x<v3.x && lin.direccion.x>v3.x)){
-							float y = ((-v.x*v3.x) - c) / v.y;
-							if (y > v2.y && y < v3.y){
-								num_lados_col++;
-
-							}
-						}
-					}
-					if (num_lados_col < 2){
-						vision_enemigo++;
 					}
 				}
-				else vision_enemigo++;
+				if (num_lados_col < 2){
+					vision_enemigo++;
+				}
 			}
-			if (vision_enemigo == obstaculo.n_obstaculos){
-				enemigo.lista[i]->teveo = true;
-				//	printf("b");
-			}
-			else{
-				enemigo.lista[i]->teveo = false;
-				//	printf("a");
-			}
+			else vision_enemigo++;
+		}
+		if (vision_enemigo == (obstaculo.n_obstaculos)){
+			enemigo.lista[i]->teveo = true;
+		}
+		else{
+			enemigo.lista[i]->teveo = false;
 		}
 	}
+}

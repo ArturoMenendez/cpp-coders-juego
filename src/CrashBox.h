@@ -1,11 +1,12 @@
 #pragma once
 #include "Vector3D.h"
 
-
 #define RECTANGULO 0
 #define CIRCULO 1
 #define LINEA 2
 #define AGUJERO 3
+#define PUERTAENTRADA 8
+#define PUERTASALIDA 9
 
 class CrashBox
 {
@@ -25,6 +26,5 @@ public:
 	CrashBox();
 	~CrashBox();
 	void Dibuja();
-	
-};
 
+};

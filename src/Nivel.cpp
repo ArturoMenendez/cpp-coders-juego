@@ -109,11 +109,6 @@ void Nivel::Dibuja(){
 	j.Pinta();
 	lobs.dibujarObstaculos();
 	ldis.dibujarDisparos();
-
-	if (j.vida <= 0) {
-		Texto::setPos(-10.0, 0.0, 10.0);
-		Texto::text("GAME OVER", 2, 255, 0, 100);
-	}
 	marcador.dibujar();
 
 }

@@ -2,7 +2,7 @@
 #include "bitmap.h"
 
 
-Codigo::Codigo(Vector3D pos) : Objeto(pos)
+Codigo::Codigo(Vector3D pos) : Objeto(pos, CODIGO, 1)
 {
 }
 
@@ -13,7 +13,9 @@ Codigo::~Codigo()
 
 void Codigo::Dibuja(){
 	static bitmap imagen("cpp.bmp");
+	static 	GLUquadricObj *mon1 = gluNewQuadric();
 
+	
 	glPushMatrix();
 	glDisable(GL_LIGHTING);	
 	glColor3ub(255, 255, 255);

@@ -87,7 +87,7 @@ void OnDraw(){
 
 	KeyOperations();
 	static float antorcha[4] = { -16.0, 11.0, 2.0, 1 };
-		
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -129,6 +129,7 @@ void OnTimer(int value){
 	n1.updateEnemigos();*/
 
 	gestor.Update();
+	gestor.Condiciones();
 
 	glutTimerFunc(25, OnTimer, 0);
 	glutPostRedisplay();
@@ -136,11 +137,10 @@ void OnTimer(int value){
 
 void OnMouseDown(int button, int state, int x, int y){
 	gestor.OnMouseDown(button, state, x, y);
-	if ((button == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN)){
-		//n1.nuevoDisparo();
-		gestor.JugadorDispara();
-		gestor.JugadorDispara();
-	}
+	//if ((button == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN)){
+	//n1.nuevoDisparo();
+	//gestor.JugadorDispara();
+	//}
 }
 
 void OnMotion(int x, int y){

@@ -37,6 +37,7 @@ CrashBox::~CrashBox()
 
 void CrashBox::Dibuja(){
 	glColor3ub(255, 0, 0);
+	glPushMatrix();
 	if (tipo == CIRCULO){
 		glTranslatef(posicion.x, posicion.y, 0.1 + posicion.z);
 		GLUquadric* obj = gluNewQuadric();
@@ -44,13 +45,16 @@ void CrashBox::Dibuja(){
 		glTranslatef(-posicion.x, -posicion.y, -0.1 - posicion.z);
 	}
 	if (tipo == LINEA){
+		glPushMatrix();
+		glTranslatef(0, 0, 1);
 		glBegin(GL_LINES);
 		glVertex3f(posicion.x, posicion.y, 1);
 		glVertex3f(direccion.x, direccion.y, 1);
 		glEnd();
+		glPopMatrix();
 	}
 	if (tipo == RECTANGULO){
-	
-	}
 
+	}
+	glPopMatrix();
 }

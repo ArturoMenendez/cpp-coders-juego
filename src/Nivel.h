@@ -7,7 +7,7 @@
 #include "Pared.h"
 #include "Marcador.h"
 
-#define NUM_NIVELES 10
+#define NUM_NIVELES 12
 
 
 class Nivel
@@ -35,7 +35,7 @@ public:
 	void updateEnemigos();
 	void interacciones();
 	void rotaJugador();
-	
+
 
 	void KeyOperations();
 	void OnKeyboardDown(unsigned char, int, int);
@@ -44,6 +44,10 @@ public:
 	void OnMotion(int x, int y);
 	void OnPassiveMotion(int x, int y);
 
+
+	int GetNumeroEnemigos(){ return lenem.n_enemigos; }
+	bool GetTocapuerta(){ return j.tocapuerta; }
+	int GetVida(){ return j.vida; }
 	int GetNivel(){ return act; }
 	void SetNivel(int numero){ act = numero; }
 	bool GetPasaNivel(int numero){ return pasanivel[numero]; }
@@ -52,4 +56,3 @@ public:
 	~Nivel();
 
 };
-

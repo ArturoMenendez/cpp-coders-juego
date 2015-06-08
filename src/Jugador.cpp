@@ -10,11 +10,11 @@ Jugador::Jugador(void)
 {
 }
 
-Jugador::Jugador(Vector3D pos) :colision(false), vida(10), movimiento(true)
+Jugador::Jugador(Vector3D pos) :colision(false), vida(10), movimiento(true), tocapuerta(false), contador(0)
 {
 	this->posicion.x = pos.x;
 	this->posicion.y = pos.y;
-	this->posicion.z = 2.8;
+	this->posicion.z = pos.z;
 	p1.mov.z = 1;
 	p1.ang = p1.mov.y;
 	keyStates['a'] = false;
@@ -22,6 +22,7 @@ Jugador::Jugador(Vector3D pos) :colision(false), vida(10), movimiento(true)
 	keyStates['d'] = false;
 	keyStates['w'] = false;
 	limites.posicion = pos;
+	limites.posicion.z = 0;
 	limites.radio = 0.8;
 	limites.tipo = CIRCULO;
 }
@@ -32,6 +33,7 @@ Jugador::~Jugador(void)
 
 void Jugador::Dibuja(){
 	GLUquadricObj* pepe = gluNewQuadric();
+	glPushMatrix();
 	glColor3f(255, 255, 255);
 	glTranslatef(ptomira.x, ptomira.y, 2.8);
 	gluDisk(pepe, 0.4, 0.6, 20, 20);
@@ -43,7 +45,7 @@ void Jugador::Dibuja(){
 	glVertex3f(0, 0.4, 0);
 	glVertex3f(0, -0.4, 0);
 	glEnd();
-	glTranslatef(-ptomira.x, -ptomira.y, -2.8);
+	glPopMatrix();
 }
 
 void Jugador::Mouse(int button, int state, int x, int y){
@@ -61,14 +63,14 @@ void Jugador::Motion(int x, int y){
 	if (botonpulsado == true){
 		ptomira.x = ((float)x - 400) / 16.82f;
 		ptomira.y = ((float)y - 300) / -16.82f;
-		ptomira.z = 2.8;
+		ptomira.z = 0;
 	}
 }
 
 void Jugador::PassiveMotion(int x, int y){
 	ptomira.x = ((float)x - 400) / 16.82f;
 	ptomira.y = ((float)y - 300) / -16.82f;
-	ptomira.z = 2.8;
+	ptomira.z = 0;
 }
 
 void Jugador::Pinta(){
@@ -147,7 +149,7 @@ void Jugador::Pinta(){
 }
 
 void Jugador::Rota(){
-	Vector3D v1 = Vector3D::creavector(posicion, ptomira);
+	Vector3D v1 = Vector3D::creavector(limites.posicion, ptomira);
 	Vector3D dirx;
 	dirx.x = 1;
 	dirx.y = 0;
@@ -205,4 +207,22 @@ CrashBox Jugador::getCrashBox(){
 void Jugador::act_Vida(int danio){
 	vida -= danio;
 	if (vida <= 0) movimiento = false;
+}
+
+void Jugador::Explota(){
+
+	glDisable(GL_LIGHTING);
+	glPushMatrix();
+	glTranslatef(posicion.x, posicion.y, 5);
+	glScalef(contador / 7, contador / 7, contador / 7);
+	glColor3ub(200, 10, 10);
+	glutSolidOctahedron();
+	glColor3ub(30, 30, 30);
+	glutSolidSphere(0.7, 20, 20);
+	glRotatef(50, 0.2, 0.4, 0.7);
+	glColor3ub(255, 150, 30);
+	glutSolidOctahedron();
+	glPopMatrix();
+	contador++;
+	glEnable(GL_LIGHTING);
 }

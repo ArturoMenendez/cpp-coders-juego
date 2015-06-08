@@ -20,25 +20,25 @@ void ListaEnemigos::agregarEnemigo(Vector3D posicion, int tipo){
 	if (n_enemigos < MAX_ENEMIGOS) {
 		Enemigo* nuevo;
 		switch (tipo){
-		case (5) : {
+		case (ADISTANCIA) : {
 			nuevo = new ADistancia(posicion, ADISTANCIA);
 			lista[n_enemigos++] = nuevo;
 			break; }
-		case(6) : {
+		case(CAC) : {
 			nuevo = new CaC(posicion, CAC);
 			lista[n_enemigos++] = nuevo;
 			break; }
-		case(7) : {
+		case(KAMIKAZE) : {
 			nuevo = new Kamikaze(posicion, KAMIKAZE);
 			lista[n_enemigos++] = nuevo;
 			break; }
-		case(12) : {
-			nuevo = new BossCaC(posicion, 12);
+		case(BOSSCAC) : {
+			nuevo = new BossCaC(posicion, BOSSCAC);
 			lista[n_enemigos++] = nuevo;
 			break;
 		}
-		case(13) : {
-			nuevo = new BossADistancia(posicion, 13);
+		case(BOSSADISTANCIA) : {
+			nuevo = new BossADistancia(posicion, BOSSADISTANCIA);
 			lista[n_enemigos++] = nuevo;
 			break;
 		}

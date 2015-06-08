@@ -40,8 +40,8 @@ bitmap::bitmap(char *nombre_archivo){
 		glGenTextures(1, &texture);
 		glBindTexture(GL_TEXTURE_2D, texture);
 		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		if (bytes_pixel == 3) gluBuild2DMipmaps(GL_TEXTURE_2D, bytes_pixel, ancho, alto, GL_BGR_EXT, GL_UNSIGNED_BYTE, imagen);
 		else gluBuild2DMipmaps(GL_TEXTURE_2D, bytes_pixel, ancho, alto, GL_BGRA_EXT, GL_UNSIGNED_BYTE, imagen);
 
