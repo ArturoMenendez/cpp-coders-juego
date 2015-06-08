@@ -24,5 +24,8 @@ public:
 	virtual void Dibuja()=0;
 	CrashBox getCrashBox();
 	bool getDestruir();
+	int getTipo() { return tipo; }
+	int getValor() { return valor; }
+	void setDestruir(bool est){ destruir = est; }
 };
 

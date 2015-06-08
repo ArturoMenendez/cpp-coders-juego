@@ -18,10 +18,15 @@ public:
 	bool* keyStates = new bool[256];
 	Pierna p1, p2;
 	Cilindro c1;
-	int vida;
+	int salud;
+	int puntos;
+	int codigo;
 	bool movimiento;
 	bool tocapuerta;
 	int contador;
+	int mod_danio;
+	int mod_vel;
+	int invencible;
 
 
 	//metodos
@@ -29,13 +34,15 @@ public:
 	Jugador(Vector3D);
 	~Jugador(void);
 	CrashBox getCrashBox();
-	void act_Vida(int danio);
+	void act_salud(int danio);
+	void invencibilidad(int t);
 	void Mouse(int, int, int, int);
 	void Motion(int, int);
 	void PassiveMotion(int, int);
 	void Pinta();
 	void Dibuja();
 	void Explota();
+	void Reinicia(Vector3D posicion);
 	void Rota();
 	void Mueve(unsigned char);
 	void Anima();

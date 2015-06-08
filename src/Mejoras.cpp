@@ -86,7 +86,7 @@ void Mvelocidad::Dibuja(){
 	glPopMatrix();
 }
 
-Minvencible::Minvencible(Vector3D pos) : Mejora(pos, INVULNERABLE, 5)
+Minvencible::Minvencible(Vector3D pos) : Mejora(pos, INVULNERABLE, 5000)
 {
 }
 Minvencible::~Minvencible()

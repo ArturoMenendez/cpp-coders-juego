@@ -3,9 +3,9 @@
 #include "ListaObstaculos.h"
 #include "ListaEnemigos.h"
 #include "ListaDisparos.h"
+#include "ListaObjetos.h"
 #include "Jugador.h"
 #include "Pared.h"
-#include "Marcador.h"
 
 #define NUM_NIVELES 12
 
@@ -20,9 +20,9 @@ class Nivel
 	ListaObstaculos lobs;
 	ListaDisparos ldis;
 	ListaEnemigos lenem;
+	ListaObjetos lobj;
 	int act;
 	Pared caja[4];
-	Marcador marcador;
 public:
 	void LeeNivel();
 	void Carga();
@@ -45,13 +45,18 @@ public:
 	void OnPassiveMotion(int x, int y);
 
 
+	int GetPuntos(){ return j.puntos; }
+	int GetCodigo(){ return j.codigo; }
+	int GetMejoras();
 	int GetNumeroEnemigos(){ return lenem.n_enemigos; }
 	bool GetTocapuerta(){ return j.tocapuerta; }
-	int GetVida(){ return j.vida; }
+	int GetSalud(){ return j.salud; }
+	void SetSalud(int salud){ j.salud = salud; }
 	int GetNivel(){ return act; }
 	void SetNivel(int numero){ act = numero; }
 	bool GetPasaNivel(int numero){ return pasanivel[numero]; }
 	void SetPasaNivel(int numero){ pasanivel[numero] = true; }
+	void SetModificadores(){ j.mod_danio = j.mod_vel = 1; j.invencible = 0; }
 	Nivel();
 	~Nivel();
 

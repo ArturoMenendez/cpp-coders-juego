@@ -17,5 +17,6 @@ public:
 	void actualizarObstaculos();
 	void animarObstaculos();
 	void borraObstaculos();
+	friend class Interaccion;
 };
 

@@ -14,33 +14,37 @@ ListaObjetos::~ListaObjetos()
 }
 
 void ListaObjetos::agregarObjetos(Vector3D posicion, int tipo){
-	Objeto* nuevo_objeto;
+	Objeto* nuevo_objeto=0;
 	if (n_objetos < MAX_OBJETOS) {
-	switch (tipo){
-	case CODIGO:
-		nuevo_objeto = new Codigo(posicion);
-		break;
-	case PUNTOS:
-		nuevo_objeto = new Mpuntos(posicion);
-		break;
-	case DANIO:
-		nuevo_objeto = new Mdanio(posicion);
-		break;
-	case VELOCIDAD:
-		nuevo_objeto = new Mvelocidad(posicion);
-		break;
-	case INVULNERABLE:
-		nuevo_objeto = new Minvencible(posicion);
-		break;
-	default:
-		n_objetos--;
+		switch (tipo){
+		case CODIGO:{
+			nuevo_objeto = new Codigo(posicion);
+			break;
 		}
-	n_objetos++;
+		case PUNTOS:{
+			nuevo_objeto = new Mpuntos(posicion);
+			break;
+		}
+		case DANIO:{
+			nuevo_objeto = new Mdanio(posicion);
+			break;
+		}
+		case VELOCIDAD:{
+			nuevo_objeto = new Mvelocidad(posicion);
+			break;
+		}
+		case INVULNERABLE:{
+			nuevo_objeto = new Minvencible(posicion);
+			break;
+		}
+		}
+		lista[n_objetos++] = nuevo_objeto;
 	}
 }
 
 void ListaObjetos::dibujarObjetos(){
-	for (int i = 0; i < n_objetos; i++) lista[i]->Dibuja();
+	for (int i = 0; i < n_objetos; i++) 
+		lista[i]->Dibuja();
 }
 
 void ListaObjetos::destruirObjetos(){

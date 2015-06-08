@@ -8,6 +8,7 @@ BossADistancia::BossADistancia(Vector3D posicion, int id) : Enemigo(posicion, id
 	t = t0;
 	mov_noteveo = 40;
 	f_explo = 2;
+	vida = 20;
 }
 
 
@@ -48,7 +49,7 @@ void BossADistancia::Dibuja(){
 bool BossADistancia::atacar(int t){
 	static int time = 2500;
 	time -= t;
-	if (time%500==0){
+	if (time%500==0&&time!=2500){
 		teveo = true;
 		return true;
 	}

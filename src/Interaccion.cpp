@@ -62,7 +62,7 @@ void Interaccion::interaccion(ListaDisparos disparo, ListaEnemigos enemigo, Juga
 			float distancia = Vector3D::modulo(dis.posicion - obj.posicion);
 			if (distancia <= (dis.radio + obj.radio)) {
 				disparo.lista[i]->destruye();
-				jugador.act_Vida(disparo.lista[i]->getDanio());
+				jugador.act_salud(disparo.lista[i]->getDanio());
 			}
 		}
 		else{
@@ -112,7 +112,7 @@ void Interaccion::interaccion(Jugador &jugador, ListaObstaculos obstaculo){
 			if (colision_CR(jug.posicion, 0.1f, obs.posicion, obs.alto, obs.ancho)) {
 				jugador.movimiento = false;
 				if (jugador.posicion.z > -4) jugador.posicion.z -= 0.1f;
-				else jugador.vida = 0;
+				else jugador.salud = 0;
 				Vector3D direc = Vector3D::creavector(jug.posicion, obs.posicion);
 				direc.unitario(direc);
 				jugador.posicion = jugador.posicion + direc*vel;
@@ -315,5 +315,36 @@ void Interaccion::ldv(ListaObstaculos obstaculo, ListaEnemigos enemigo, Jugador 
 		else{
 			enemigo.lista[i]->teveo = false;
 		}
+	}
+}
+
+void Interaccion::interaccion(Jugador &jugador, ListaObjetos objetos){
+	CrashBox jug, obj;
+
+	jug = jugador.limites;
+	for (int i = 0; i < objetos.n_objetos; i++){
+		obj = objetos.lista[i]->getCrashBox();
+		float distancia = Vector3D::modulo(jug.posicion - obj.posicion);
+		if (distancia <= (jug.radio + obj.radio)){
+			switch (objetos.lista[i]->getTipo()){
+			case CODIGO:
+				jugador.codigo++;
+				break;
+			case PUNTOS:
+				jugador.puntos = objetos.lista[i]->getValor();
+				break;
+			case DANIO:
+				jugador.mod_danio = objetos.lista[i]->getValor();
+				break;
+			case VELOCIDAD:
+				jugador.mod_vel = objetos.lista[i]->getValor();
+				break;
+			case INVULNERABLE:
+				jugador.invencible = objetos.lista[i]->getValor();
+				break;
+			}
+			objetos.lista[i]->setDestruir(true);
+		}
+
 	}
 }

@@ -8,9 +8,10 @@
 #define PI 3.1416
 
 
-Disparo::Disparo(Jugador personaje, int vida, int danio) : destruir(false), radio(0.3), vida(1000), rojo(255), verde(0), azul(0), danio(1), enemigo(false), dib(true){
+Disparo::Disparo(Jugador personaje, int vida, int danio) : destruir(false), radio(0.3), vida(1000), rojo(255), verde(0), azul(0), enemigo(false), dib(true){
 	Vector3D velocidad;
 	float f = 3;
+	this->danio = danio;
 	pos.x = personaje.posicion.x + (1.4*cos(personaje.angrot * 2 * PI / 360)) + (0.7*sin(personaje.angrot * 2 * PI / 360)); 
 	pos.y = personaje.posicion.y - (0.7*cos(personaje.angrot * 2 * PI / 360)) + (1.4*sin(personaje.angrot * 2 * PI / 360)); 
 	pos.z = 0;
@@ -41,8 +42,8 @@ Disparo::Disparo(Enemigo &enem, int life, int damage, bool dibujar, float desfas
 		}
 		else{
 			Vector3D aux=enem.posicion;
-			aux.x += cos(desfase);
-			aux.y += sin(desfase);
+			aux.x += cos(desfase)*10;
+			aux.y += sin(desfase)*10;
 			aux.z = 0;
 			velocidad = velocidad.creavector(pos, aux);
 		}

@@ -25,5 +25,6 @@ public:
 	void rotaEnemigos();
 	void updateEnemigos(Vector3D jugador, ListaDisparos &ldis);
 	void borraEnemigos();
+	friend class Interaccion;
 };
 

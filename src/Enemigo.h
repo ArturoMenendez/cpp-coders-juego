@@ -21,6 +21,7 @@ public:
 	int vida;
 	int t0;
 	int t;
+	int puntos;
 	bool teveo;
 	float mov_teveo, mov_noteveo;
 	float giraanima;

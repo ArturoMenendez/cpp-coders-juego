@@ -3,8 +3,9 @@
 #include "Texto.h"
 
 
-Nivel::Nivel()
+Nivel::Nivel() :j(Vector3D(-19.0f,10.0f,0.0f))
 {
+
 	Pared sup(-20.0F, 12.5F, 20.0F, 12.5F), der(20.0F, 12.5F, 20.0F, -12.5F), inf(20.0F, -12.5F, -20.0F, -12.5F), izq(-20.0F, -12.5F, -20.0F, 12.5F);
 	caja[0] = sup;
 	caja[1] = der;
@@ -55,8 +56,8 @@ void Nivel::LeeNivel(){
 /*******7-ENEMIGO KAMIKAZE******************************/
 /*******8-PUERTA ENTRADA********************************/
 /*******9-PUERTA SALIDA*********************************/
-/*******10-CODIGO DE ACCESO*****************************/
-/*******11-FRAGMENTO CODIGO CLASE***********************/
+/*******10-OBJETO***************************************/
+/*******11-JEFE FINAL***********************************/
 /*******12-JEFE CUERPO A CUERPO*************************/
 /*******13-JEFE A DISTANCIA*****************************/
 /*******************************************************/
@@ -74,10 +75,20 @@ void Nivel::Carga(){
 		lobs.agregarObstaculo(pos, tam, (int)param[0], (bool)param[7]);
 	}
 	if (param[0] == 4){
-		j = Jugador(pos);
+		//j.Reinicia(pos);
+		j.movimiento = true;
+		j.tocapuerta = false;
+		j.contador = 0;
+		//j.mod_danio = 1;
+		//j.mod_vel = 1;
+		//j.invencible = 0;
+		j.posicion = j.limites.posicion = pos;
 	}
 	if (param[0] == 5 || param[0] == 6 || param[0] == 7 || param[0] == 12 ||param[0]==13){
 		lenem.agregarEnemigo(pos, (int)param[0]);
+	}
+	if (param[0] == 10){
+		lobj.agregarObjetos(pos, (int)param[7]);
 	}
 }
 
@@ -109,27 +120,28 @@ void Nivel::Dibuja(){
 	j.Pinta();
 	lobs.dibujarObstaculos();
 	ldis.dibujarDisparos();
-	marcador.dibujar();
-
+	lobj.dibujarObjetos();
 }
 
 void Nivel::Borrar(){
 	ldis.borraDisparos();
 	lenem.borraEnemigos();
 	lobs.borraObstaculos();
+	lobj.borraObjetos();
 }
 
 
 void Nivel::nuevoDisparo(){
-	ldis.agregarDisparos(j, 1000, 1);
+	ldis.agregarDisparos(j, 1000, j.mod_danio);
 }
 
 void Nivel::actualizaListas(){
 	lobs.actualizarObstaculos();
 	lobs.animarObstaculos();
 	lenem.destruirEnemigo();
+	lobj.destruirObjetos();
 	ldis.actualizarDisparos(25);
-	marcador.actualizarMarcador(j.vida, 0.025f);
+	j.invencibilidad(25);
 }
 
 void Nivel::updateEnemigos(){
@@ -145,6 +157,7 @@ void Nivel::interacciones(){
 	Interaccion::interaccion(lenem);
 	Interaccion::interaccion(j, lenem);
 	Interaccion::ldv(lobs, lenem, j);
+	Interaccion::interaccion(j,lobj);
 }
 
 void Nivel::rotaJugador(){
@@ -176,4 +189,23 @@ void Nivel::OnMotion(int x, int y){
 
 void Nivel::OnPassiveMotion(int x, int y){
 	j.PassiveMotion(x, y);
+}
+
+int Nivel::GetMejoras(){
+	if ((j.mod_danio != 1) && (j.mod_vel != 1) && (j.invencible > 0))
+		return 7;
+	if ((j.mod_danio != 1) && (j.mod_vel != 1))
+		return 4;
+	if ((j.mod_danio != 1) && (j.invencible > 0))
+		return 5;
+	if ((j.mod_vel != 1) && (j.invencible > 0))
+		return 6;
+	if (j.mod_danio != 1)
+		return 1;
+	if (j.mod_vel != 1)
+		return 2;
+	if (j.invencible > 0)
+		return 3;
+	else
+		return 0;
 }

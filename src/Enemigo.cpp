@@ -5,7 +5,7 @@
 #include "math.h"
 
 
-Enemigo::Enemigo(void) :t0(40), teveo(false), vida(2), posicion(0, 0, 0), giraanima(5), contador(0), f_explo(7), objetivo(0, 0, 0)
+Enemigo::Enemigo(void) :t0(40), teveo(false), vida(2), posicion(0, 0, 0), giraanima(5), contador(0), f_explo(7), objetivo(0, 0, 0), puntos(0)
 {
 	angrot = 0;
 	lin.posicion = posicion;

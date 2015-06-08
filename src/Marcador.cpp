@@ -15,9 +15,56 @@ Marcador::~Marcador()
 {
 }
 
-void Marcador::actualizarMarcador(int salud, float t){
+void Marcador::actualizarMarcador(int salud, float t, int puntos, int nivel, int vidas, int llaves, int mejoras){
 	if (salud < 0) salud = 0;
 	this->salud = salud;
+	this->puntuacion = puntos;
+	this->vidas = vidas;
+	this->nivel = nivel;
+	this->llaves = llaves;
+
+	if (mejoras==1){
+		this->objetos[0] = true;
+		this->objetos[1] = false;
+		this->objetos[2] = false;
+	}
+	else if (mejoras==2){
+		this->objetos[0] = false;
+		this->objetos[1] = true;
+		this->objetos[2] = false;
+	}
+	else if (mejoras == 3){
+		this->objetos[0] = false;
+		this->objetos[1] = false;
+		this->objetos[2] = true;
+	}
+	else if (mejoras == 4){
+		this->objetos[0] = true;
+		this->objetos[1] = true;
+		this->objetos[2] = false;
+	}
+	else if (mejoras == 5){
+		this->objetos[0] = true;
+		this->objetos[1] = false;
+		this->objetos[2] = true;
+	}
+	else if (mejoras == 6){
+		this->objetos[0] = false;
+		this->objetos[1] = true;
+		this->objetos[2] = true;
+	}
+	else if (mejoras == 7){
+		this->objetos[0] = true;
+		this->objetos[1] = true;
+		this->objetos[2] = true;
+	}
+	else {
+		this->objetos[0] = false;
+		this->objetos[1] = false;
+		this->objetos[2] = false;
+	}
+
+	
 
 	tiempo -= t;
 }
@@ -90,7 +137,7 @@ void Marcador::dibujar(){
 	//Nivel
 	Texto::setPos(-3.75, 15.25, 10.01);
 	Texto::text("NIVEL ", 1, 255, 255, 0);
-	Texto::numero(nivel, 1, 1, 255, 255, 0);
+	Texto::numero(nivel, 2, 1, 255, 255, 0);
 	
 
 	//Puntuacion
@@ -163,7 +210,19 @@ void Marcador::dibujar(){
 		glVertex3f(-2.5 + (i*3.25), 14.75, 10.01);
 		glVertex3f(-2.5 + (i*3.25), 12.75, 10.01);
 		glEnd();
-	}/**/
+	}
+	if (objetos[0]){
+		Texto::setPos(0, 13.75f, 11);
+		Texto::text("D", 1, 255, 255, 0);
+	}
+	if (objetos[1]){
+		Texto::setPos(3, 13.75f, 11);
+		Texto::text("V", 1, 255, 255, 0);
+	}
+	if (objetos[2]){
+		Texto::setPos(6, 13.75f, 11);
+		Texto::text("I", 1, 255, 255, 0);
+	}
 
 	//Tiempo
 	glColor3ub(255, 255, 255);

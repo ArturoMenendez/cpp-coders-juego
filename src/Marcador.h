@@ -13,7 +13,7 @@ class Marcador
 public:
 	Marcador();
 	~Marcador();
-	void actualizarMarcador(int salud, float t);
+	void actualizarMarcador(int salud, float t, int puntos, int nivel, int vidas, int llaves, int mejoras);
 	void dibujar();
 };
 

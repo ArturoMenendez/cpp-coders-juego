@@ -3,6 +3,7 @@
 #include "OpenGL.h"
 #include "glut.h"
 #include "Texto.h"
+#include "Marcador.h"
 
 
 class Gestor
@@ -18,7 +19,9 @@ public:
 		FIN
 	};
 	Estado estado;
-	bool pasar;
+	Marcador marcador;
+	int vidas;
+
 	//metodos
 	//constructor y destructor
 	Gestor();
@@ -31,6 +34,11 @@ public:
 
 	//metodos para control del juego
 	void Condiciones();
+
+	//metodos para marcador
+	void SetVidas();
+	int GetTiempo();
+
 
 	//metodos relacionados mayormente con glut 
 	void OnKeyboardDown(unsigned char);

@@ -14,5 +14,6 @@ public:
 	void dibujarObjetos();
 	void destruirObjetos();
 	void borraObjetos();
+	friend class Interaccion;
 };
 

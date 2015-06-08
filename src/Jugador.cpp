@@ -10,7 +10,7 @@ Jugador::Jugador(void)
 {
 }
 
-Jugador::Jugador(Vector3D pos) :colision(false), vida(10), movimiento(true), tocapuerta(false), contador(0)
+Jugador::Jugador(Vector3D pos) :colision(false), salud(10), movimiento(true), tocapuerta(false), contador(0), mod_danio(1), mod_vel(1), invencible(0), codigo(0), puntos(0)
 {
 	this->posicion.x = pos.x;
 	this->posicion.y = pos.y;
@@ -21,6 +21,10 @@ Jugador::Jugador(Vector3D pos) :colision(false), vida(10), movimiento(true), toc
 	keyStates['s'] = false;
 	keyStates['d'] = false;
 	keyStates['w'] = false;
+	keyStates['A'] = false;
+	keyStates['S'] = false;
+	keyStates['D'] = false;
+	keyStates['W'] = false;
 	limites.posicion = pos;
 	limites.posicion.z = 0;
 	limites.radio = 0.8;
@@ -164,17 +168,17 @@ void Jugador::Rota(){
 
 void Jugador::KeyOperations(void){
 	if (movimiento){
-		if (keyStates['w']) {
-			posicion.y += 0.2;
+		if (keyStates['w'] || keyStates['W']) {
+			posicion.y += 0.15*mod_vel;
 		}
-		if (keyStates['s']) {
-			posicion.y -= 0.2;
+		if (keyStates['s'] || keyStates['S']) {
+			posicion.y -= 0.15*mod_vel;
 		}
-		if (keyStates['d']) {
-			posicion.x += 0.2;
+		if (keyStates['d'] || keyStates['D']) {
+			posicion.x += 0.15*mod_vel;
 		}
-		if (keyStates['a']) {
-			posicion.x -= 0.2;
+		if (keyStates['a'] || keyStates['A']) {
+			posicion.x -= 0.15*mod_vel;
 		}
 		if (posicion.x > MAX_X - limites.radio) posicion.x = MAX_X - limites.radio;
 		if (posicion.x < -MAX_X + limites.radio) posicion.x = -MAX_X + limites.radio;
@@ -203,10 +207,16 @@ void Jugador::Anima(){
 CrashBox Jugador::getCrashBox(){
 	return limites;
 }
-
-void Jugador::act_Vida(int danio){
-	vida -= danio;
-	if (vida <= 0) movimiento = false;
+void Jugador::invencibilidad(int t){
+	if (invencible){
+		invencible -= t;
+	}
+}
+void Jugador::act_salud(int danio){
+	if (!invencible){
+		salud -= danio;
+		if (salud <= 0) movimiento = false;
+	}
 }
 
 void Jugador::Explota(){
@@ -225,4 +235,16 @@ void Jugador::Explota(){
 	glPopMatrix();
 	contador++;
 	glEnable(GL_LIGHTING);
+}
+
+void Jugador::Reinicia(Vector3D posicion){
+	this->posicion = posicion;
+	colision = false;
+	salud = 10;
+	movimiento = true;
+	tocapuerta = false;
+	contador = 0;
+	mod_danio = 1;
+	mod_vel = 1;
+	invencible = 0;
 }

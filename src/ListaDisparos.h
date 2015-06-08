@@ -17,5 +17,6 @@ public:
 	void actualizarDisparos(const int t);
 	void dibujarDisparos();
 	void borraDisparos();
+	friend class Interaccion;
 };
 
