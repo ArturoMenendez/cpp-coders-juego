@@ -46,7 +46,7 @@ void Obstaculo::Dibuja(){
 	switch (id){
 	case(1) : {
 		glPushMatrix();
-		glColor3ub(120, 150, 80);
+		glColor3ub(200, 200, 200);
 		glTranslatef(posicion.x, posicion.y, posicion.z);
 		glTranslatef(0, 0, tamanio.z / 2);
 		glScalef(tamanio.x, tamanio.y, tamanio.z);
@@ -125,7 +125,7 @@ void Obstaculo::Dibuja(){
 
 	case(9) : {
 		glPushMatrix();
-		glColor3ub(180, 180, 220);
+		glColor3ub(200, 100, 80);
 		glTranslatef(posicion.x, posicion.y, posicion.z);
 		glTranslatef(0, 0, tamanio.z / 2);
 		glScalef(tamanio.x, tamanio.y, tamanio.z);

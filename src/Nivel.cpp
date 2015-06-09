@@ -3,8 +3,9 @@
 #include "Texto.h"
 
 
-Nivel::Nivel() : j(Vector3D(-19.0f, 10.0f, 0.0f))
+Nivel::Nivel() :j(Vector3D(-19.0f,10.0f,0.0f))
 {
+
 	Pared sup(-20.0F, 12.5F, 20.0F, 12.5F), der(20.0F, 12.5F, 20.0F, -12.5F), inf(20.0F, -12.5F, -20.0F, -12.5F), izq(-20.0F, -12.5F, -20.0F, 12.5F);
 	caja[0] = sup;
 	caja[1] = der;
@@ -83,7 +84,7 @@ void Nivel::Carga(){
 		//j.invencible = 0;
 		j.posicion = j.limites.posicion = pos;
 	}
-	if (param[0] == 5 || param[0] == 6 || param[0] == 7 || param[0] == 11 || param[0] == 12 || param[0] == 13){
+	if (param[0] == 5 || param[0] == 6 || param[0] == 7 || param[0] == 12 ||param[0]==13){
 		lenem.agregarEnemigo(pos, (int)param[0]);
 	}
 	if (param[0] == 10){
@@ -92,8 +93,8 @@ void Nivel::Carga(){
 }
 
 void Nivel::Dibuja(){
-	static bitmap suelo("suelo.bmp");
 	glPushMatrix();
+	static bitmap suelo("suelo.bmp");
 	glEnable(GL_LIGHTING);
 	suelo.usarTextura();
 	glBegin(GL_QUADS);	//SUELO
@@ -113,6 +114,7 @@ void Nivel::Dibuja(){
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 
+	
 	glEnable(GL_LIGHTING);
 	glPopMatrix();
 	for (int i = 0; i < 4; i++)	caja[i].Dibuja();
@@ -140,14 +142,16 @@ void Nivel::actualizaListas(){
 	lobs.actualizarObstaculos();
 	lobs.animarObstaculos();
 	lenem.destruirEnemigo();
-	ldis.actualizarDisparos(25);
 	lobj.actualizarObjetos();
+	ldis.actualizarDisparos(25);
 	j.invencibilidad(25);
+	j.puntos = 0;
 }
 
 void Nivel::updateEnemigos(){
 	lenem.mueveEnemigos();
 	lenem.updateEnemigos(j.limites.posicion, ldis);
+
 }
 
 void Nivel::interacciones(){
@@ -157,14 +161,16 @@ void Nivel::interacciones(){
 	Interaccion::interaccion(lenem, lobs);
 	Interaccion::interaccion(lenem);
 	Interaccion::interaccion(j, lenem);
-	Interaccion::interaccion(j, lobj);
 	Interaccion::ldv(lobs, lenem, j);
+	Interaccion::interaccion(j,lobj);
 }
 
 void Nivel::rotaJugador(){
 	j.Rota();
 	j.Anima();
 }
+
+
 
 void Nivel::KeyOperations(){
 	j.KeyOperations();

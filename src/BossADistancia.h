@@ -5,7 +5,7 @@ class BossADistancia :
 {
 public:
 	//variables
-	int cont;
+
 	//metodos
 	BossADistancia(Vector3D, int);
 	~BossADistancia();

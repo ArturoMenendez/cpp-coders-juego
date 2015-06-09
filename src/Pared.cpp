@@ -23,14 +23,23 @@ Vector3D Pared::getLimite2(){
 
 void Pared::Dibuja(){
 	//codigo para textura
-	glColor3ub(255, 0, 0);
+	static bitmap pared("pared.bmp");
+	glEnable(GL_LIGHTING);
+	pared.usarTextura();
+	glColor3ub(255, 255, 255);
 	glBegin(GL_QUADS);	//PARED SUPERIOR
+	glTexCoord2f(1.0, 1.0);
 	glNormal3f(0, 0, 0);//normales para iluminacion
 	glVertex3f(limite1.x, limite1.y, 0.0);
+	glTexCoord2f(1.0, 0.0);
 	glNormal3f(0, 0, 10);
 	glVertex3f(limite1.x, limite1.y, 10.0);
+	glTexCoord2f(0.0, 0.0);
 	glVertex3f(limite2.x, limite2.y, 10.0);
+	glTexCoord2f(0.0, 1.0);
 	glNormal3f(0, 0, 0);
 	glVertex3f(limite2.x, limite2.y, 0.0);
 	glEnd();
+	glDisable(GL_TEXTURE_2D);
+
 }

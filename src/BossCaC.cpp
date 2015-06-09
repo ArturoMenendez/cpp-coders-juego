@@ -9,7 +9,7 @@ BossCaC::BossCaC() :Enemigo()
 BossCaC::BossCaC(Vector3D posicion, int id) : Enemigo(posicion, id), enreposo(true), cont(0)
 {
 	mov_teveo = 1.5;
-	vida = 2;
+	vida = 55;
 	t0=80;
 	t = 0;
 	limites.radio = 3;
@@ -22,13 +22,14 @@ BossCaC::~BossCaC()
 
 void BossCaC::Dibuja(){
 	if (vida > 0){
-		static bitmap texrueda("bola.bmp");
+		static bitmap texrueda("broca.bmp");
+		static bitmap cu("cuerpobosscac.bmp");
+
 		glPushMatrix();
 		lin.Dibuja();
 		limites.Dibuja();
-
+		glColor3ub(30, 30, 30);
 		glEnable(GL_LIGHTING);
-		glColor3ub(255, 255, 255);
 
 		glTranslatef(posicion.x, posicion.y, 0);
 		glRotatef(angrot, 0, 0, 1);
@@ -37,11 +38,10 @@ void BossCaC::Dibuja(){
 		glRotatef(90, 1, 0, 0);
 
 		GiraAnima();
-		texrueda.usarTextura();
+		
 		GLUquadricObj *rueda = gluNewQuadric();
-		gluQuadricOrientation(rueda, GLU_OUTSIDE);
-		gluQuadricTexture(rueda, GL_TRUE);
-		glColor3ub(255, 255, 255);
+		
+		
 		gluCylinder(rueda, 2.5, 3, 0.5, 20, 20);
 		glTranslatef(0, 0, 0.5);
 		//glColor3ub(100, 100, 100);
@@ -56,18 +56,29 @@ void BossCaC::Dibuja(){
 		glTranslatef(0, 0, 0.5);
 		gluCylinder(rueda, 3, 2.5, 0.5, 20, 20);
 		glPopMatrix();
-		glDisable(GL_TEXTURE_2D);
-		glColor3ub(100, 100, 100);
+
+		glColor3ub(255, 255, 255);
 		glPushMatrix();
 		glTranslatef(-3, 0, 3);
 		glRotatef(90, 0, 1, 0);
-		GLUquadricObj *cuerpo = gluNewQuadric();
-		gluCylinder(cuerpo, 2, 2, 5, 20, 20);
+
+		cu.usarTextura();
+		gluQuadricOrientation(rueda, GLU_OUTSIDE);
+		gluQuadricTexture(rueda, GL_TRUE);
+		gluCylinder(rueda, 2, 2, 5, 20, 20);
 		glTranslatef(0, 0, 5);
+		texrueda.usarTextura();
+		GLUquadricObj *cuerpo = gluNewQuadric();
+		gluQuadricOrientation(cuerpo, GLU_OUTSIDE);
+		gluQuadricTexture(cuerpo, GL_TRUE);
 		gluCylinder(cuerpo, 0.5, 0.5, 0.5, 20, 20);
 		glTranslatef(0, 0, 0.5);
 		GiraAnima();
-		glutSolidCone(1.8, 4, 20, 20);
+		
+		
+		gluCylinder(cuerpo, 1.8,0,4,20,20);
+		//glutSolidCone(1.8, 4, 20, 20);
+		glDisable(GL_TEXTURE_2D);
 		glPopMatrix();
 		glPopMatrix();
 	}
@@ -145,24 +156,24 @@ void BossCaC::Rota(){
 			float aux = Vector3D::angvect(dirx, v1);
 			angrot = -aux;
 		}
-		cont++;
-		if (cont >= 20){
+objetivo = lin.direccion;
+		if (t >= 20){
 			enreposo = false;			
 			objetivo = Vector3D::creavector(lin.posicion,lin.direccion);
 			objetivo = Vector3D::unitario(objetivo);
 			cont = 0;
 		}
-		//objetivo = lin.direccion;
+		//
 
 	}
 
 }
 
 bool BossCaC::atacar(int t){
-	static int time = 250;
+	static int time = 200;
 	time -= t;
 	if (time < 0) {
-		time = 250;
+		time = 200;
 		return true;
 	}
 	else return false;

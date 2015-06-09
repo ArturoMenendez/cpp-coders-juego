@@ -1,9 +1,9 @@
 #pragma once
 #include "stdio.h"
-#include "ListaObjetos.h"
 #include "ListaObstaculos.h"
 #include "ListaEnemigos.h"
 #include "ListaDisparos.h"
+#include "ListaObjetos.h"
 #include "Jugador.h"
 #include "Pared.h"
 
@@ -44,8 +44,11 @@ public:
 	void OnMotion(int x, int y);
 	void OnPassiveMotion(int x, int y);
 
+
 	int GetPuntos(){ return j.puntos; }
+	int GetPuntosEnemigo(){ return lenem.GetPuntosEnemigo(); }
 	int GetCodigo(){ return j.codigo; }
+	void SetCodigo(int num){ j.codigo = num; }
 	int GetMejoras();
 	int GetNumeroEnemigos(){ return lenem.getNumero(); }
 	bool GetTocapuerta(){ return j.tocapuerta; }

@@ -5,7 +5,7 @@
 #include "math.h"
 
 
-Enemigo::Enemigo(void) :t0(40), teveo(false), vida(2), posicion(0, 0, 0), giraanima(5), contador(0), f_explo(7), objetivo(0, 0, 0), puntos(0)
+Enemigo::Enemigo(void) :t0(40), teveo(false), vida(2), posicion(0, 0, 0), giraanima(5), contador(0), f_explo(7), objetivo(0, 0, 0), puntos(10)
 {
 	angrot = 0;
 	lin.posicion = posicion;
@@ -16,7 +16,7 @@ Enemigo::Enemigo(void) :t0(40), teveo(false), vida(2), posicion(0, 0, 0), giraan
 
 }
 
-Enemigo::Enemigo(Vector3D pos, int id) : t0(40), teveo(false), limites(pos, 1.1F), vida(2), contador(0), giraanima(0), f_explo(7), objetivo(0, 0, 0), mov_teveo(20), mov_noteveo(20)
+Enemigo::Enemigo(Vector3D pos, int id) : t0(40), teveo(false), limites(pos, 1.1F), vida(2), contador(0), giraanima(0), f_explo(7), objetivo(0, 0, 0), mov_teveo(20), mov_noteveo(20), puntos(10)
 {
 	posicion = pos;
 	this->id = id;
@@ -107,7 +107,7 @@ void Enemigo::GiraAnima(){
 }
 
 void Enemigo::Explota(){
-		glDisable(GL_LIGHTING);
+	glDisable(GL_LIGHTING);
 		glPushMatrix();
 		glTranslatef(posicion.x, posicion.y, 5);
 		glScalef(contador / f_explo, contador / f_explo, contador / f_explo);

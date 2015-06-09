@@ -1,6 +1,7 @@
 #pragma once
-
+#include "bitmap.h"
 #include "Vector3D.h"
+
 class Pared
 {
 	Vector3D limite1;

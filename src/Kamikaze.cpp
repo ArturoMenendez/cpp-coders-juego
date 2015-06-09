@@ -9,7 +9,7 @@ Kamikaze::Kamikaze(Vector3D pos, int id) : Enemigo(pos, id), rueda(0), ataca(fal
 {
 	rueda = 0;
 	giraanima=4.5;
-	mov_teveo = 8;
+	mov_teveo = 7;
 }
 
 Kamikaze::~Kamikaze()
@@ -43,7 +43,6 @@ void Kamikaze::Dibuja()
 		glutSolidCone(0.5, 0.5, 20, 20);
 		///////////////////////////
 		glPopMatrix();
-		glDisable(GL_LIGHTING);
 	}
 	else
 		Explota();

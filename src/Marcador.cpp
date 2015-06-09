@@ -23,12 +23,12 @@ void Marcador::actualizarMarcador(int salud, float t, int puntos, int nivel, int
 	this->nivel = nivel;
 	this->llaves = llaves;
 
-	if (mejoras == 1){
+	if (mejoras==1){
 		this->objetos[0] = true;
 		this->objetos[1] = false;
 		this->objetos[2] = false;
 	}
-	else if (mejoras == 2){
+	else if (mejoras==2){
 		this->objetos[0] = false;
 		this->objetos[1] = true;
 		this->objetos[2] = false;
@@ -63,6 +63,9 @@ void Marcador::actualizarMarcador(int salud, float t, int puntos, int nivel, int
 		this->objetos[1] = false;
 		this->objetos[2] = false;
 	}
+
+	
+
 	tiempo -= t;
 }
 
@@ -175,6 +178,8 @@ void Marcador::dibujar(){
 	Texto::text("x", 1, 255, 255, 0);
 	Texto::numero(vidas, 2, 1, 255, 255, 0);
 
+	
+
 	//LLaves (trozos de codigo)
 	glColor3ub(255, 255, 255);
 	codigo.usarTextura();
@@ -194,6 +199,7 @@ void Marcador::dibujar(){
 	Texto::numero(llaves, 1, 1, 255, 255, 0);
 	Texto::text("/", 1, 255, 255, 0);
 	Texto::numero(total_llaves, 1, 1, 255, 255, 0);
+
 
 	//Objetos/mejoras
 	glColor3ub(150, 150, 150);

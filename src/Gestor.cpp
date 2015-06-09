@@ -20,9 +20,10 @@ void Gestor::Dibuja(){
 		}
 		nivel.Borrar();
 		nivel.LeeNivel();
-
 		nivel.SetSalud(10);
-		vidas = 2;
+		nivel.SetCodigo(0);
+		marcador.SetTiempo(500);
+		vidas = 3;
 		glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
 		Texto::setPos(-18, 15, 0);
 		Texto::text("CPP CODERS: RAIDERS OF THE LOST CLASS", 1, 255, 20, 20);
@@ -54,7 +55,6 @@ void Gestor::Dibuja(){
 	}
 	else if (estado == JUEGO){
 		glutSetCursor(GLUT_CURSOR_NONE);
-
 		marcador.dibujar();
 		nivel.Dibuja();
 	}
@@ -95,6 +95,8 @@ void Gestor::Dibuja(){
 
 	else if (estado == GAMEOVER){
 		glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
+
+		nivel.SetCodigo(nivel.GetNivel());
 		nivel.Dibuja();
 		marcador.dibujar();
 		glPushMatrix();
@@ -111,8 +113,11 @@ void Gestor::Dibuja(){
 		glVertex2f(-5, 1);
 		glEnd();
 
-		if (vidas>0)OpenGL::Print("CONTINUAR", 395, 340, 255, 0, 0);
-		else OpenGL::Print("NO TIENES VIDAS", 375, 340, 255, 0, 0);
+		if (vidas>0)
+			OpenGL::Print("CONTINUAR", 395, 340, 255, 0, 0);
+
+		if (vidas<=0)
+			OpenGL::Print("NO TIENES VIDAS", 375, 340, 255, 0, 0);
 
 		glBegin(GL_POLYGON);
 		glColor3ub(200, 200, 200);
@@ -126,17 +131,23 @@ void Gestor::Dibuja(){
 
 		OpenGL::Print("SALIR", 420, 445, 255, 0, 0);
 		glPopMatrix();
+
 	}
 	else if (estado == FIN){
+		glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
 		Texto::setPos(-8, 12, 0);
 		Texto::text("ENHORABUENA!!", 1, 255, 20, 20);
 		Texto::setPos(-22.5, 8, 0);
 		Texto::text("GRACIAS A LOS FRAGMENTOS DE CODIGO RECUPERADOS", 1, 255, 20, 20);
 		Texto::setPos(-17, 4, 0);
 		Texto::text("SE HA RECONSTRUIDO LA CLASE ASIMOV", 1, 255, 20, 20);
-		Texto::setPos(-21.5, -4, 0);
+		Texto::setPos(-21.5, -0, 0);
 		Texto::text("Y LOS ROBOTS VUELVEN A SERVIR A LOS HOMBRES", 1, 255, 20, 20);
-		Texto::setPos(-18, -10, 0);
+		Texto::setPos(-20, -4, 0);
+		Texto::text("PUNTUACION: ", 1, 255, 20, 20);
+		Texto::setPos(-0, -4, 0);
+		Texto::numero(puntuacion, 6, 1, 255, 20, 20);
+		Texto::setPos(-18, -12, 0);
 		Texto::text("(Haz clic para volver a la pantalla de inicio)", 0.7, 255, 20, 20);
 	}
 }
@@ -147,22 +158,28 @@ void Gestor::Update(){
 		nivel.updateEnemigos();
 		nivel.interacciones();
 		nivel.rotaJugador();
-		marcador.actualizarMarcador(nivel.GetSalud(), 0.025, nivel.GetPuntos(), nivel.GetNivel(), vidas, nivel.GetCodigo(), nivel.GetMejoras());
+		marcador.actualizarMarcador(nivel.GetSalud(),0.025, GetPuntos(), nivel.GetNivel(), vidas, nivel.GetCodigo(),nivel.GetMejoras());
 	}
 	else if (estado == GAMEOVER) nivel.actualizaListas();
 	else if (estado == PAUSA) nivel.actualizaListas();
 }
 
+
+
 void Gestor::Condiciones(){
 	if (estado == JUEGO){
-		if (nivel.GetNumeroEnemigos() == 0 && nivel.GetTocapuerta()){
+		if (nivel.GetNumeroEnemigos() == 0 && /*nivel.GetCodigo()==(nivel.GetNivel()+1) &&*/ nivel.GetTocapuerta()){
 			nivel.SetNivel(nivel.GetNivel() + 1);
 			if (nivel.GetNivel() < NUM_NIVELES){
 				nivel.SetPasaNivel(nivel.GetNivel());
 				nivel.Borrar();
 				nivel.LeeNivel();
 			}
-			else estado = FIN;
+			else{
+				puntuacion += marcador.GetTiempo() * 10;
+				puntuacion += nivel.GetPuntos();
+				estado = FIN;
+			}
 		}
 		if (nivel.GetSalud() <= 0){
 			estado = GAMEOVER;
@@ -171,13 +188,17 @@ void Gestor::Condiciones(){
 }
 
 
+int Gestor::GetPuntos(){
+	puntuacion += nivel.GetPuntos();
+	puntuacion += nivel.GetPuntosEnemigo();
+	return puntuacion;
+}
+
+
 
 void Gestor::OnKeyboardDown(unsigned char key){
 	if (estado == INICIO){
-		if (key == 'e' || key == 'E')
-			estado = JUEGO;
-		else if (key == 's' || key == 'S')
-			exit(0);
+		
 	}
 	else if (estado == JUEGO){
 		nivel.OnKeyboardDown(key, 0, 0);
@@ -185,10 +206,7 @@ void Gestor::OnKeyboardDown(unsigned char key){
 			estado = PAUSA;
 	}
 	else if (estado == PAUSA){
-		if (key == 'c' || key == 'C')
-			estado = JUEGO;
-		if (key == 's' || key == 'S')
-			estado = INICIO;
+		
 	}
 }
 
@@ -208,9 +226,17 @@ void Gestor::OnMouseDown(int button, int state, int x, int y){
 
 	if (estado == INICIO){
 		if (x > 310 && x < 590 && y>140 && y < 196){
+			nivel.SetModificadores();
 			estado = JUEGO;
 			state = GLUT_UP;
-
+			nivel.OnKeyboardUp('w', 0, 0);
+			nivel.OnKeyboardUp('a', 0, 0);
+			nivel.OnKeyboardUp('s', 0, 0);
+			nivel.OnKeyboardUp('d', 0, 0);
+			nivel.OnKeyboardUp('W', 0, 0);
+			nivel.OnKeyboardUp('A', 0, 0);
+			nivel.OnKeyboardUp('S', 0, 0);
+			nivel.OnKeyboardUp('D', 0, 0);
 		}
 		if (x > 310 && x < 590 && y>234 && y < 290){
 			exit(0);
@@ -225,6 +251,14 @@ void Gestor::OnMouseDown(int button, int state, int x, int y){
 	if (estado == PAUSA){
 		if (x > 320 && x < 580 && y>320 && y < 373){
 			estado = JUEGO;
+			nivel.OnKeyboardUp('w', 0, 0);
+			nivel.OnKeyboardUp('a', 0, 0);
+			nivel.OnKeyboardUp('s', 0, 0);
+			nivel.OnKeyboardUp('d', 0, 0);
+			nivel.OnKeyboardUp('W', 0, 0);
+			nivel.OnKeyboardUp('A', 0, 0);
+			nivel.OnKeyboardUp('S', 0, 0);
+			nivel.OnKeyboardUp('D', 0, 0);
 			state = GLUT_UP;
 
 		}
@@ -243,8 +277,17 @@ void Gestor::OnMouseDown(int button, int state, int x, int y){
 				nivel.Borrar();
 				nivel.LeeNivel();
 				estado = JUEGO;
+				nivel.OnKeyboardUp('w', 0, 0);
+				nivel.OnKeyboardUp('a', 0, 0);
+				nivel.OnKeyboardUp('s', 0, 0);
+				nivel.OnKeyboardUp('d', 0, 0);
+				nivel.OnKeyboardUp('W', 0, 0);
+				nivel.OnKeyboardUp('A', 0, 0);
+				nivel.OnKeyboardUp('S', 0, 0);
+				nivel.OnKeyboardUp('D', 0, 0);
 				state = GLUT_UP;
 			}
+
 		}
 		if (x > 320 && x < 580 && y>425 && y < 478){
 			estado = INICIO;

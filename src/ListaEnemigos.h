@@ -22,6 +22,7 @@ public:
 	void dibujarEnemigos();
 	void destruirEnemigo();
 	void mueveEnemigos();
+	int GetPuntosEnemigo();
 	void updateEnemigos(Vector3D jugador);
 	void rotaEnemigos();
 	void updateEnemigos(Vector3D jugador, ListaDisparos &ldis);

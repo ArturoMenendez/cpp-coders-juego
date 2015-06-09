@@ -123,6 +123,19 @@ void ListaEnemigos::borraEnemigos(){
 	n_enemigos = 0;
 }
 
+int ListaEnemigos::GetPuntosEnemigo(){
+	if (n_enemigos != 0){
+		for (int i = 0; i < n_enemigos; i++){
+			if (lista[i]->vida <= 0 && lista[i]->contador >= 14)
+				return lista[i]->puntos;
+			else
+				return 0;
+		}
+	}
+		return 0;
+}
+
+
 int ListaEnemigos::getNumero(){
 	return n_enemigos;
 }

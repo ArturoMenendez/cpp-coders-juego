@@ -10,6 +10,7 @@ BossFinal::BossFinal(Vector3D posicion, int id) : Enemigo(posicion, id), time1(3
 	f_explo = 2;
 	limites.radio = 4;
 	posicion.z = 6;
+	vida = 10;
 }
 
 

@@ -130,6 +130,7 @@ void OnTimer(int value){
 
 	gestor.Update();
 	gestor.Condiciones();
+	//gestor.GetPuntos();
 
 	glutTimerFunc(25, OnTimer, 0);
 	glutPostRedisplay();

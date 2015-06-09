@@ -24,16 +24,16 @@ Disparo::Disparo(Jugador personaje, int vida, int dam) : destruir(false), radio(
 	limites.tipo = CIRCULO;
 }
 
-Disparo::Disparo(Enemigo &enem, int life, int damage, bool dibujar,float rad, float desfase) : destruir(false), radio(rad), vida(life), rojo(0), verde(0), azul(255), danio(damage), enemigo(true), dib(dibujar){
+Disparo::Disparo(Enemigo &enem, int life, int damage, bool dibujar, float rad, float desfase) : destruir(false), radio(rad), vida(life), rojo(0), verde(0), azul(255), danio(damage), enemigo(true), dib(dibujar){
 	Vector3D velocidad;
 	float f = 3;
 	pos.x = enem.posicion.x;
 	pos.y = enem.posicion.y;
 	pos.z = 1.7;
 	if (enem.id == 12){
-		velocidad = velocidad.creavector(pos, pos+enem.objetivo);
+		velocidad = velocidad.creavector(pos,pos+enem.objetivo);
 	}
-	if (enem.id == 13){
+	else if(enem.id == 13){
 		if (enem.teveo){
 			velocidad = velocidad.creavector(pos, enem.lin.direccion);
 			velocidad.x += desfase*(rand() / (float)RAND_MAX);

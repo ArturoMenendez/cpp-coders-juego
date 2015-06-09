@@ -7,6 +7,7 @@ CaC::CaC() : Enemigo()
 
 CaC::CaC(Vector3D pos, int id) : Enemigo(pos, id)
 {
+	mov_teveo = 8;
 }
 
 CaC::~CaC()

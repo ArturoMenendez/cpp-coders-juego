@@ -2,12 +2,15 @@
 #include "BossADistancia.h"
 
 
-BossADistancia::BossADistancia(Vector3D posicion, int id) : Enemigo(posicion, id), cont(0)
+BossADistancia::BossADistancia(Vector3D posicion, int id) : Enemigo(posicion, id)
 {
+	t0 = 100;
 	t = t0;
 	mov_noteveo = 40;
 	f_explo = 2;
-	vida = 20;
+	vida = 40;
+	puntos = 300;
+	limites.radio = 2.5;
 }
 
 
@@ -18,42 +21,46 @@ BossADistancia::~BossADistancia()
 
 void BossADistancia::Dibuja(){
 	if (vida > 0){
-			//static bitmap asdf("bola.bmp");
-			glPushMatrix();
-			lin.Dibuja();
-			limites.Dibuja();
+		//static bitmap asdf("bola.bmp");
+		glPushMatrix();
+		lin.Dibuja();
+		limites.Dibuja();
 
-			glEnable(GL_LIGHTING);
-			glColor3ub(255, 255, 255);
+		glEnable(GL_LIGHTING);
+		glColor3ub(255, 255, 255);
 
-			glTranslatef(posicion.x, posicion.y, 0);
-			glRotatef(angrot, 0, 0, 1);
-			glPushMatrix();
+		glTranslatef(posicion.x, posicion.y, 0);
+		glRotatef(angrot, 0, 0, 1);
+		glPushMatrix();
 
-			GLUquadricObj *cuerpo = gluNewQuadric();
-			gluCylinder(cuerpo, 3, 2, 5, 20, 20);
-			glPushMatrix();
-			glTranslatef(0,0,3);
-			glRotatef(90, 0, 1, 0);
-			gluCylinder(cuerpo, 0, 1, 4, 20, 20);
-			glPopMatrix();
-			glPopMatrix();
-			glPopMatrix();
-
-		if (vida <= 0){
+		GLUquadricObj *cuerpo = gluNewQuadric();
+		gluCylinder(cuerpo, 3, 2, 5, 20, 20);
+		glPushMatrix();
+		glTranslatef(0, 0, 3);
+		glRotatef(90, 0, 1, 0);
+		gluCylinder(cuerpo, 0, 1, 4, 20, 20);
+		glPopMatrix();
+		glTranslatef(0, 0, 5);
+		gluCylinder(cuerpo, 2.5, 2.5, 2, 20, 20);
+		glTranslatef(0,0,2);
+		gluDisk(cuerpo,0,2.5,20,20);
+		glPopMatrix();
+		glPopMatrix();
+	}
+	else{
 			Explota();
 		}
 	}
-}
+
 
 bool BossADistancia::atacar(int t){
 	static int time = 2500;
 	time -= t;
-	if (time % 500 == 0 && time!=2500){
+	if (time%500==0&&time!=2500){
 		teveo = true;
 		return true;
 	}
-
+	
 
 	if (time < 1) {
 		time = 2500;
