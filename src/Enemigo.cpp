@@ -107,7 +107,7 @@ void Enemigo::GiraAnima(){
 }
 
 void Enemigo::Explota(){
-	glDisable(GL_LIGHTING);
+		glDisable(GL_LIGHTING);
 		glPushMatrix();
 		glTranslatef(posicion.x, posicion.y, 5);
 		glScalef(contador / f_explo, contador / f_explo, contador / f_explo);

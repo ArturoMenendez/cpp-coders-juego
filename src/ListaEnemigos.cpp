@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "ListaEnemigos.h"
 #include "ListaDisparos.h"
 #define ADISTANCIA		5
@@ -5,6 +6,7 @@
 #define KAMIKAZE		7
 #define BOSSCAC			12
 #define BOSSADISTANCIA	13
+#define BOSSFINAL		11
 
 ListaEnemigos::ListaEnemigos()
 {
@@ -42,6 +44,11 @@ void ListaEnemigos::agregarEnemigo(Vector3D posicion, int tipo){
 			lista[n_enemigos++] = nuevo;
 			break;
 		}
+		case(BOSSFINAL) : {
+			nuevo = new BossFinal(posicion, BOSSFINAL);
+			lista[n_enemigos++] = nuevo;
+			break;
+		}
 		default:
 			break;
 		}
@@ -75,24 +82,31 @@ void ListaEnemigos::updateEnemigos(Vector3D jugador, ListaDisparos &ldis){
 		lista[i]->Update();
 		lista[i]->lin.direccion = jugador;
 		if (lista[i]->atacar(25)) {
-			if (lista[i]->id == ADISTANCIA)		ldis.agregarDisparos(*lista[i], 1000, 1, true); //modificar
-			if (lista[i]->id == CAC)	ldis.agregarDisparos(*lista[i], 100, 2, true);
+			if (lista[i]->id == ADISTANCIA)		ldis.agregarDisparos(*lista[i], 1000, 1, true, 0.3); //modificar
+			if (lista[i]->id == CAC)	ldis.agregarDisparos(*lista[i], 100, 2, true, 0.3);
 			if (lista[i]->id == KAMIKAZE)	{
-				ldis.agregarDisparos(*lista[i], 100, 5, true);
+				ldis.agregarDisparos(*lista[i], 100, 4, true, 0.8);
 				lista[i]->act_Vida(100);
 			}
 			if (lista[i]->id == BOSSCAC)
-				ldis.agregarDisparos(*lista[i], 1000, 1, true);
+				ldis.agregarDisparos(*lista[i], 1000, 3, true, 0.3);
 			if (lista[i]->id == BOSSADISTANCIA){
 				if (lista[i]->teveo){
-					ldis.agregarDisparos(*lista[i], 1000, 1, true, 5);
-					ldis.agregarDisparos(*lista[i], 1000, 1, true);
-					ldis.agregarDisparos(*lista[i], 1000, 1, true, -5);
+					ldis.agregarDisparos(*lista[i], 1000, 1, true, 0.5, 5);
+					ldis.agregarDisparos(*lista[i], 1000, 1, true, 0.5);
+					ldis.agregarDisparos(*lista[i], 1000, 1, true, 0.5, -5);
 				}
 				else{
 					for (float j = 0; j <= 6.28f; j += 0.314f){
-						ldis.agregarDisparos(*lista[i], 1000, 1, true, j);
+						ldis.agregarDisparos(*lista[i], 1000, 1, true, 0.3, j);
 					}
+				}
+			}
+			if (lista[i]->id == BOSSFINAL){
+				ldis.agregarDisparos(*lista[i], 1000, 2, true, 0.8);
+				if (lista[i]->teveo){
+					Vector3D pos(18 - rand() % 37, 10.5 - rand() % 24, 0);
+					agregarEnemigo(pos, rand() % 3 + 5);
 				}
 			}
 		}
@@ -107,4 +121,8 @@ void ListaEnemigos::borraEnemigos(){
 	for (int i = 0; i < n_enemigos; i++)
 		delete lista[i];
 	n_enemigos = 0;
+}
+
+int ListaEnemigos::getNumero(){
+	return n_enemigos;
 }

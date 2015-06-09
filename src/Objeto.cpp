@@ -27,3 +27,15 @@ CrashBox Objeto::getCrashBox(){
 bool Objeto::getDestruir(){
 	return destruir;
 }
+
+int Objeto::getTipo(){
+	return tipo;
+}
+
+int Objeto::getValor(){
+	return valor;
+}
+
+void Objeto::setDestruir(bool est){
+	destruir = est;
+}

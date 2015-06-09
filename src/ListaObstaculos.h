@@ -5,7 +5,7 @@
 
 class ListaObstaculos
 {
-public:
+//public:
 	int n_obstaculos;
 	Obstaculo *lista[MAX_OBSTACULOS];
 
@@ -17,6 +17,7 @@ public:
 	void actualizarObstaculos();
 	void animarObstaculos();
 	void borraObstaculos();
+
 	friend class Interaccion;
 };
 

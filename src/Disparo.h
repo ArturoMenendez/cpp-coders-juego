@@ -22,8 +22,8 @@ class Disparo
 public:
 	bool destruir;
 
-	Disparo(Jugador personaje, int vida, int danio);
-	Disparo(Enemigo &enem, int vida, int danio, bool dibujar, float desfase);
+	Disparo(Jugador personaje, int vida, int dam);
+	Disparo(Enemigo &enem, int vida, int danio, bool dibujar, float rad, float desfase);
 	Disparo();
 	~Disparo();
 	void dibujar();

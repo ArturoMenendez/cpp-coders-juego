@@ -3,7 +3,7 @@
 #include "bitmap.h"
 
 
-Mejora::Mejora(Vector3D pos, int id, int val) : Objeto(pos,id,val)
+Mejora::Mejora(Vector3D pos, int id, int val) : Objeto(pos, id, val), vida(5000)
 {
 }
 Mejora::~Mejora()

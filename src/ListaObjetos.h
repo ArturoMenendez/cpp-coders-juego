@@ -12,8 +12,9 @@ public:
 	~ListaObjetos();
 	void agregarObjetos(Vector3D posicion, int tipo);
 	void dibujarObjetos();
-	void destruirObjetos();
+	void actualizarObjetos();
 	void borraObjetos();
+
 	friend class Interaccion;
 };
 

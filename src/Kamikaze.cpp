@@ -5,7 +5,7 @@ Kamikaze::Kamikaze() : Enemigo()
 {
 }
 
-Kamikaze::Kamikaze(Vector3D pos, int id) : Enemigo(pos, id), rueda(0)
+Kamikaze::Kamikaze(Vector3D pos, int id) : Enemigo(pos, id), rueda(0), ataca(false)
 {
 	rueda = 0;
 	giraanima=4.5;
@@ -52,8 +52,6 @@ void Kamikaze::Dibuja()
 void Kamikaze::Anima(){}
 
 bool Kamikaze::atacar(int t){
-	static bool ataca = false;
-
 	if (t == 0)	ataca = true;
 	if (ataca && vida>0){
 		return true;

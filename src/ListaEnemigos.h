@@ -5,13 +5,14 @@
 #include "Kamikaze.h"
 #include "BossCaC.h"
 #include "BossADistancia.h"
+#include "BossFinal.h"
 #include "Vector3D.h"
 #include "ListaDisparos.h"
 #define MAX_ENEMIGOS 20
 
 class ListaEnemigos
 {
-public:
+//public:
 	int n_enemigos;
 	Enemigo *lista[MAX_ENEMIGOS];
 public:
@@ -25,6 +26,8 @@ public:
 	void rotaEnemigos();
 	void updateEnemigos(Vector3D jugador, ListaDisparos &ldis);
 	void borraEnemigos();
+	int getNumero();
+
 	friend class Interaccion;
 };
 

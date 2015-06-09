@@ -207,11 +207,13 @@ void Jugador::Anima(){
 CrashBox Jugador::getCrashBox(){
 	return limites;
 }
+
 void Jugador::invencibilidad(int t){
 	if (invencible){
 		invencible -= t;
 	}
 }
+
 void Jugador::act_salud(int danio){
 	if (!invencible){
 		salud -= danio;

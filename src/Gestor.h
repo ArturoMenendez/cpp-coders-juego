@@ -4,24 +4,22 @@
 #include "glut.h"
 #include "Texto.h"
 #include "Marcador.h"
-
+enum Estado
+{
+	INICIO,
+	JUEGO,
+	PAUSA,
+	GAMEOVER,
+	FIN
+};
 
 class Gestor
 {
 public:
 	//variables
-	enum Estado
-	{
-		INICIO,
-		JUEGO,
-		PAUSA,
-		GAMEOVER,
-		FIN
-	};
-	Estado estado;
+	int estado;
 	Marcador marcador;
 	int vidas;
-
 	//metodos
 	//constructor y destructor
 	Gestor();
@@ -38,7 +36,6 @@ public:
 	//metodos para marcador
 	void SetVidas();
 	int GetTiempo();
-
 
 	//metodos relacionados mayormente con glut 
 	void OnKeyboardDown(unsigned char);

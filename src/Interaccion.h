@@ -4,8 +4,8 @@
 #include "ListaObstaculos.h"
 #include "Jugador.h"
 #include "ListaEnemigos.h"
-#include "Pared.h"
 #include "ListaObjetos.h"
+#include "Pared.h"
 
 class Interaccion
 {
@@ -17,8 +17,9 @@ public:
 	static void interaccion(Jugador &jugador, ListaObstaculos obstaculo);
 	static void interaccion(ListaEnemigos enemigo, ListaObstaculos obstaculo);
 	static void interaccion(ListaEnemigos enemigos);
-	static void interaccion(Jugador jugador, ListaEnemigos enemigo);
-	static void ldv(ListaObstaculos obstaculo, ListaEnemigos enemigo, Jugador j);
+	static void interaccion(Jugador &jugador, ListaEnemigos enemigo);
 	static void interaccion(Jugador &jugador, ListaObjetos objetos);
+	static void ldv(ListaObstaculos obstaculo, ListaEnemigos enemigo, Jugador j);
+
 };
 

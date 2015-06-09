@@ -8,6 +8,7 @@ protected:
 public:
 	Mejora(Vector3D pos, int id, int val);
 	~Mejora();
+	virtual void Dibuja() = 0;
 };
 
 class Mpuntos :

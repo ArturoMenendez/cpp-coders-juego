@@ -20,6 +20,7 @@ void Gestor::Dibuja(){
 		}
 		nivel.Borrar();
 		nivel.LeeNivel();
+
 		nivel.SetSalud(10);
 		vidas = 2;
 		glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
@@ -53,6 +54,7 @@ void Gestor::Dibuja(){
 	}
 	else if (estado == JUEGO){
 		glutSetCursor(GLUT_CURSOR_NONE);
+
 		marcador.dibujar();
 		nivel.Dibuja();
 	}
@@ -109,11 +111,8 @@ void Gestor::Dibuja(){
 		glVertex2f(-5, 1);
 		glEnd();
 
-		if (vidas>0)
-			OpenGL::Print("CONTINUAR", 395, 340, 255, 0, 0);
-
-		if (vidas<=0)
-			OpenGL::Print("NO TIENES VIDAS", 375, 340, 255, 0, 0);
+		if (vidas>0)OpenGL::Print("CONTINUAR", 395, 340, 255, 0, 0);
+		else OpenGL::Print("NO TIENES VIDAS", 375, 340, 255, 0, 0);
 
 		glBegin(GL_POLYGON);
 		glColor3ub(200, 200, 200);
@@ -127,7 +126,6 @@ void Gestor::Dibuja(){
 
 		OpenGL::Print("SALIR", 420, 445, 255, 0, 0);
 		glPopMatrix();
-
 	}
 	else if (estado == FIN){
 		Texto::setPos(-8, 12, 0);
@@ -149,13 +147,11 @@ void Gestor::Update(){
 		nivel.updateEnemigos();
 		nivel.interacciones();
 		nivel.rotaJugador();
-		marcador.actualizarMarcador(nivel.GetSalud(),0.025, nivel.GetPuntos(), nivel.GetNivel(), vidas, nivel.GetCodigo(),nivel.GetMejoras());
+		marcador.actualizarMarcador(nivel.GetSalud(), 0.025, nivel.GetPuntos(), nivel.GetNivel(), vidas, nivel.GetCodigo(), nivel.GetMejoras());
 	}
 	else if (estado == GAMEOVER) nivel.actualizaListas();
 	else if (estado == PAUSA) nivel.actualizaListas();
 }
-
-
 
 void Gestor::Condiciones(){
 	if (estado == JUEGO){
@@ -166,16 +162,13 @@ void Gestor::Condiciones(){
 				nivel.Borrar();
 				nivel.LeeNivel();
 			}
-			else{
-				estado = FIN;
-			}
+			else estado = FIN;
 		}
 		if (nivel.GetSalud() <= 0){
 			estado = GAMEOVER;
 		}
 	}
 }
-
 
 
 
@@ -252,7 +245,6 @@ void Gestor::OnMouseDown(int button, int state, int x, int y){
 				estado = JUEGO;
 				state = GLUT_UP;
 			}
-
 		}
 		if (x > 320 && x < 580 && y>425 && y < 478){
 			estado = INICIO;

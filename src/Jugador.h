@@ -25,8 +25,9 @@ public:
 	bool tocapuerta;
 	int contador;
 	int mod_danio;
-	int mod_vel;
+	int mod_vel; 
 	int invencible;
+
 
 
 	//metodos
@@ -42,10 +43,10 @@ public:
 	void Pinta();
 	void Dibuja();
 	void Explota();
-	void Reinicia(Vector3D posicion);
 	void Rota();
 	void Mueve(unsigned char);
 	void Anima();
 	void KeyOperations(void);
 	void NoMueve(unsigned char);
+	void Reinicia(Vector3D posicion);
 };
